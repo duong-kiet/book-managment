@@ -8,7 +8,7 @@ const port = 3000;
 app.set("views","./views"); // đến thư mục views 
 app.set("view engine", "pug");
 
-routeClient.index(app);
+routeClient.index(app); // kieu goi ham index cua routeClient 
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
