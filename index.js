@@ -6,6 +6,8 @@ const routeClient = require("./routes/client/index.route.js")
 const app = express();
 const port = process.env.PORT;
 
+app.use(express.static("public"));  // biến thư mục public thành thư mục static có thể truy cập bởi người dùng
+
 app.set("views","./views"); // đến thư mục views 
 app.set("view engine", "pug");
 
