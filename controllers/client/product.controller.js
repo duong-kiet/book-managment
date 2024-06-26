@@ -1,24 +1,20 @@
+const Product = require("../../models/product.model");
+
 // GET
-module.exports.index  = (req, res) => {
+module.exports.index  = async (req, res) => {
+    const products = await Product.find({
+        status: "active",
+        deleted: false
+    });
+
+    for (const item of products) {
+        item.priceNew = ((1 - item.discountPercentage/100) * item.price).toFixed(0);
+    }
+
+    console.log(products);
+    
     res.render("client/pages/products/index.pug", {
-        pageTitle: "Danh sach san pham"
-    })
-}
-
-// POST
-module.exports.create  = (req, res) => {
-    res.render("client/pages/products/create") // duoi .pug 
-    // tuong duong /products/create 
-}
-
-// PATCH
-module.exports.edit  = (req, res) => {
-    res.render("client/pages/products/edit")
-    // tuong duong /products/edit
-}
-
-// GET 
-module.exports.detail  = (req, res) => {
-    res.render("client/pages/products/detail")
-    // tuong duong /products/detail
+        pageTitle: "Danh sach san pham",
+        products: products
+    });
 }

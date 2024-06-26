@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const productSchema = new Schema({
     title: String,
     description: String,
+    price: Number,
     discountPercentage: Number,
     stock: Number,
     thumbnail: String,
@@ -15,4 +16,4 @@ const productSchema = new Schema({
 
 const Product = mongoose.model("Product", productSchema, "products"); // ten connection
 
-model.exports = Product;
+module.exports = Product;

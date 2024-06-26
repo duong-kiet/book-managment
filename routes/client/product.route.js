@@ -3,13 +3,11 @@ const router = express.Router();
 
 const controller = require("../../controllers/client/product.controller");
 
-router.get("/", controller.index);
+router.get("/", controller.index);  
 
-router.post("/create", controller.create);
-
-router.patch("/edit", controller.edit);
-
-router.get("/detail", controller.detail);
+/* thông thường là router.get("/", (req, res) => {
+    res.render() nhưng bay giờ phải tách riêng ra trong file controller
+}) */
 
 module.exports = router;
 

@@ -4,7 +4,8 @@ require("dotenv").config();
 const database = require("./config/database.js");
 database.connect();
 
-const routeClient = require("./routes/client/index.route.js")
+const routeAdmin = require("./routes/admin/index.route.js");
+const routeClient = require("./routes/client/index.route.js");
 
 const app = express();
 const port = process.env.PORT;
@@ -14,6 +15,7 @@ app.use(express.static("public"));  // biến thư mục public thành thư mụ
 app.set("views","./views"); // đến thư mục views 
 app.set("view engine", "pug");
 
+routeAdmin.index(app);
 routeClient.index(app); // kieu goi ham index cua routeClient 
 
 app.listen(port, () => {
