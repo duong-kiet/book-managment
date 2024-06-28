@@ -26,3 +26,14 @@ if(listButtonStatus.length > 0) {
     buttonCurrent.classList.add("active");
 }
 // End Button Status
+
+// Form search
+const formSearch = document.querySelector("[form-search");
+if(formSearch) {
+    formSearch.addEventListener("submit", (event) => {
+        event.preventDefault();
+        
+    })
+}
+
+// End form search
