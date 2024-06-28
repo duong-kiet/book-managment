@@ -6,6 +6,21 @@ module.exports.index = async (req, res) => {
         deleted: false
     }
 
+    const filterStatus = [
+        {
+            label: "Tất cả",
+            value: ""
+        },
+        {
+            label: "Hoạt động",
+            value: "active"
+        },
+        {
+            label: "Dừng hoạt động",
+            value: "inactive"
+        }
+    ];
+
     if(req.query.status) {
         find.status = req.query.status // truy vấn 
     }
@@ -24,6 +39,7 @@ module.exports.index = async (req, res) => {
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Quan ly san pham",
         products: products,
-        keyword: keyword
+        keyword: keyword,
+        filterStatus: filterStatus
     });
 }
