@@ -34,12 +34,34 @@ module.exports.index = async (req, res) => {
     }
     // End Tìm kiếm 
 
-    const products = await Product.find(find);
+    // Phân trang
+    const pagination = {
+        currentPage: 1,
+        limitItems: 4,
+    }
 
+    if(req.query.page) {
+        pagination.currentPage = parseInt(req.query.page);
+    }
+
+    pagination.skip = (pagination.currentPage - 1) * pagination.limitItems;
+
+    const countProducts = await Product.countDocuments(find);
+    const totalPage = Math.ceil(countProducts/pagination.limitItems);
+    console.log(totalPage);
+    pagination.totalPage = totalPage;
+
+
+    // Hết phân trang 
+
+    const products = await Product.find(find).limit(pagination.limitItems).skip(pagination.skip);
+
+    console.log(pagination);
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Quan ly san pham",
         products: products,
         keyword: keyword,
-        filterStatus: filterStatus
+        filterStatus: filterStatus,
+        paginaton: pagination
     });
 }

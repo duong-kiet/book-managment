@@ -65,4 +65,11 @@ block main
                     //-     td
                     //-         button(class="btn btn-warning btn-sm") Sửa
                     //-         button(class="btn btn-danger btn-sm ml-1") Xóa
+    
+    nav 
+        ul(class="pagination")
+            - for (var i = 1; i <= paginaton.totalPage; i++) 
+              li(class="page-item")
+                button(class="page-link") #{i}
+            
             
