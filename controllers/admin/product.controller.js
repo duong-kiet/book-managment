@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model")
+const paginationHelper = require("../../helpers/pagination.helper")
 
 // GET /admin/products/
 module.exports.index = async (req, res) => {
@@ -35,22 +36,7 @@ module.exports.index = async (req, res) => {
     // End Tìm kiếm 
 
     // Phân trang
-    const pagination = {
-        currentPage: 1,
-        limitItems: 4,
-    }
-
-    if(req.query.page) {
-        pagination.currentPage = parseInt(req.query.page);
-    }
-
-    pagination.skip = (pagination.currentPage - 1) * pagination.limitItems;
-
-    const countProducts = await Product.countDocuments(find);
-    const totalPage = Math.ceil(countProducts/pagination.limitItems);
-
-    pagination.totalPage = totalPage;
-
+    const pagination = await paginationHelper(req, find);
 
     // Hết phân trang 
 
