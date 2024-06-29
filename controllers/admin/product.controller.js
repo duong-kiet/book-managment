@@ -48,7 +48,7 @@ module.exports.index = async (req, res) => {
 
     const countProducts = await Product.countDocuments(find);
     const totalPage = Math.ceil(countProducts/pagination.limitItems);
-    console.log(totalPage);
+
     pagination.totalPage = totalPage;
 
 
@@ -56,12 +56,11 @@ module.exports.index = async (req, res) => {
 
     const products = await Product.find(find).limit(pagination.limitItems).skip(pagination.skip);
 
-    console.log(pagination);
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Quan ly san pham",
         products: products,
         keyword: keyword,
         filterStatus: filterStatus,
-        paginaton: pagination
+        pagination: pagination
     });
 }
