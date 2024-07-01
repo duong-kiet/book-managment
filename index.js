@@ -1,5 +1,6 @@
 const express = require("express");
 require("dotenv").config();
+const bodyParser = require('body-parser');
 
 const database = require("./config/database.js");
 database.connect();
@@ -10,6 +11,8 @@ const systemConfig = require("./config/system.js")
 
 const app = express();
 const port = process.env.PORT;
+
+app.use(bodyParser.json())
 
 app.use(express.static("public"));  // biến thư mục public thành thư mục static có thể truy cập bởi người dùng
 
