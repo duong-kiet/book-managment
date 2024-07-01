@@ -142,9 +142,11 @@ if(boxActions) {
                 ids: ids
             }
 
+            const link = boxActions.getAttribute("box-actions");
+
             // console.log(dataChangeMulti);
 
-            fetch("/admin/products/change-multi", {
+            fetch(link, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
