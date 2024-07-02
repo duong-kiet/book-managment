@@ -67,6 +67,7 @@ module.exports.changeStatus = async (req, res) => {
         status: statusChange
     });
 
+    req.flash('success', 'Cập nhật trạng thái thành công')
     // res.redirect("back")
     res.json({
         code: 200
@@ -112,6 +113,8 @@ module.exports.deleteItem = async (req, res) => {
     }, {
         deleted: true
     });
+
+    req.flash('success', 'Xoá sản phẩm thành công') 
 
     res.json({
         code: 200
