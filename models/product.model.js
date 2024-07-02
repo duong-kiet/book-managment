@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const slug = require("mongoose-slug-updater");
+mongoose.plugin(slug);
 
-const productSchema = new Schema({
+const productSchema = new mongoose.Schema({
     title: String,
     description: String,
     price: Number,
@@ -13,7 +14,14 @@ const productSchema = new Schema({
     deleted: {
         type: Boolean,
         default: false
+    },
+    slug: {
+        type: String,
+        slug: "title", // thích trường nào thì thêm vào , phải là duy nhất 
+        unique: true
     }
+}, {
+    timestamps: true // Tự động thêm trường createAt và updateAt
 });
 
 
