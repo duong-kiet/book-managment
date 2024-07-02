@@ -14,5 +14,7 @@ router.patch("/delete/:id", controller.deleteItem);
 
 // router.patch("/trash", controller.trash);
 
+router.patch("/change-position/:id", controller.changePosition);
+
 module.exports = router;
    

@@ -40,7 +40,13 @@ module.exports.index = async (req, res) => {
 
     // Hết phân trang 
 
-    const products = await Product.find(find).limit(pagination.limitItems).skip(pagination.skip);
+    const products = await Product
+    .find(find)
+    .limit(pagination.limitItems)
+    .skip(pagination.skip)
+    .sort({
+        position: "desc"
+    });
 
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Quan ly san pham",
@@ -105,6 +111,22 @@ module.exports.deleteItem = async (req, res) => {
         _id: id
     }, {
         deleted: true
+    });
+
+    res.json({
+        code: 200
+    });
+}
+
+// PATCH /admin/products/change-position/:id
+module.exports.changePosition = async (req, res) => {
+    const id = req.params.id;
+    const position = req.body.position;
+
+    await Product.updateOne({
+        _id: id
+    }, {
+        position: position
     });
 
     res.json({
