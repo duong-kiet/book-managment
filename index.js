@@ -21,6 +21,8 @@ app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 // End Flash
 
+app.use(bodyParser.urlencoded({ extended: false }))
+
 app.use(bodyParser.json())
 
 app.use(express.static("public"));  // biến thư mục public thành thư mục static có thể truy cập bởi người dùng

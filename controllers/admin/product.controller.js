@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model")
+const systemConfig = require("../../config/system");
 const paginationHelper = require("../../helpers/pagination.helper")
 
 // GET /admin/products/
@@ -135,4 +136,30 @@ module.exports.changePosition = async (req, res) => {
     res.json({
         code: 200
     });
+}
+
+// GET /admin/products/create
+module.exports.create = async (req, res) => {
+    res.render("admin/pages/products/create.pug", {
+        pageTitle: "Them moi san pham",
+    });
+}
+
+// POST /admin/products/create
+module.exports.createPost = async (req, res) => {
+    req.body.price = parseInt(req.body.price);
+    req.body.discountPercentage = parseInt(req.body.discountPercentage);
+    req.body.price = parseInt(req.body.price);
+    req.body.stock = parseInt(req.body.stock);
+    if(req.body.position) {
+        req.body.position = parseInt(req.body.position);
+    } else {
+        const countProducts = await Product.countDocuments({}); // đếm ra tất cả bản ghi 
+        req.body.position = countProducts + 1;
+    }
+    
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+
+    res.redirect(`/${systemConfig.prefixAdmin}/products`)
 }
