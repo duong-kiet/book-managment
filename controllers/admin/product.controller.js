@@ -71,12 +71,26 @@ module.exports.changeStatus = async (req, res) => {
 module.exports.changeMulti = async (req, res) => {
     const {status, ids} = req.body;
 
-    await Product.updateMany({
-        _id: ids
-    }, {
-        status: status
-    });
     // Tìm tất cả các thằng có trong ids rồi update theo status 
+    switch (status) {
+        case "active":
+        case "inactive":
+            await Product.updateMany({
+                _id: ids
+            }, {
+                status: status
+            });
+            break;
+        case "delete":
+            await Product.updateMany({
+                _id: ids
+            }, {
+                deleted: true
+            });
+            break;
+        default:
+            break;
+    }
 
     res.json({
         code: 200
