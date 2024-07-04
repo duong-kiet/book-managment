@@ -28,10 +28,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
 
-app.use(express.static("public"));  // biến thư mục public thành thư mục static có thể truy cập bởi người dùng
-
-app.set("views","./views"); // đến thư mục views 
+app.set("views",`${__dirname}/views`); // đến thư mục views 
 app.set("view engine", "pug");
+
+app.use(express.static(`${__dirname}/public`));  // biến thư mục public thành thư mục static có thể truy cập bởi người dùng
 
 // App locals variables
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
