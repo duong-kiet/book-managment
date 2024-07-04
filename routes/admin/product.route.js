@@ -27,7 +27,21 @@ router.patch("/change-position/:id", controller.changePosition);
 
 router.get("/create", controller.create); 
 
-router.post("/create", upload.single('thumbnail'),validate.createPost, controller.createPost); // truyền ô input mà ta muốn lấy 
+router.post(
+    "/create", 
+    upload.single('thumbnail'),
+    validate.createPost, 
+    controller.createPost
+); // truyền ô input mà ta muốn lấy 
+
+router.get("/edit/:id", controller.edit); // Lấy ra giao diện cho trang chỉnh sửa 
+
+router.patch(
+    "/edit/:id", 
+    upload.single('thumbnail'),
+    validate.createPost, 
+    controller.editPatch
+);
 
 module.exports = router;
    
