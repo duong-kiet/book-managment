@@ -4,6 +4,8 @@ const router = express.Router();
 
 const controller = require("../../controllers/admin/product.controller");
 
+const validate = require("../../validates/admin/product.validate.js")
+
 // const upload = multer({ dest: './public/uploads/' }) // up ảnh vào thư mục này 
 
 const storageMulterHelper = require("../../helpers/storageMulter.helper");
@@ -25,7 +27,7 @@ router.patch("/change-position/:id", controller.changePosition);
 
 router.get("/create", controller.create); 
 
-router.post("/create", upload.single('thumbnail'), controller.createPost); // truyền ô input mà ta muốn lấy 
+router.post("/create", upload.single('thumbnail'),validate.createPost, controller.createPost); // truyền ô input mà ta muốn lấy 
 
 module.exports = router;
    
