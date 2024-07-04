@@ -9,6 +9,8 @@ router.get("/", controller.index);
     res.render() nhưng bay giờ phải tách riêng ra trong file controller
 }) */
 
+router.get("/:slug", controller.detail);  
+
 module.exports = router;
 
 // require giong import 
