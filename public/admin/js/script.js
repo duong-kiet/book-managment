@@ -236,7 +236,7 @@ if(uploadImage) {
     uploadImageInput.addEventListener("change", () => {
         const file = uploadImageInput.files[0];
         if(file) {
-            uploadImagePreview.src = URL.createObjectURL()
+            uploadImagePreview.src = URL.createObjectURL(file)
         }
     })
 }

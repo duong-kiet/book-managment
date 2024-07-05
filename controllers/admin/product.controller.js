@@ -147,11 +147,11 @@ module.exports.create = async (req, res) => {
 
 // POST /admin/products/create
 module.exports.createPost = async (req, res) => {
-    console.log(req.file);
+    // console.log(req.file);
 
-    if(req.file && req.file.filename) {
-        req.body.thumbnail = `/uploads/${req.file.filename}`;
-    }
+    // if(req.file && req.file.filename) {
+    //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+    // } cho phần local
 
     req.body.price = parseInt(req.body.price);
     req.body.discountPercentage = parseInt(req.body.discountPercentage);
@@ -198,9 +198,9 @@ module.exports.editPatch = async (req, res) => {
     try{
         const id = req.params.id;
         
-        if(req.file && req.file.filename) {
-            req.body.thumbnail = `/uploads/${req.file.filename}`;
-        }
+        // if(req.file && req.file.filename) {
+        //     req.body.thumbnail = `/uploads/${req.file.filename}`;
+        // }
 
         req.body.price = parseInt(req.body.price);
         req.body.discountPercentage = parseInt(req.body.discountPercentage);
