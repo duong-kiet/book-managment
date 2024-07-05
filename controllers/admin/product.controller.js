@@ -41,13 +41,21 @@ module.exports.index = async (req, res) => {
 
     // Hết phân trang 
 
+    // Sắp xếp
+    const sort= {};
+
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    } else {
+        sort.position = "desc"
+    }
+    
+    // Hết sắp xếp 
     const products = await Product
     .find(find)
     .limit(pagination.limitItems)
     .skip(pagination.skip)
-    .sort({
-        position: "desc"
-    });
+    .sort(sort);
 
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Quan ly san pham",

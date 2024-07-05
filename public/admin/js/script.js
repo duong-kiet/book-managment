@@ -241,3 +241,43 @@ if(uploadImage) {
     })
 }
 // End Upload image
+
+// Sort 
+const sort = document.querySelector("[sort]")
+if(sort) {
+    let url = new URL(window.location.href);
+
+    const select = sort.querySelector("[sort-select]")
+    select.addEventListener("change", () => {
+        const [sortKey, sortValue] =  select.value.split("-")
+
+        if(sortKey && sortValue) {
+            url.searchParams.set("sortKey", sortKey);
+            url.searchParams.set("sortValue", sortValue);
+
+            window.location.href = url.href;
+        }
+    })
+
+
+    // Thêm selected mặc định cho thẻ option
+    const defaultSortKey = url.searchParams.get("sortKey");
+    const defaultSortValue = url.searchParams.get("sortValue");
+
+    if(defaultSortKey && defaultSortValue) {
+        const optionSelected = select.querySelector(`option[value="${defaultSortKey}-${defaultSortValue}"]`);
+        optionSelected.setAttribute("selected", true);
+    }
+
+    // Tính năng clear
+    const buttonClear = sort.querySelector("[sort-clear]");
+    if(buttonClear) {
+        buttonClear.addEventListener("click", () => {
+            url.searchParams.delete("sortKey");
+            url.searchParams.delete("sortValue");
+
+            window.location.href = url.href;
+        })
+    }
+}
+// End sort
