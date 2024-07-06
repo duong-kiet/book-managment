@@ -5,6 +5,7 @@ const flash = require('express-flash')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const methodOverride = require('method-override')
+const path = require('path');
 
 const database = require("./config/database.js");
 database.connect();
@@ -30,6 +31,8 @@ app.use(bodyParser.json())
 
 app.set("views",`${__dirname}/views`); // đến thư mục views 
 app.set("view engine", "pug");
+
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce'))); // dirname: đường dẫn của thư mục gốc ( ở đây là product-management)
 
 app.use(express.static(`${__dirname}/public`));  // biến thư mục public thành thư mục static có thể truy cập bởi người dùng
 
