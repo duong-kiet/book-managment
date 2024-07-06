@@ -2,9 +2,14 @@ const ProductCategory = require("../../models/product-category.model")
 const systemConfig = require("../../config/system");
 
 // GET /admin/products-category
-module.exports.index = (req, res) => {
+module.exports.index = async (req, res) => {
+    const records = await ProductCategory.find({
+        deleted: false
+    })
+
     res.render("admin/pages/products-category/index.pug", {
-        pageTitle: "Danh muc san pham"
+        pageTitle: "Danh muc san pham",
+        records: records
     });
 }
 
