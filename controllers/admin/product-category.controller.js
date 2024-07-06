@@ -14,9 +14,15 @@ module.exports.index = async (req, res) => {
 }
 
 // GET /admin/products-category/create
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
+    const categories = await ProductCategory.find({
+        deleted: false,
+    })
+
+
     res.render("admin/pages/products-category/create.pug", {
-        pageTitle: "Them moi danh muc san pham"
+        pageTitle: "Them moi danh muc san pham",
+        categories: categories
     });
 }
 
