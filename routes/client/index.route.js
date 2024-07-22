@@ -1,7 +1,11 @@
 const homeRoute = require("./home.route.js")
 const productRoute = require("./product.route.js")
 
+const categoryMiddleware = require("../../middlewares/client/category.middleware.js")
+
 module.exports.index = (app) => {
+    app.use(categoryMiddleware.category)
+
     app.use("/", homeRoute);
     // app.get("/", homeRoute); neu dung get thi tat ca thang con cua no cung se la get 
     
