@@ -13,6 +13,8 @@ const productSchema = new mongoose.Schema({
     status: String,
     position: Number,
     createdBy: String,
+    updatedby: String,
+    deletedBy: String,
     deleted: {
         type: Boolean,
         default: false

@@ -77,6 +77,21 @@ module.exports.index = async (req, res) => {
         
         item.createdAtFormat = moment(item.createdAt).format("DD/MM/YYYY HH:mm:ss")
     }
+
+    for (const item of products) {
+        if(item.updatedBy) {
+            const accountCreated = await Account.findOne({
+                _id: item.updatedBy
+            }) 
+    
+            item.updatedByFullName = accountCreated.fullName;    
+        } else {
+            item.updatedByFullName = ""
+        }
+        
+        item.updatedAtFormat = moment(item.updatedAt).format("DD/MM/YYYY HH:mm:ss")
+    }
+
     res.render("admin/pages/products/index.pug", {
         pageTitle: "Quan ly san pham",
         products: products,
@@ -273,6 +288,8 @@ module.exports.editPatch = async (req, res) => {
                 const countProducts = await Product.countDocuments({}); // đếm ra tất cả bản ghi 
                 req.body.position = countProducts + 1;
             }
+
+            req.body.updatedBy = res.locals.account.id;
     
             await Product.updateOne({
                 _id: id,
