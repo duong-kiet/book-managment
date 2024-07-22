@@ -24,6 +24,6 @@ module.exports.requireAuth = async (req, res, next) => {
 
     res.locals.account = account;
     res.locals.role = role;
-
+    
     next();
 }

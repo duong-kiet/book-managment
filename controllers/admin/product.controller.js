@@ -103,7 +103,7 @@ module.exports.index = async (req, res) => {
 
 // PATCH /admin/products/change-status/:statusChange/:id
 module.exports.changeStatus = async (req, res) => {
-    if(role.permissions.includes("products_edit")) {
+    if(res.locals.role.permissions.includes("products_edit")) {
         const {id, statusChange} = req.params;
 
         await Product.updateOne({
@@ -124,7 +124,7 @@ module.exports.changeStatus = async (req, res) => {
 
 // PATCH /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-    if(role.permissions.includes("products_edit")) {
+    if(res.locals.role.permissions.includes("products_edit")) {
         const {status, ids} = req.body;
 
         // Tìm tất cả các thằng có trong ids rồi update theo status 
@@ -158,13 +158,14 @@ module.exports.changeMulti = async (req, res) => {
 
 // PATCH /admin/products/delete/:id
 module.exports.deleteItem = async (req, res) => {
-    if(role.permissions.includes("products_delete")) {
+    if(res.locals.role.permissions.includes("products_delete")) {
         const id = req.params.id;
 
         await Product.updateOne({
             _id: id
         }, {
-            deleted: true
+            deleted: true,
+            deletedBy: res.locals.account.id
         });
 
         req.flash('success', 'Xoá sản phẩm thành công') 
@@ -180,7 +181,7 @@ module.exports.deleteItem = async (req, res) => {
 
 // PATCH /admin/products/change-position/:id
 module.exports.changePosition = async (req, res) => {
-    if(role.permissions.includes("products_edit")) {
+    if(res.locals.role.permissions.includes("products_edit")) {
         const id = req.params.id;
         const position = req.body.position;
 
@@ -270,7 +271,7 @@ module.exports.edit = async (req, res) => {
 
 // PATCH /admin/products/edit/:id
 module.exports.editPatch = async (req, res) => {
-    if(role.permissions.includes("products_edit")) {
+    if(res.locals.role.permissions.includes("products_edit")) {
         try{
             const id = req.params.id;
             
