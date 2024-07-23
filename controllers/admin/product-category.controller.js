@@ -38,8 +38,9 @@ module.exports.createPost = async (req, res) => {
         req.body.position = countCategory + 1;
     }
     
-    await ProductCategory.save();
-
+    const newCategory = new ProductCategory(req.body);
+    await newCategory.save();
+  
     res.redirect(`/${systemConfig.prefixAdmin}/products-category`)
 }
 

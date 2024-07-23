@@ -9,7 +9,9 @@ router.get("/", controller.index);
     res.render() nhưng bay giờ phải tách riêng ra trong file controller
 }) */
 
-router.get("/:slug", controller.detail);  
+router.get("/:slugCategory", controller.category) 
+
+router.get("/detail/:slug", controller.detail);  
 
 module.exports = router;
 
