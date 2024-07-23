@@ -1,5 +1,6 @@
 const homeRoute = require("./home.route.js")
 const productRoute = require("./product.route.js")
+const searchRoute = require("./search.route.js")
 
 const categoryMiddleware = require("../../middlewares/client/category.middleware.js")
 
@@ -11,6 +12,8 @@ module.exports.index = (app) => {
     
     app.use("/products", productRoute); // khi dung /products thi se chay vao day 
     // app.get("/products", productRoute);
+
+    app.use("/search", searchRoute)
 }
  // tuong tuong nhu const index ( cho nao const thay bang module.exports)
 
