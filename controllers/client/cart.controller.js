@@ -35,5 +35,6 @@ module.exports.addPost = async (req, res) => {
             }
         })
     }
+    
     res.redirect("back")
 }
