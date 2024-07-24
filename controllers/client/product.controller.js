@@ -17,7 +17,7 @@ module.exports.index  = async (req, res) => {
     }
     
     res.render("client/pages/products/index.pug", {
-        pageTitle: "Danh sach san pham",
+        pageTitle: "Danh sách sản phẩm",
         products: products
     });
 }
@@ -69,7 +69,7 @@ module.exports.category  = async (req, res) => {
     }
     
     res.render("client/pages/products/index.pug", {
-        pageTitle: "Danh sach san pham",
+        pageTitle: "Danh sách sản phẩm",
         products: products
     });
 }
@@ -88,7 +88,7 @@ module.exports.detail  = async (req, res) => {
 
     if(product) {
         res.render("client/pages/products/detail.pug", {
-            pageTitle: "Chi tiet san pham",
+            pageTitle: "Chi tiết sản phẩm",
             product: product
         });
     } else {
