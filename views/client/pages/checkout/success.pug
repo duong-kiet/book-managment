@@ -10,26 +10,26 @@ block main
         .row
             .col-12
                 div(class="alert alert-success")
-                | Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.
+                    | Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.
 
-            if(order)
-                .row
-                    .col-12
-                        h4(class="mb-2") Thông tin cá nhân
-                        table(class="table table-bordered")
-                            tbody
-                                tr
-                                    td Họ tên
-                                    td
-                                        b #{order.userInfo.fullName}
-                                tr
-                                    td Số điện thoại
-                                    td
-                                        b #{order.userInfo.phone}
-                                tr
-                                    td Địa chỉ
-                                    td
-                                        b #{order.userInfo.address}
+        if(order)
+            .row
+                .col-12
+                    h4(class="mb-2") Thông tin cá nhân
+                    table(class="table table-bordered")
+                        tbody
+                            tr
+                                td Họ tên
+                                td
+                                    b #{order.userInfo.fullName}
+                            tr
+                                td Số điện thoại
+                                td
+                                    b #{order.userInfo.phone}
+                            tr
+                                td Địa chỉ
+                                td
+                                    b #{order.userInfo.address}
 
             .row
                 .col-12

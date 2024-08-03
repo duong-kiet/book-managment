@@ -32,9 +32,9 @@ module.exports.index = async (req,res) => {
 
 // POST /checkout/order
 module.exports.orderPost = async (req,res) => {
-    const cartId = req.cookies.cardId
+    const cartId = req.cookies.cartId
     const userInfo = req.body
-
+   
     const orderData = {
         userInfo: userInfo,
         products: []
