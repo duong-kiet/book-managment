@@ -45,6 +45,17 @@ if(formSearch) {
 
         window.location.href = url.href;
     })
+
+    formSearch.addEventListener("reset", (event) => {
+        const keyword = event.target.elements.keyword.value;
+
+        if(keyword) {
+            url.searchParams.delete("keyword");
+            event.target.elements.keyword.value = "";
+        }
+
+        window.location.href = url.href;
+    })
 }
 
 // End form search
@@ -71,7 +82,7 @@ if(listButtonChangeStatus.length > 0) {
     listButtonChangeStatus.forEach(button => {
         button.addEventListener("click", () => {
             const link = button.getAttribute("link");
-            console.log(link);
+            // console.log(link);
             fetch(link, {
                 method: "PATCH",
                 headers: {
@@ -114,59 +125,58 @@ if(inputCheckAll) {
             }
         })
     })
-    // End Check Item
 }
+// End Check Item
 
+// // Box Actions
+// const boxActions = document.querySelector("[box-actions]");
+// if(boxActions) {
+//     const button = boxActions.querySelector("button");
 
-// Box Actions
-const boxActions = document.querySelector("[box-actions]");
-if(boxActions) {
-    const button = boxActions.querySelector("button");
+//     button.addEventListener("click", () => {
+//         const select = boxActions.querySelector("select");
+//         const status = select.value;
 
-    button.addEventListener("click", () => {
-        const select = boxActions.querySelector("select");
-        const status = select.value;
+//         const listInputChecked = document.querySelectorAll("input[name='checkItem']:checked")
+//         const ids = [];
+//         listInputChecked.forEach(input => {
+//             ids.push(input.value);
+//         });
 
-        const listInputChecked = document.querySelectorAll("input[name='checkItem']:checked")
-        const ids = [];
-        listInputChecked.forEach(input => {
-            ids.push(input.value);
-        });
+//         if(status != "" && ids.length > 0) {
+//             // console.log(status);
+//             // console.log(ids);
 
-        if(status != "" && ids.length > 0) {
-            // console.log(status);
-            // console.log(ids);
+//             const dataChangeMulti = {
+//                 status: status,
+//                 ids: ids
+//             }
 
-            const dataChangeMulti = {
-                status: status,
-                ids: ids
-            }
+//             const link = boxActions.getAttribute("box-actions");
 
-            const link = boxActions.getAttribute("box-actions");
+//             // console.log(dataChangeMulti);
 
-            // console.log(dataChangeMulti);
+//             fetch(link, {
+//                 method: "PATCH",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//                 body: JSON.stringify(dataChangeMulti),
+//             })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     if(data.code == 200) {
+//                         window.location.reload();
+//                     }
+//                 })
+//         } else {
+//             alert("Hành động và checkItem phải được chọn")
+//         }
+//     })
+// }
+// // End Box Actions
 
-            fetch(link, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(dataChangeMulti),
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.code == 200) {
-                        window.location.reload();
-                    }
-                })
-        } else {
-            alert("Hành động và checkItem phải được chọn")
-        }
-    })
-}
-// End Box Actions
-
-// Xóa bản ghi
+// Xóa bản ghi 
 const listButtonDelete = document.querySelectorAll("[button-delete]");
 if(listButtonDelete.length > 0) {
     listButtonDelete.forEach(button => {
@@ -186,51 +196,54 @@ if(listButtonDelete.length > 0) {
         })
     })
 }
-// End Xóa bản ghi
+// End xóa bản ghi 
 
-// Thay đổi vị trí 
-const listInputPosition = document.querySelectorAll("input[name='position']");
-if(listInputPosition.length > 0) {
-    listInputPosition.forEach(input => {
-        input.addEventListener("change", () => {
-            const link = input.getAttribute("link");
-            const position = parseInt(input.value);
+// // Thay đổi vị trí 
+// const listInputPosition = document.querySelectorAll("input[name='position']");
+// if(listInputPosition.length > 0) {
+//     listInputPosition.forEach(input => {
+//         input.addEventListener("change", () => {
+//             const link = input.getAttribute("link");
+//             const position = parseInt(input.value);
 
-            fetch(link, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    position: position
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                })
-        })
-    })
-}
-// Hết thay đổi vị trí
+//             fetch(link, {
+//                 method: "PATCH",
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//                 body: JSON.stringify({
+//                     position: position
+//                 })
+//             })
+//                 .then(res => res.json())
+//                 .then(data => {
+//                     console.log(data);
+//                 })
+//         })
+//     })
+// }
+// // Hết thay đổi vị trí
 
-// show-alert
-const showAlert = document.querySelector("[show-alert]");
+// Show-alert
+const showAlert = document.querySelector("[show-alert");
+
 if(showAlert) {
     let time = showAlert.getAttribute("show-alert") || 3000;
     time = parseInt(time);
-  
+
     setTimeout(() => {
-      showAlert.classList.add("hidden");
+        showAlert.classList.add("hidden");
     }, time);
 }
+
 // End show-alert
 
-// Upload image
+// Upload preview image 
 const uploadImage = document.querySelector("[upload-image]");
 
 if(uploadImage) {
     const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
+    console.log(uploadImageInput);
     const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
 
     uploadImageInput.addEventListener("change", () => {
@@ -240,90 +253,153 @@ if(uploadImage) {
         }
     })
 }
-// End Upload image
+// End upload preview image
 
-// Sort 
-const sort = document.querySelector("[sort]")
-if(sort) {
+// Sort theo title
+const listSortTitle = document.querySelectorAll("[sort-title]");
+
+if(listSortTitle.length > 0) {
     let url = new URL(window.location.href);
 
-    const select = sort.querySelector("[sort-select]")
-    select.addEventListener("change", () => {
-        const [sortKey, sortValue] =  select.value.split("-")
+    listSortTitle.forEach(button => {
+        button.addEventListener("click", () => {
+            const sortValue = button.getAttribute("sort-title");
 
-        if(sortKey && sortValue) {
-            url.searchParams.set("sortKey", sortKey);
-            url.searchParams.set("sortValue", sortValue);
-
-            window.location.href = url.href;
-        }
-    })
-
-
-    // Thêm selected mặc định cho thẻ option
-    const defaultSortKey = url.searchParams.get("sortKey");
-    const defaultSortValue = url.searchParams.get("sortValue");
-
-    if(defaultSortKey && defaultSortValue) {
-        const optionSelected = select.querySelector(`option[value="${defaultSortKey}-${defaultSortValue}"]`);
-        optionSelected.setAttribute("selected", true);
-    }
-
-    // Tính năng clear
-    const buttonClear = sort.querySelector("[sort-clear]");
-    if(buttonClear) {
-        buttonClear.addEventListener("click", () => {
-            url.searchParams.delete("sortKey");
-            url.searchParams.delete("sortValue");
-
-            window.location.href = url.href;
-        })
-    }
-}
-// End sort
-
-// Phân quyền
-const tablePermissions = document.querySelector("[table-permissions]");
-if(tablePermissions) {
-    const buttonSubmit = document.querySelector("[button-submit]")
-    buttonSubmit.addEventListener("click", () => {
-        const roles = [];
-
-        const listItemRoleId = document.querySelectorAll("[role-id]");
-        for (const element of listItemRoleId) {
-            const roleId = element.getAttribute("role-id");
-            const role = {
-                id: roleId,
-                permissions: []
+            if(url.searchParams.has("sortAuthor")) {
+                url.searchParams.delete("sortAuthor");
             }
-            const listInputChecked = tablePermissions.querySelectorAll(`input[data-id="${roleId}"]:checked`); // tìm các ô input đã tích 
-            
-            listInputChecked.forEach(input => {
-                const dataName = input.getAttribute("data-name");
-                role.permissions.push(dataName)
-            });
-            roles.push(role);
-        }
 
-        const path = buttonSubmit.getAttribute("button-submit")
-        console.log(path)
-        fetch(path, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(roles)
+            if(sortValue) {
+                url.searchParams.set("sortTitle", sortValue);
+            } else {
+                url.searchParams.delete("sortTitle");
+            }
+
+            window.location.href = url.href;
         })
-            .then(res => res.json())
-            .then(data => {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: data.message,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            })
+
     })
+
+    // Thêm class active mặc định
+    const statusCurrent = url.searchParams.get("sortTitle") || "";
+    const buttonCurrent = document.querySelector(`[sort-title="${statusCurrent}"]`);
+
+    buttonCurrent.classList.add("active");
 }
-// End Phân quyền
+
+// Sort theo author 
+const listSortAuthor = document.querySelectorAll("[sort-author]");
+if(listSortAuthor.length > 0) {
+    let url = new URL(window.location.href);
+
+    listSortAuthor.forEach(button => {
+        button.addEventListener("click", () => {
+            const sortValue = button.getAttribute("sort-author");
+
+            if(url.searchParams.has("sortTitle")) {
+                url.searchParams.delete("sortTitle");
+            }
+
+            if(sortValue) {
+                url.searchParams.set("sortAuthor", sortValue);
+            } else {
+                url.searchParams.delete("sortAuthor");
+            }
+    
+
+            window.location.href = url.href;
+        })
+    })
+
+    // Thêm class active mặc định
+    const statusCurrent = url.searchParams.get("sortAuthor") || "";
+    const buttonCurrent = document.querySelector(`[sort-author="${statusCurrent}"]`);
+
+    buttonCurrent.classList.add("active");
+}
+
+// // Sort 
+// const sort = document.querySelector("[sort]")
+// if(sort) {
+//     let url = new URL(window.location.href);
+
+//     const select = sort.querySelector("[sort-select]")
+//     select.addEventListener("change", () => {
+//         const [sortKey, sortValue] =  select.value.split("-")
+
+//         if(sortKey && sortValue) {
+//             url.searchParams.set("sortKey", sortKey);
+//             url.searchParams.set("sortValue", sortValue);
+
+//             window.location.href = url.href;
+//         }
+//     })
+
+
+//     // Thêm selected mặc định cho thẻ option
+//     const defaultSortKey = url.searchParams.get("sortKey");
+//     const defaultSortValue = url.searchParams.get("sortValue");
+
+//     if(defaultSortKey && defaultSortValue) {
+//         const optionSelected = select.querySelector(`option[value="${defaultSortKey}-${defaultSortValue}"]`);
+//         optionSelected.setAttribute("selected", true);
+//     }
+
+//     // Tính năng clear
+//     const buttonClear = sort.querySelector("[sort-clear]");
+//     if(buttonClear) {
+//         buttonClear.addEventListener("click", () => {
+//             url.searchParams.delete("sortKey");
+//             url.searchParams.delete("sortValue");
+
+//             window.location.href = url.href;
+//         })
+//     }
+// }
+// // End sort
+
+// // Phân quyền
+// const tablePermissions = document.querySelector("[table-permissions]");
+// if(tablePermissions) {
+//     const buttonSubmit = document.querySelector("[button-submit]")
+//     buttonSubmit.addEventListener("click", () => {
+//         const roles = [];
+
+//         const listItemRoleId = document.querySelectorAll("[role-id]");
+//         for (const element of listItemRoleId) {
+//             const roleId = element.getAttribute("role-id");
+//             const role = {
+//                 id: roleId,
+//                 permissions: []
+//             }
+//             const listInputChecked = tablePermissions.querySelectorAll(`input[data-id="${roleId}"]:checked`); // tìm các ô input đã tích 
+            
+//             listInputChecked.forEach(input => {
+//                 const dataName = input.getAttribute("data-name");
+//                 role.permissions.push(dataName)
+//             });
+//             roles.push(role);
+//         }
+
+//         const path = buttonSubmit.getAttribute("button-submit")
+//         console.log(path)
+//         fetch(path, {
+//             method: "PATCH",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify(roles)
+//         })
+//             .then(res => res.json())
+//             .then(data => {
+//                 Swal.fire({
+//                     position: "center",
+//                     icon: "success",
+//                     title: data.message,
+//                     showConfirmButton: false,
+//                     timer: 1500
+//                 });
+//             })
+//     })
+// }
+// // End Phân quyền

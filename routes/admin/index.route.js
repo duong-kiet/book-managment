@@ -1,61 +1,20 @@
 const dashboardRoute = require("./dashboard.route.js")
-const productsRoute = require("./product.route.js")
-const productsCategoryRoute = require("./product-category.route.js")
-const rolesRoute = require("./role.route.js")
-const accountsRoute = require("./account.route.js")
-const authRoute = require("./auth.route.js")
-const profileRoute = require("./profile.route.js")
-const settingRoute = require("./setting.route");
+const booksRoute = require("./book.route.js")
+// const userRoute = require("./user.route.js")
 
-const systemConfig = require("../../config/system.js")
+// const orderRoute = require("./order.route.js")
 
-const authMiddleware = require("../../middlewares/admin/auth.middleware.js")
-
+// const systemConfig = require("../../config/system.js")
+// const authMiddleware = require("../../middlewares/admin/auth.middleware.js")
 
 module.exports.index = (app) => {
-    const path = `/${systemConfig.prefixAdmin}`;
-    
-    app.use(
-        `${path}/dashboard`, 
-        authMiddleware.requireAuth,
-        dashboardRoute
-    ); 
+    app.use("/admin/dashboard", dashboardRoute);
 
-    app.use(
-        `${path}/products`, 
-        authMiddleware.requireAuth, 
-        productsRoute
-    );
+    app.use("/admin/books", booksRoute);
 
-    app.use(
-        `${path}/products-category`, 
-        authMiddleware.requireAuth, 
-        productsCategoryRoute
-    );
+    // app.use("/admin/user", userRoute);
 
-    app.use(
-        `${path}/roles`, 
-        authMiddleware.requireAuth, 
-        rolesRoute
-    );
+    // app.use("/admin/book", bookRoute);
 
-    app.use(
-        `${path}/accounts`, 
-        authMiddleware.requireAuth, 
-        accountsRoute
-    );
-    
-    app.use(
-        `${path}/profile`, 
-        authMiddleware.requireAuth, 
-        profileRoute
-    );
-
-    app.use(
-        `${path}/settings`,
-        authMiddleware.requireAuth,
-        settingRoute
-    );
-   
-    app.use(`${path}/auth`, authRoute);
+    // app.use("/admin/order", orderRoute);
 }

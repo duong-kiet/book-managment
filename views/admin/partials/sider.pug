@@ -1,23 +1,59 @@
-.sider 
-    .inner-menu
-        ul
-            li 
-                a(href=`/${prefixAdmin}/dashboard`) Tổng quan
-            if(role.permissions.includes("products_view"))
-                li
-                    a(href=`/${prefixAdmin}/products`) Danh sách sản phẩm
-            if(role.permissions.includes("products-category_view"))
-                li
-                    a(href=`/${prefixAdmin}/products-category`) Danh mục sản phẩm
-            if(role.permissions.includes("roles_view"))
-                li
-                    a(href=`/${prefixAdmin}/roles`) Nhóm quyền
-            if(role.permissions.includes("roles_permissions"))
-                li
-                    a(href=`/${prefixAdmin}/roles/permissions`) Phân quyền
-            if(role.permissions.includes("accounts_view"))
-                li
-                    a(href=`/${prefixAdmin}/accounts`) Tài khoản Admin
-            li
-                a(href=`/${prefixAdmin}/settings/general`) Cài đặt chung
+.col-auto.col-md-3.col-xl-2.px-sm-2.px-0.bg-dark
+  .d-flex.flex-column.align-items-center.align-items-sm-start.px-3.pt-2.text-white.min-vh-100
+    a.d-flex.align-items-center.pb-3.mb-md-0.me-md-auto.text-white.text-decoration-none(href='/admin/dashboard')
+      i.fa.fa-2x.fa-user
+      span.fs-5.d-none.d-sm-inline.ms-2 ADMIN
+    ul#menu.nav.nav-pills.flex-column.mb-sm-auto.mb-0.align-items-center.align-items-sm-start
+      li.nav-item
+        a.nav-link.align-middle.px-0(href='/admin/dashboard')
+          i.fa.fa-lg.fa-compass
+          span.ms-2.d-none.d-sm-inline Dashboard
+      li
+        a.nav-link.px-0.align-middle(href='/admin/books')
+          i.fa.fa-book
+          span.ms-2.d-none.d-sm-inline Manage Books
+      li
+        a.nav-link.px-0.align-middle(href='/admin/books-category')
+          i.fa.fa-th-large
+          span.ms-2.d-none.d-sm-inline Manage Categories
+      
+    hr
+    .dropdown.pb-4
+      a#dropdownUser1.d-flex.align-items-center.text-white.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
+        img.rounded-circle(src='https://github.com/mdo.png' alt='hugenerd' width='30' height='30')
+        span.d-none.d-sm-inline.mx-1 Dương Kiệt 
+      ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(aria-labelledby='dropdownUser1')
+        li
+          a.dropdown-item(href='#') New project...
+        li
+          a.dropdown-item(href='#') Settings
+        li
+          a.dropdown-item(href='#') Profile
+        li
+          hr.dropdown-divider
+        li
+          a.dropdown-item(href='#') Sign out
+
+//- .sider 
+//-     .inner-menu
+//-         ul
+//-             li 
+//-                 a(href=`/${prefixAdmin}/dashboard`) Tổng quan
+//-             if(role.permissions.includes("products_view"))
+//-                 li
+//-                     a(href=`/${prefixAdmin}/products`) Danh sách sản phẩm
+//-             if(role.permissions.includes("products-category_view"))
+//-                 li
+//-                     a(href=`/${prefixAdmin}/products-category`) Danh mục sản phẩm
+//-             if(role.permissions.includes("roles_view"))
+//-                 li
+//-                     a(href=`/${prefixAdmin}/roles`) Nhóm quyền
+//-             if(role.permissions.includes("roles_permissions"))
+//-                 li
+//-                     a(href=`/${prefixAdmin}/roles/permissions`) Phân quyền
+//-             if(role.permissions.includes("accounts_view"))
+//-                 li
+//-                     a(href=`/${prefixAdmin}/accounts`) Tài khoản Admin
+//-             li
+//-                 a(href=`/${prefixAdmin}/settings/general`) Cài đặt chung
             

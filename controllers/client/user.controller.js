@@ -1,6 +1,6 @@
 const md5 = require("md5")
 const generateHelper = require("../../helpers/generate.helper")
-const sendEmailHelper = require("../../helpers/sendEmail.helper");
+const sendEmailHelper = require("../../helpers/sendMail.helper");
 
 const User = require("../../models/user.model");
 const ForgotPassword = require("../../models/forgot-password.model");

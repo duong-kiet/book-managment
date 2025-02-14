@@ -1,0 +1,246 @@
+extends ../../layouts/default.pug 
+include ../../mixins/filter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/box-actions.pug
+include ../../mixins/alert.pug
+
+block main 
+  .col.py-3
+    //- - if (messages.success)
+    //-   div(
+    //-     class="alert alert-success show-alert"
+    //-     show-alert=3000
+    //-   ) #{messages.success}
+
+    +alert-success(3000)
+    +alert-error(3000)
+
+    h1.mb-4 Manage Books
+
+    .card.mb-4
+      .card-header.fw-bold Search 
+      .card-body
+        //- .row.justify-content-between 
+        .row
+          .col-5
+            form(form-search="")
+              .input-group
+                input(
+                  type="text"
+                  placeholder="Nhập tên sách"
+                  name="keyword"
+                  class="form-control"
+                  value=keyword
+                )
+                .input-group-append
+                  button(
+                    class="btn btn-primary"
+                    type="submit"
+                  )  
+                    i(class="fa fa-search")
+                  button(
+                    class="btn btn-warning"
+                    type="reset"
+                  ) 
+                    i(class="fa fa-eraser")
+
+    .d-grid.d-md-flex.justify-content-md-end.mb-3
+      a(
+        class="btn btn-outline-success me-3"
+        href=`/admin/books/create`
+      ) + Add book
+
+    table.table.table-hover
+      thead.thead-primary
+        tr
+          th
+            input(name="checkAll" type="checkbox")
+          th(scope='col') STT 
+          th(scope='col') Hình ảnh 
+          th(scope='col') 
+            .d-flex.align-items-end
+                p.mb-0 Tên sách 
+                .dropdown.ms-2
+                  i.dropdown-toggle(data-bs-toggle='dropdown' aria-expanded='false')
+                  ul.dropdown-menu(style='')
+                    li
+                      a.dropdown-item(href='#' sort-title="") Mặc định
+                    li
+                      a.dropdown-item(href='#' sort-title="asc") Từ A-Z
+                    li
+                      a.dropdown-item(href='#' sort-title="desc") Từ Z-A
+          th(scope='col') 
+            .d-flex.align-items-end
+              p.mb-0 Tác giả 
+              .dropdown.ms-2
+                i.dropdown-toggle(data-bs-toggle='dropdown' aria-expanded='false')
+                ul.dropdown-menu(style='')
+                  li
+                    a.dropdown-item(href='#' sort-author="") Mặc định 
+                  li
+                    a.dropdown-item(href='#' sort-author="asc") Từ A-Z
+                  li
+                    a.dropdown-item(href='#' sort-author="desc") Từ Z-A
+          th(scope='col') 
+            .d-flex.align-items-end
+              p.mb-0 Trạng thái 
+              .dropdown.ms-2
+                i.dropdown-toggle(data-bs-toggle='dropdown' aria-expanded='false')
+                ul.dropdown-menu(style='')
+                  li
+                    a.dropdown-item.button.btn.btn-sm.btn-outline-success(button-status='') Tất cả
+                  li
+                    a.dropdown-item.button.btn.btn-sm.btn-outline-success(button-status='active') Hoạt động 
+                  li 
+                    a.dropdown-item.button.btn.btn-sm.btn-outline-success(button-status='inactive') Dừng hoạt động 
+          th(scope='col') Hành động 
+      tbody
+        each item, index in books
+          tr
+            td 
+              input(name="checkItem" type="checkbox")
+            td(scope='row') #{index+1}
+            td 
+              img(
+                src=item.thumbnail,
+                width="80px",
+                height="auto"
+              )
+            td #{item.title}
+            td #{item.author}
+            td 
+              if(item.status == "active")
+                button(
+                  link=`/admin/books/change-status/inactive/${item.id}`
+                  class="btn badge bg-success"
+                  button-change-status
+                ) Hoạt động
+              else 
+                button(
+                  link=`/admin/books/change-status/active/${item.id}`
+                  class="btn badge bg-danger"
+                  button-change-status
+                ) Dừng hoạt động
+            td 
+              a.btn.btn-info.btn-sm(href=`/admin/books/detail/${item.id}`)
+                i.fa.fa-info.px-1
+              a.btn.btn-warning.btn-sm.ms-2(href=`/admin/books/edit/${item.id}`)
+                i.fa.fa-pencil
+              a.btn.btn-danger.btn-sm.ms-2(button-delete=`/admin/books/delete/${item.id}`)
+                i.fa.fa-trash
+
+
+    nav
+      ul.pagination.justify-content-center
+        if(pagination.currentPage > 1)
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=1
+            ) Trang đầu
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=pagination.currentPage - 1
+            ) Trang trước 
+      
+        - for (var i = 1; i <= pagination.totalPage; i++) 
+          li(class=("page-item " + (pagination.currentPage == i ? "active" : "")))
+            button(
+              class="page-link"
+              button-pagination=i
+            ) #{i}
+
+        if(pagination.currentPage < pagination.totalPage)
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=pagination.currentPage + 1
+            ) Trang sau
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=pagination.totalPage
+            ) Trang cuối
+
+    //- .card.mb-3 
+    //-     table.table.table-hover.table-sm
+    //-         thead
+    //-             tr
+    //-                 th
+    //-                     input(
+    //-                         name="checkAll" 
+    //-                         type="checkbox"
+    //-                     )
+    //-                 th STT
+    //-                 th Hình ảnh
+    //-                 th Tiêu đề
+    //-                 th Giá
+    //-                 if(role.permissions.includes("products_edit"))
+    //-                     th Vị trí
+    //-                     th Trạng thái 
+    //-                 th Tạo bởi
+    //-                 th Cập nhập
+    //-                 th Hành động
+
+    //-         tbody
+    //-             each item, index in products
+    //-                 tr
+    //-                     td 
+    //-                         input(name="checkItem" type="checkbox" value=item.id)
+
+    //-                     td #{index+1}
+    //-                     td
+    //-                         img(
+    //-                             src=item.thumbnail,
+    //-                             width="80px",
+    //-                             height="auto"
+    //-                         )
+    //-                     td #{item.title}
+    //-                     td #{item.price}$
+    //-                     if(role.permissions.includes("products_edit"))
+    //-                         td 
+    //-                             input(
+    //-                                 link=`/${prefixAdmin}/products/change-position/${item.id}`
+    //-                                 type="number"
+    //-                                 name="position"
+    //-                                 value=item.position
+    //-                                 style="width: 60px"
+    //-                                 min="1"
+    //-                             )
+                
+    //-                         td 
+    //-                             if(item.status == "active")
+    //-                                 button(
+    //-                                     link=`/${prefixAdmin}/products/change-status/inactive/${item.id}`
+    //-                                     class="badge badge-success"
+    //-                                     button-change-status
+    //-                                 ) Hoạt động
+    //-                             else 
+    //-                                 button(
+    //-                                     link=`/${prefixAdmin}/products/change-status/active/${item.id}`
+    //-                                     class="badge badge-danger"
+    //-                                     button-change-status
+    //-                                 ) Dừng hoạt động
+    //-                     td
+    //-                         div #{item.createdByFullName}
+    //-                         div #{item.createdAtFormat}
+    //-                     td
+    //-                         div #{item.updatedByFullName}
+    //-                         div #{item.updatedAtFormat}
+    //-                     td
+    //-                         a(
+    //-                             class="btn btn-info btn-sm"
+    //-                             href=`/${prefixAdmin}/products/detail/${item.id}`
+    //-                         ) Chi tiết 
+    //-                         if(role.permissions.includes("products_edit"))
+    //-                             a(
+    //-                                 class="btn btn-warning btn-sm"
+    //-                                 href=`/${prefixAdmin}/products/edit/${item.id}`
+    //-                             ) Sửa
+    //-                         if(role.permissions.includes("products_delete"))
+    //-                             button(
+                                    class="btn btn-danger btn-sm ml-1"
+                                    button-delete=`/${prefixAdmin}/products/delete/${item.id}`
+                                ) Xóa

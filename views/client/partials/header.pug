@@ -1,54 +1,85 @@
 include ../mixins/sub-menu.pug
 
 header.header 
-    .container 
-        .row.align-items-center    
-            .col-3 
-                .inner-logo 
-                    a(href="/")
-                        img(src=setting.logo, alt="Logo")
+  .container
+    nav.navbar.navbar-expand-lg.navbar-light
+        .container-fluid
+            a.navbar-brand(href='#')
+              img(src='https://cdn-icons-png.freepik.com/256/3145/3145765.png?semt=ais_hybrid' alt='' width='80' height='80')
+            button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
+              span.navbar-toggler-icon
+            #navbarSupportedContent.collapse.navbar-collapse
+              ul.navbar-nav.me-auto.mb-2.mb-lg-0
+                li.nav-item
+                  a.nav-link.active(aria-current='page' href='#') Home
+                li.nav-item
+                  a.nav-link.active(aria-current='page' href='#') About us
+                li.nav-item
+                  a.nav-link.active(aria-current='page' href='#') Books
+                li.nav-item.dropdown
+                  a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
+                    | All categories
+                  ul.dropdown-menu(aria-labelledby='navbarDropdown')
+                    li
+                      a.dropdown-item(href='#') Arts
+                    li
+                      a.dropdown-item(href='#') Musics
+                    li
+                      a.dropdown-item(href='#') Comics
+
+              form.d-flex(style="width: 400px")
+                input.form-control.me-2(type='search' placeholder='Search' aria-label='Search')
+                button.btn.btn-outline-success(type='submit') Search
+    //- .container 
+
+    //-     .row.align-items-center    
+    //-         .col-1
+    //-             .inner-logo 
+    //-                 a(href="/")
+    //-                     img(src="https://www.shutterstock.com/image-vector/hand-keep-book-read-source-600nw-1127076767.jpg", alt="logo")
+    //-                     //- img(src=setting.logo, alt="Logo")
             
-            .col-5
-                form(
-                    action="/search"
-                    method="GET"    
-                ) 
-                    div(class="form-group d-flex mb-0")
-                        input(
-                            type="text"
-                            placeholder="Nhập từ khóa..."
-                            class="form-control"
-                            name="keyword"
-                            value=keyword   
-                        )
-                        button(
-                            type="submit"
-                            class="btn btn-primary"
-                        ) Tìm
+    //-         .col-7
+    //-             form(
+    //-                 action="/search"
+    //-                 method="GET"    
+    //-             ) 
+    //-                 div(class="form-group d-flex mb-0")
+    //-                     input(
+    //-                         type="text"
+    //-                         placeholder="Nhập từ khóa..."
+    //-                         class="form-control"
+    //-                         name="keyword"
+    //-                         value=keyword   
+    //-                     )
+    //-                     button(
+    //-                         type="submit"
+    //-                         class="btn btn-primary"
+    //-                     ) Tìm
 
-            .col-4 
-                .inner-menu 
-                    ul 
-                        li 
-                            a(href="/") Trang chủ
-                        li(class="sub-menu")
-                            a(href="/products") Sản phẩm
-                            if(layoutCategoryProducts)
-                                +sub-menu(layoutCategoryProducts)
+    //-         .col-4 
+    //-             .inner-menu 
+    //-                 ul 
+    //-                     li 
+    //-                         a(href="/") Trang chủ
+    //-                     li(class="sub-menu")
+    //-                         a(href="/products") Sản phẩm
+    //-                         if(layoutCategoryProducts)
+    //-                             +sub-menu(layoutCategoryProducts)
 
-                        li 
-                            a(href="/cart") Giỏ hàng (#{cartTotal})  
+    //-                     li 
+    //-                         a(href="/cart") Giỏ hàng (#{cartTotal})  
                               
-                        if(user)
-                            li
-                                a(href="/user/profile") #{user.fullName}
-                            li
-                                a(href="/user/logout") Đăng xuất
-                        else
-                            li
-                                a(href="/user/login") Đăng nhập
-                            li
-                                a(href="/user/register") Đăng ký
+    //-                     if(user)
+    //-                         li
+    //-                             a(href="/user/profile") #{user.fullName}
+    //-                         li
+    //-                             a(href="/user/logout") Đăng xuất
+    //-                     else
+    //-                         li
+    //-                             a(href="/user/login") Đăng nhập
+    //-                         li
+    //-                             a(href="/user/register") Đăng ký
 
 
                                         

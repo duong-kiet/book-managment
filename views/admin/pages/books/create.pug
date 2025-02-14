@@ -1,0 +1,98 @@
+extends ../../layouts/default.pug 
+include ../../mixins/alert.pug
+
+block main 
+  .col.py-3
+    +alert-success(3000)
+    +alert-error(3000)
+    
+    h1.mb-4 Create Books
+
+    form(
+      action=`/admin/books/create`
+      method="POST"
+      id="form-create-book"
+      class="d-flex flex-column gap-4"
+      enctype="multipart/form-data" 
+    )
+      div(
+        class="form-group" 
+      )
+        label(for="title") Tên sách
+        input(
+          type="text"
+          class="form-control"
+          id="title"
+          name="title"
+          required
+        )
+      div(class="form-group")
+        label(for="author") Tác giả 
+        input(
+          type="text"
+          class="form-control"
+          id="author"
+          name="author"
+          required
+        )
+      div(class="form-group")
+        label(for="price") Giá
+        input(
+          type="number"
+          class="form-control"
+          id="price"
+          name="price"
+          value="0"
+          min="0"
+        )
+      div(
+        class="form-group d-flex flex-column"
+        upload-image
+      )
+        input(
+          type="file"
+          class="form-control-file"
+          id="thumbnail"
+          name="thumbnail"
+          accept="image/*" 
+          upload-image-input
+        )
+        img(
+          src=""
+          class="image-preview"
+          upload-image-preview
+        )
+      div(class="form-group")
+        label(for="position") Vị trí
+        input(
+          type="number"
+          class="form-control"
+          id="position"
+          name="position"
+          placeholder="Tự động tăng"
+          min="1"
+        )
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusActive"
+          name="status"
+          value="active"
+          checked
+        )
+        label(for="statusActive" class="form-check-label") Hoạt động
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="statusInActive"
+          name="status"
+          value="inactive"
+        )
+        label(for="statusInActive" class="form-check-label") Dừng hoạt động
+      div(class="form-group")
+        button(
+            type="submit"
+            class="btn btn-primary"
+        ) Tạo mới
