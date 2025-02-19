@@ -70,3 +70,7 @@
   border-radius: 5px;
 }
 /* End image-preview */
+
+.title-error {
+  font-size: 60px;
+}

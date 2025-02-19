@@ -8,31 +8,53 @@
         a.nav-link.align-middle.px-0(href='/admin/dashboard')
           i.fa.fa-lg.fa-compass
           span.ms-2.d-none.d-sm-inline Dashboard
-      li
-        a.nav-link.px-0.align-middle(href='/admin/books')
-          i.fa.fa-book
-          span.ms-2.d-none.d-sm-inline Manage Books
-      li
-        a.nav-link.px-0.align-middle(href='/admin/books-category')
-          i.fa.fa-th-large
-          span.ms-2.d-none.d-sm-inline Manage Categories
+      
+      if(role.permissions.includes("books_view"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/books')
+            i.fa.fa-book
+            span.ms-2.d-none.d-sm-inline Manage Books
+      
+      if(role.permissions.includes("books_category_view"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/books-category')
+            i.fa.fa-th-large
+            span.ms-2.d-none.d-sm-inline Manage Categories
+      if(role.permissions.includes("roles_view"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/roles')
+            i.fa.fa-users
+            span.ms-2.d-none.d-sm-inline Nhóm quyền
+      if(role.permissions.includes("roles_permissions"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/roles/permissions')
+            i.fa.fa-share-alt
+            span.ms-2.d-none.d-sm-inline Phân quyền
+      if(role.permissions.includes("accounts_view"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/accounts')
+            i.fa.fa-server
+            span.ms-2.d-none.d-sm-inline Admin Accounts
+      if(role.permissions.includes("users_view"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/accounts/users')
+            i.fa.fa-male
+            span.ms-2.d-none.d-sm-inline User Accounts
       
     hr
-    .dropdown.pb-4
+    div.dropdown.pb-4(style='position: fixed; bottom: 10px')
       a#dropdownUser1.d-flex.align-items-center.text-white.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
-        img.rounded-circle(src='https://github.com/mdo.png' alt='hugenerd' width='30' height='30')
-        span.d-none.d-sm-inline.mx-1 Dương Kiệt 
+        img.rounded-circle(src=account.avatar width='30' height='30')
+        span.d-none.d-sm-inline.mx-1 #{account.fullName}
       ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(aria-labelledby='dropdownUser1')
         li
-          a.dropdown-item(href='#') New project...
+          a.dropdown-item(href=`#`) Settings
         li
-          a.dropdown-item(href='#') Settings
-        li
-          a.dropdown-item(href='#') Profile
+          a.dropdown-item(href='/admin/profile') Profile
         li
           hr.dropdown-divider
         li
-          a.dropdown-item(href='#') Sign out
+          a.dropdown-item(href='/admin/auth/logout') Sign out
 
 //- .sider 
 //-     .inner-menu

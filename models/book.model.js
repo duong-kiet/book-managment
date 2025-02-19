@@ -8,9 +8,14 @@ const bookSchema = new mongoose.Schema({
     price: Number,
     thumbnail: String, // ảnh đại diện của sách
     position: Number,
-    category: String,
+    category_id: String,
     status: String,
     description: String,
+    rating: Number,
+    sold: {
+        type: Number,
+        default: 0
+    },
     deleted: {
         type: Boolean,
         default: false

@@ -38,6 +38,19 @@ block main
           value=book.author
         )
       div(class="form-group")
+        label(for="category_id") Danh mục
+        select(
+          name="category_id"
+          class="form-control"
+          id="category_id"
+        )
+          option(value="") -- Chọn danh mục --
+          for item in categories
+            option(
+              value=item.id
+              selected=(item.id == book.category_id ? true : false)
+            ) #{item.title}
+      div(class="form-group")
         label(for="price") Giá
         input(
           type="number"
@@ -47,6 +60,15 @@ block main
           min="0"
           value=book.price
         )
+      div(class="form-group")
+        label(for="desc") Mô tả
+        textarea(
+          class="form-control"
+          id="desc"
+          name="description"
+          rows="5"
+          textarea-mce
+        ) #{book.description}
       div(
         class="form-group d-flex flex-column"
         upload-image

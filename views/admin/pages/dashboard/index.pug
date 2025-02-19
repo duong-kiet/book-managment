@@ -5,15 +5,8 @@ include ../../mixins/pagination.pug
 include ../../mixins/box-actions.pug
 
 block main 
-  .col.py-3
-    h3 Left Sidebar with Submenus
-    p.lead
-      | An example 2-level sidebar with collasible menu items. The menu functions like an &quot;accordion&quot; where only a single
-      | menu is be open at a time. While the sidebar itself is not toggle-able, it does responsively shrink in width on smaller screens.
-    ul.list-unstyled
-      li
-        h5 Responsive
-        |  shrinks in width, hides text labels and collapses to icons only on mobile
+  .col.py-3.d-flex.align-items-center.justify-content-center(style='background-size: cover; background-repeat: no-repeat; background-image: url("https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3JtNDk0LWJnLTAyNi14LmpwZw.jpg")')
+    h1(style='font-size: 60px') Welcome back #{account.fullName}
 
 //- doctype html 
 //- html

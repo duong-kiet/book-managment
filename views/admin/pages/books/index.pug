@@ -7,12 +7,6 @@ include ../../mixins/alert.pug
 
 block main 
   .col.py-3
-    //- - if (messages.success)
-    //-   div(
-    //-     class="alert alert-success show-alert"
-    //-     show-alert=3000
-    //-   ) #{messages.success}
-
     +alert-success(3000)
     +alert-error(3000)
 
@@ -21,7 +15,6 @@ block main
     .card.mb-4
       .card-header.fw-bold Search 
       .card-body
-        //- .row.justify-content-between 
         .row
           .col-5
             form(form-search="")
@@ -109,7 +102,7 @@ block main
               )
             td #{item.title}
             td #{item.author}
-            td 
+            td
               if(item.status == "active")
                 button(
                   link=`/admin/books/change-status/inactive/${item.id}`
@@ -127,42 +120,54 @@ block main
                 i.fa.fa-info.px-1
               a.btn.btn-warning.btn-sm.ms-2(href=`/admin/books/edit/${item.id}`)
                 i.fa.fa-pencil
-              a.btn.btn-danger.btn-sm.ms-2(button-delete=`/admin/books/delete/${item.id}`)
+              a.btn.btn-danger.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target='#deleteModal')
                 i.fa.fa-trash
+              //- Modal
+              #deleteModal.modal.fade(tabindex='-1' aria-labelledby='deleteModalLabel' aria-hidden='true')
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      h5#deleteModalLabel.modal-title Delete confirmation 
+                      button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                    .modal-body
+                      p Bạn có chắc chắn muốn xóa sản phẩm này không ? 
+                    .modal-footer
+                      button.btn.btn-success(type='button' button-delete=`/admin/books/delete/${item.id}`) Yes
+                      button.btn.btn-danger(type='button' data-bs-dismiss='modal') No
 
-
-    nav
-      ul.pagination.justify-content-center
-        if(pagination.currentPage > 1)
-          li(class="page-item")
-            button(
-              class="page-link"
-              button-pagination=1
-            ) Trang đầu
-          li(class="page-item")
-            button(
-              class="page-link"
-              button-pagination=pagination.currentPage - 1
-            ) Trang trước 
+    +pagination(pagination)
+    //- nav
+    //-   ul.pagination.justify-content-center
+    //-     if(pagination.currentPage > 1)
+    //-       li(class="page-item")
+    //-         button(
+    //-           class="page-link"
+    //-           button-pagination=1
+    //-         ) Trang đầu
+    //-       li(class="page-item")
+    //-         button(
+    //-           class="page-link"
+    //-           button-pagination=pagination.currentPage - 1
+    //-         ) Trang trước 
       
-        - for (var i = 1; i <= pagination.totalPage; i++) 
-          li(class=("page-item " + (pagination.currentPage == i ? "active" : "")))
-            button(
-              class="page-link"
-              button-pagination=i
-            ) #{i}
+    //-     - for (var i = 1; i <= pagination.totalPage; i++) 
+    //-       li(class=("page-item " + (pagination.currentPage == i ? "active" : "")))
+    //-         button(
+    //-           class="page-link"
+    //-           button-pagination=i
+    //-         ) #{i}
 
-        if(pagination.currentPage < pagination.totalPage)
-          li(class="page-item")
-            button(
-              class="page-link"
-              button-pagination=pagination.currentPage + 1
-            ) Trang sau
-          li(class="page-item")
-            button(
-              class="page-link"
-              button-pagination=pagination.totalPage
-            ) Trang cuối
+    //-     if(pagination.currentPage < pagination.totalPage)
+    //-       li(class="page-item")
+    //-         button(
+    //-           class="page-link"
+    //-           button-pagination=pagination.currentPage + 1
+    //-         ) Trang sau
+    //-       li(class="page-item")
+    //-         button(
+    //-           class="page-link"
+    //-           button-pagination=pagination.totalPage
+    //-         ) Trang cuối
 
     //- .card.mb-3 
     //-     table.table.table-hover.table-sm

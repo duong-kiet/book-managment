@@ -1,48 +1,177 @@
 extends ../../layouts/default.pug
+include ../../mixins/filter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/box-actions.pug
+include ../../mixins/alert.pug
 
 block main
-  h1(class="mb-4") Nhóm quyền
+  .col.py-3
+    +alert-success(3000)
+    +alert-error(3000)
 
-  .card.mb-3
-    .card-header Danh sách
-    .card-body
-      .row
-        .col-8
-        .col-4.text-right
-          a(
-            href=`/${prefixAdmin}/roles/create`
-            class="btn btn-outline-success"
-          ) + Thêm mới
+    h1.mb-4 Nhóm quyền
 
-      table(
-        class="table table-hover table-sm"
-      )
-        thead
-          tr
-            th STT
-            th Nhóm quyền
-            th Mô tả ngắn
-            th Hành động
-
-        tbody
-          if(records.length > 0)
-            each item, index in records
-              tr
-                td #{index + 1}
-                td #{item.title}
-                td #{item.description}
-                td
-                  a(
-                    class="btn btn-secondary btn-sm"
-                    href=`/${prefixAdmin}/roles/detail/${item.id}`
-                  ) Chi tiết
-                  a(
-                    class="btn btn-warning btn-sm ml-1"
-                    href=`/${prefixAdmin}/roles/edit/${item.id}`
-                  ) Sửa
-                  button(
-                    class="btn btn-danger btn-sm ml-1"
-                  ) Xóa
-          else
+    .d-grid.d-md-flex.justify-content-md-end.mb-3
+      //- Create
+      button.btn.btn-outline-success.me-3(type='button' data-bs-toggle='modal' data-bs-target=`#addModal`) + Add role
+      //- Modal
+      .modal.fade(tabindex='-1' id=`addModal` aria-labelledby=`addModalLabel` aria-hidden='true')
+        .modal-dialog.modal-dialog-scrollable
+          .modal-content
+            .modal-header
+              h5(id=`addModalLabel`).modal-title Thông tin thể loại
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              form(
+                action=`/admin/roles/create`
+                method="POST"
+                id=`form-create-role`
+                class="d-flex flex-column gap-4"
+              )
+                div(
+                  class="form-group" 
+                )
+                  label(for="title") Tên role
+                  input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    required
+                  )
+                div(class="form-group")
+                  label(for="desc") Mô tả
+                  textarea(
+                    class="form-control"
+                    id="desc"
+                    name="description"
+                    rows="5"
+                    textarea-mce
+                  )
+                div(class="form-group")
+                  button.btn.btn-success(type="submit") Tạo mới 
+       
+    table.table.table-hover
+      thead.thead-primary
+        tr
+          th(scope='col') STT 
+          th(scope='col') Nhóm quyền
+          th(scope='col') 
+            .d-flex.align-items-end
+                p.mb-0 Mô tả ngắn
+          th(scope='col') Hành động 
+      tbody
+        if(roles.length > 0)
+          each item, index in roles
             tr
-              td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.
+              td(scope='row') #{index+1}
+              td #{item.title}
+              td 
+                if item.description
+                  != item.description
+              td 
+                //- Edit 
+                a.btn.btn-warning.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#showModal-${item.id}`)
+                  i.fa.fa-pencil
+                //- Modal
+                .modal.fade(tabindex='-1' id=`showModal-${item.id}` aria-labelledby=`showModalLabel-${item.id}` aria-hidden='true')
+                  .modal-dialog.modal-dialog-scrollable
+                    .modal-content
+                      .modal-header
+                        h5(id=`showModalLabel-${item.id}`).modal-title Thông tin role
+                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                      .modal-body
+                        form(
+                          action=`/admin/roles/edit/${item.id}?_method=PATCH`
+                          method="POST"
+                          id=`form-show-role-${item.id}`
+                          class="d-flex flex-column gap-4"
+                        )
+                          div(
+                            class="form-group" 
+                          )
+                            label(for="title") Tên role
+                            input(
+                              type="text"
+                              class="form-control"
+                              id="title"
+                              name="title"
+                              required
+                              value=item.title
+                            )
+                          div(class="form-group")
+                            label(for="desc") Mô tả
+                            textarea(
+                              class="form-control"
+                              id="desc"
+                              name="description"
+                              rows="5"
+                              textarea-mce
+                            ) !{item.description}
+
+                          div(class="form-group")
+                            button.btn.btn-primary(type="submit") Save changes
+
+                //- Delete
+                a.btn.btn-danger.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#deleteModal-${item.id}`)
+                  i.fa.fa-trash
+                //- Modal
+                .modal.fade(tabindex='-1' id=`deleteModal-${item.id}` aria-labelledby=`deleteModalLabel-${item.id}` aria-hidden='true')
+                  .modal-dialog
+                    .modal-content
+                      .modal-header
+                        h5(id=`deleteModalLabel-${item.id}`).modal-title Delete confirmation 
+                        button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                      .modal-body
+                        p Bạn có chắc chắn muốn xóa role này không ? 
+                      .modal-footer
+                        button.btn.btn-success(type='button' button-delete=`/admin/roles/delete/${item.id}`) Yes
+                        button.btn.btn-danger(type='button' data-bs-dismiss='modal') No
+
+        else 
+          tr
+            td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.
+    //- .card.mb-3
+    //-   .card-header Danh sách
+    //-   .card-body
+    //-     .row
+    //-       .col-8
+    //-       .col-4.text-right
+    //-         a(
+    //-           href=`/${prefixAdmin}/roles/create`
+    //-           class="btn btn-outline-success"
+    //-         ) + Thêm mới
+
+    //-     table(
+    //-       class="table table-hover table-sm"
+    //-     )
+    //-       thead
+    //-         tr
+    //-           th STT
+    //-           th Nhóm quyền
+    //-           th Mô tả ngắn
+    //-           th Hành động
+
+    //-       tbody
+    //-         if(records.length > 0)
+    //-           each item, index in records
+    //-             tr
+    //-               td #{index + 1}
+    //-               td #{item.title}
+    //-               td #{item.description}
+    //-               td
+    //-                 a(
+    //-                   class="btn btn-secondary btn-sm"
+    //-                   href=`/${prefixAdmin}/roles/detail/${item.id}`
+    //-                 ) Chi tiết
+    //-                 a(
+    //-                   class="btn btn-warning btn-sm ml-1"
+    //-                   href=`/${prefixAdmin}/roles/edit/${item.id}`
+    //-                 ) Sửa
+    //-                 button(
+    //-                   class="btn btn-danger btn-sm ml-1"
+    //-                 ) Xóa
+    //-         else
+    //-           tr
+    //-             td(colspan="4" class="text-center") Chưa có nhóm quyền nào được tạo.

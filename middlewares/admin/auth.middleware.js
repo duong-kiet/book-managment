@@ -1,20 +1,20 @@
-const systemConfig = require("../../config/system.js")
+// const systemConfig = require("../../config/system.js")
 const Account = require("../../models/account.model")
 const Role = require("../../models/role.model")
 
 module.exports.requireAuth = async (req, res, next) => {
     if(!req.cookies.token) {
-        res.redirect(`/${systemConfig.prefixAdmin}/auth/login`)
+        res.redirect(`/admin/auth/login`)
         return;
     } 
 
     const account = await Account.findOne({
         token: req.cookies.token,
         deleted: false
-    }).select("fullName email phone avatar role_id")
+    }).select("_id fullName email phone avatar role_id status password")
 
     if(!account) {
-        res.redirect(`/${systemConfig.prefixAdmin}/auth/login`)
+        res.redirect(`/admin/auth/login`)
         return;
     }
 

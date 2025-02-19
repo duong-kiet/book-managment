@@ -1,56 +1,128 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ./newest.pug
+include ./price-desc.pug
+include ./price-asc.pug
+include ../../mixins/star.pug
+include ../../mixins/pagination.pug
+
 
 block main 
-  .container.my-3 
-    .row 
-      .col-12 
-        +box-head("Phổ biến")
+  .container.mt-5
+    .row.gx-5
+      .col-3.filter-search
+        .card
+          .card-header.d-flex.align-items-center.justify-content-between.py-3
+            .d-flex
+              i.fa.fa-filter.me-2.mt-1
+              p.fw-bold.mt-0.mb-0
+            i.fa.fa-repeat(aria-hidden='true')
+          .card-body
+            .mt-3.mb-5
+              h6.card-title.mb-4 Danh mục sản phẩm 
+              for item in booksCategory
+                .form-check
+                  input#flexCheckDefault.form-check-input(type='checkbox' value='')
+                  label.form-check-label(for='flexCheckDefault')
+                    | #{item.title}
+            hr
+            .mt-3.mb-3
+              h6.card-title.mb-4 Khoảng giá
+              .d-flex.justify-content-between.mb-3
+                .input-group.price.mb-3
+                  input.form-control(type='number' placeholder='Từ' min='0')
+                span -
+                .input-group.price.mb-3
+                  input.form-control(type='number' placeholder='Đến' min='0')
+              //- button.btn.btn-success.btn-full-width(type='button') Áp dụng 
+            hr
+            .mt-3.mb-5
+              h6.card-title.mb- Đánh giá 
+              .five-star
+                a(href='/5')
+                  - for (var i = 0; i < 5; ++i) {
+                    i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden='true')
+                  - }
+              .four-star
+                a(href='/4')
+                  - for (var i = 0; i < 5; i++)
+                    if i < 4
+                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                    else
+                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                
+                span Trở lên
+              .three-star
+                a(href='/3')
+                  - for (var i = 0; i < 5; i++)
+                    if i < 3
+                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                    else
+                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                
+                span Trở lên
+              .two-star
+                a(href='/2')
+                  - for (var i = 0; i < 5; i++)
+                    if i < 2
+                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                    else
+                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                
+                span Trở lên
+              .one-star
+                a(href='/1')
+                  - for (var i = 0; i < 5; i++)
+                    if i < 1
+                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                    else
+                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                span Trở lên
 
-    .row 
-      each book in books 
-        .col-4.mb-3 
-            a(href=`/books/detail/${book.slug}`)
-              .book-item 
-                .inner-image 
-                  img(src=book.thumbnail,alt=book.title)
-                .inner-content        
-                  h3.inner-title #{book.title}
-                  .inner-price #{book.price} đồng 
+            hr
+            button.btn.btn-success.btn-full-width(type='button') Áp dụng 
 
-//- block main 
-//-     .container.my-3 
-//-         .row 
-//-             .col-12 
-//-                 +box-head("Sản phẩm nổi bật")
+      .col-9.display-book
+        div
+          .justify-content-between.pt-3.pb-2.mb-3
+            ul#pills-tab.nav(role='tablist')
+              li.nav-item(role='presentation')
+                h6#pills-home-tab.nav-link.active.mb-0(data-bs-toggle='pill' data-bs-target='#pills-home' role='tab' aria-controls='pills-home' aria-selected='true') Danh sách sản phẩm 
+              li.nav-item(role='presentation')
+                h6#pills-newest-tab.nav-link.mb-0(data-bs-toggle='pill' data-bs-target='#pills-newest' type='button' role='tab' aria-controls='pills-newest' aria-selected='false') Sản phẩm mới nhất 
+              li.nav-item(role='presentation')
+                h6#pills-price_desc-tab.nav-link.mb-0(data-bs-toggle='pill' data-bs-target='#pills-price_desc' type='button' role='tab' aria-controls='pills-price_desc' aria-selected='false') Giá cao đến thấp
+              li.nav-item(role='presentation')
+                h6#pills-price_asc-tab.nav-link.mb-0(data-bs-toggle='pill' data-bs-target='#pills-price_asc' type='button' role='tab' aria-controls='pills-price_asc' aria-selected='false') Giá thấp đến cao 
+          #pills-tabContent.tab-content
+            #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+              .row.d-flex.gy-3
+                for book in books
+                  .card-book.col-3
+                    .inner-image.d-flex.justify-content-center
+                      a(href=`/books/detail/${book.slug}`)
+                        img(src=book.thumbnail width='110px' height='180px')
+                    p.inner-title.mt-3 #{book.title}
+                    p.inner-price #{book.price} đồng 
+                    .d-flex.justify-content-between
+                      div
+                        +star(book.rating)
+                      p.inner-sold Đã bán #{book.sold}
+            +newest()
+            +price_desc()
+            +price_asc()
 
-//-         .row   
-//-             each item in productsFeatured 
-//-                 .col-4.mb-3 
-//-                     .product-item 
-//-                         .inner-image 
-//-                             img(src=item.thumbnail,alt=item.title)
-//-                         .inner-content        
-//-                             h3.inner-title 
-//-                                 a(href=`/products/detail/${item.slug}`) #{item.title}
-//-                             .inner-price-now #{item.priceNew}$
-//-                             .inner-price-old #{item.price}
-//-                             .inner-discount -#{item.discountPercentage}%
-
-//-     .container.my-3 
-//-         .row 
-//-             .col-12 
-//-                 +box-head("Sản phẩm mới nhất")
-
-//-         .row   
-//-             each item in productsNew 
-//-                 .col-4.mb-3 
-//-                     .product-item 
-//-                         .inner-image 
-//-                             img(src=item.thumbnail,alt=item.title)
-//-                         .inner-content        
-//-                             h3.inner-title 
-//-                                 a(href=`/products/detail/${item.slug}`) #{item.title}
-//-                             .inner-price-now #{item.priceNew}$
-//-                             .inner-price-old #{item.price}
-//-                             .inner-discount -#{item.discountPercentage}%
+          .mb-4
+          +pagination(pagination)
+          //- nav.mt-5.mb-4
+          //-   ul.pagination.justify-content-center
+          //-     li.page-item.disabled
+          //-       a.page-link(href='#' tabindex='-1' aria-disabled='true') Previous
+          //-     li.page-item
+          //-       a.page-link(href='#') 1
+          //-     li.page-item
+          //-       a.page-link(href='#') 2
+          //-     li.page-item
+          //-       a.page-link(href='#') 3
+          //-     li.page-item
+          //-       a.page-link(href='#') Next

@@ -1,0 +1,265 @@
+extends ../../layouts/default.pug 
+include ../../mixins/filter-status.pug
+include ../../mixins/search.pug
+include ../../mixins/pagination.pug
+include ../../mixins/box-actions.pug
+include ../../mixins/alert.pug
+
+block main 
+  .col.py-3
+    +alert-success(3000)
+    +alert-error(3000)
+
+    h1.mb-4 Manage Categories
+
+    .d-grid.d-md-flex.justify-content-md-end.mb-3
+      button.btn.btn-outline-success.me-3(type='button' data-bs-toggle='modal' data-bs-target=`#addModal`) + Add Category
+      //- Modal
+      .modal.fade(tabindex='-1' id=`addModal` aria-labelledby=`addModalLabel` aria-hidden='true')
+        .modal-dialog.modal-dialog-scrollable
+          .modal-content
+            .modal-header
+              h5(id=`addModalLabel`).modal-title Thông tin thể loại
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              form(
+                action=`/admin/books-category/create`
+                method="POST"
+                id=`form-create-bookCategory`
+                class="d-flex flex-column gap-4"
+                enctype="multipart/form-data" 
+              )
+                div(
+                  class="form-group" 
+                )
+                  label(for="title") Tên thể loại
+                  input(
+                    type="text"
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    required
+                  )
+                div(class="form-group")
+                  label(for="desc") Mô tả
+                  textarea(
+                    class="form-control"
+                    id="desc"
+                    name="description"
+                    rows="5"
+                    textarea-mce
+                  )
+                div(
+                  class="form-group d-flex flex-column"
+                  upload-image
+                )
+                  input(
+                    type="file"
+                    class="form-control-file"
+                    id="thumbnail"
+                    name="thumbnail"
+                    accept="image/*" 
+                    upload-image-input
+                  )
+                  img(
+                    src=""
+                    class="image-preview"
+                    upload-image-preview
+                  )
+                div(class="form-group")
+                  label(for="position") Vị trí
+                  input(
+                    type="number"
+                    class="form-control"
+                    id="position"
+                    name="position"
+                    placeholder="Tự động tăng"
+                    min="1"
+                  )
+                div(class="form-group")
+                  button.btn.btn-success(type="submit") Tạo mới
+       
+    table.table.table-hover
+      thead.thead-primary
+        tr
+          th
+            input(name="checkAll" type="checkbox")
+          th(scope='col') STT 
+          th(scope='col') Hình ảnh 
+          th(scope='col') 
+            .d-flex.align-items-end
+                p.mb-0 Thể loại 
+                .dropdown.ms-2
+                  i.dropdown-toggle(data-bs-toggle='dropdown' aria-expanded='false')
+                  ul.dropdown-menu(style='')
+                    li
+                      a.dropdown-item(href='#' sort-title="") Mặc định
+                    li
+                      a.dropdown-item(href='#' sort-title="asc") Từ A-Z
+                    li
+                      a.dropdown-item(href='#' sort-title="desc") Từ Z-A
+          th(scope='col') Hành động 
+      tbody
+        each item, index in booksCategory
+          tr
+            td 
+              input(name="checkItem" type="checkbox")
+            td(scope='row') #{index+1}
+            td 
+              img(
+                src=item.thumbnail,
+                width="80px",
+                height="80px"
+              )
+            td #{item.title}
+            td 
+              //- Info 
+              a.btn.btn-info.btn-sm(type='button' data-bs-toggle='modal' data-bs-target=`#showInfoModal-${item.id}`)
+                i.fa.fa-info.px-1
+              //- Modal
+              .modal.fade(tabindex='-1' id=`showInfoModal-${item.id}` aria-labelledby=`showInfoModalLabel-${item.id}` aria-hidden='true')
+                .modal-dialog.modal-dialog-scrollable
+                  .modal-content
+                    .modal-header
+                      h5(id=`showInfoModalLabel-${item.id}`).modal-title Thông tin thể loại
+                      button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                    .modal-body
+                        div(
+                          class="form-group mb-3" 
+                        )
+                          label(for="title") Tên thể loại
+                          span.ms-2.fw-bold #{item.title}
+                        
+                        if item.description
+                          div(class="form-group mb-3")
+                            label(for="desc") Mô tả
+                            p !{item.description}
+                        if item.thumbnail
+                          div(class="form-group mb-3")
+                            p.mb-0 Ảnh đại diện
+                            img(
+                              src=item.thumbnail
+                              class="image-preview"
+                              upload-image-preview
+                            )
+                        div(class="form-group")
+                          label(for="position") Vị trí
+                          span.ms-2.fw-bold #{item.position}
+
+              //- Edit 
+              a.btn.btn-warning.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#showModal-${item.id}`)
+                i.fa.fa-pencil
+              //- Modal
+              .modal.fade(tabindex='-1' id=`showModal-${item.id}` aria-labelledby=`showModalLabel-${item.id}` aria-hidden='true')
+                .modal-dialog.modal-dialog-scrollable
+                  .modal-content
+                    .modal-header
+                      h5(id=`showModalLabel-${item.id}`).modal-title Thông tin thể loại
+                      button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                    .modal-body
+                      form(
+                        action=`/admin/books-category/edit/${item.id}?_method=PATCH`
+                        method="POST"
+                        id=`form-show-bookCategory-${item.id}`
+                        class="d-flex flex-column gap-4"
+                        enctype="multipart/form-data" 
+                      )
+                        div(
+                          class="form-group" 
+                        )
+                          label(for="title") Tên thể loại
+                          input(
+                            type="text"
+                            class="form-control"
+                            id="title"
+                            name="title"
+                            required
+                            value=item.title
+                          )
+                        div(class="form-group")
+                          label(for="desc") Mô tả
+                          textarea(
+                            class="form-control"
+                            id="desc"
+                            name="description"
+                            rows="5"
+                            textarea-mce
+                          ) #{item.description}
+                        div(
+                          class="form-group d-flex flex-column"
+                          upload-image
+                        )
+                          input(
+                            type="file"
+                            class="form-control-file"
+                            id="thumbnail"
+                            name="thumbnail"
+                            accept="image/*" 
+                            upload-image-input
+                          )
+                          img(
+                            src=item.thumbnail
+                            class="image-preview"
+                            upload-image-preview
+                          )
+                        div(class="form-group")
+                          label(for="position") Vị trí
+                          input(
+                            type="number"
+                            class="form-control"
+                            id="position"
+                            name="position"
+                            placeholder="Tự động tăng"
+                            min="1"
+                            value=item.position
+                          )
+                        div(class="form-group")
+                          button.btn.btn-primary(type="submit") Save changes
+
+              //- Delete
+              a.btn.btn-danger.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#deleteModal-${item.id}`)
+                i.fa.fa-trash
+              //- Modal
+              .modal.fade(tabindex='-1' id=`deleteModal-${item.id}` aria-labelledby=`deleteModalLabel-${item.id}` aria-hidden='true')
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      h5(id=`deleteModalLabel-${item.id}`).modal-title Delete confirmation 
+                      button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                    .modal-body
+                      p Bạn có chắc chắn muốn xóa thể loại này không ? 
+                    .modal-footer
+                      button.btn.btn-success(type='button' button-delete=`/admin/books-category/delete/${item.id}`) Yes
+                      button.btn.btn-danger(type='button' data-bs-dismiss='modal') No
+    nav
+      ul.pagination.justify-content-center
+        if(pagination.currentPage > 1)
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=1
+            ) Trang đầu
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=pagination.currentPage - 1
+            ) Trang trước 
+      
+        - for (var i = 1; i <= pagination.totalPage; i++) 
+          li(class=("page-item " + (pagination.currentPage == i ? "active" : "")))
+            button(
+              class="page-link"
+              button-pagination=i
+            ) #{i}
+
+        if(pagination.currentPage < pagination.totalPage)
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=pagination.currentPage + 1
+            ) Trang sau
+          li(class="page-item")
+            button(
+              class="page-link"
+              button-pagination=pagination.totalPage
+            ) Trang cuối

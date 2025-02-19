@@ -1,4 +1,5 @@
-const Book = require("../../models/book.model")
+const Book = require("../../models/book.model");
+const BookCategory = require("../../models/book-category.model");
 
 // GET /admin/books/
 module.exports.index = async (req, res) => {
@@ -106,9 +107,16 @@ module.exports.deleteItem = async (req, res) => {
 }
 
 // GET /admin/books/create
-module.exports.create = (req, res) => {
+module.exports.create = async (req, res) => {
+  const categories = await BookCategory.find({
+    deleted: false,
+  });
+
+  // console.log(categories);
+
   res.render("admin/pages/books/create.pug", {
-    pageTitle: "Trang tạo mới sách"
+    pageTitle: "Trang tạo mới sách",
+    categories: categories
   })
 }
 
@@ -139,13 +147,18 @@ module.exports.createPost = async (req, res) => {
 module.exports.edit = async (req, res) => {
   const id = req.params.id;
 
+  const categories = await BookCategory.find({
+    deleted: false,
+  });
+
   const book = await Book.findOne({
     _id: id
   })
 
   res.render("admin/pages/books/edit.pug", {
     pageTitle: "Trang chỉnh sửa sách",
-    book: book
+    book: book,
+    categories: categories
   })
 }
 
@@ -186,8 +199,17 @@ module.exports.detail = async (req, res) => {
     deleted: false
   })
 
+  let category = "";
+  if (book.category_id) {
+    category = await BookCategory.findOne({
+      _id: book.category_id,
+      deleted: false
+    })
+  }
+
   res.render("admin/pages/books/detail.pug", {
     pageTitle: "Trang chi tiết sách",
-    book: book
+    book: book,
+    category: category
   })
 }

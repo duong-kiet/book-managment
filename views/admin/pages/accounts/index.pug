@@ -1,67 +1,173 @@
 extends ../../layouts/default.pug
+include ../../mixins/alert.pug
 
-block main
-  h1(class="mb-4") Danh sách tài khoản
 
-  .card.mb-3
-    .card-header Danh sách
-    .card-body
-      .row
-        .col-8
-        .col-4.text-right
-          a(
-            href=`/${prefixAdmin}/accounts/create`
-            class="btn btn-outline-success"
-          ) + Thêm mới
-      table(
-        class="table table-hover table-sm"
-      )
-        thead
-          tr
-            th STT
-            th Avatar
-            th Họ tên
-            th Phân quyền
-            th Email
-            th Trạng thái
-            th Hành động
+block main 
+  .col.py-3
+    +alert-success(3000)
+    +alert-error(3000)
 
-        tbody
-          each item, index in records
-            tr 
-              td #{index+1}
-              td
-                img(
-                  src=item.avatar
-                  alt=item.fullName
-                  width="100px"
-                  height="auto"
+    h1.mb-4 Admin Accounts
+
+    .d-grid.d-md-flex.justify-content-md-end.mb-3
+      //- Create
+      button.btn.btn-outline-success.me-3(type='button' data-bs-toggle='modal' data-bs-target=`#addModal`) + Add account
+      //- Modal
+      .modal.fade(tabindex='-1' id=`addModal` aria-labelledby=`addModalLabel` aria-hidden='true')
+        .modal-dialog.modal-dialog-scrollable
+          .modal-content
+            .modal-header
+              h5(id=`addModalLabel`).modal-title Danh sách quản trị viên
+              button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+            .modal-body
+              form(
+                action=`/admin/accounts/create`
+                method="POST"
+                id=`form-create-account`
+                class="d-flex flex-column gap-4"
+                enctype="multipart/form-data" 
+              )
+                div(
+                  class="form-group" 
                 )
-              td #{item.fullName}
-              td #{item.roleTitle}
-              td #{item.email}
-              td
-                if (item.status === "active")
-                  a(
-                    href="javascript:;"
-                    class="badge badge-success"
-                    data-status="active"
-                  ) Hoạt động
-                else
-                  a(
-                    href="javascript:;"
-                    class="badge badge-danger"
-                    data-status="inactive"
-                  ) Dừng hoạt động
-              td
-                a(
-                  class="btn btn-secondary btn-sm"
-                  href=`/${prefixAdmin}/accounts/detail/${item.id}`
-                ) Chi tiết
-                a(
-                  class="btn btn-warning btn-sm ml-1"
-                  href=`/${prefixAdmin}/accounts/edit/${item.id}`
-                ) Sửa
+                  label(for="fullName") Họ và tên 
+                  input(
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    name="fullName"
+                    required
+                  )
+                div(
+                  class="form-group" 
+                )
+                  label(for="email") Email
+                  input(
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  )
+                div(class="form-group")
+                  label(for="password") Mật khẩu 
+                  input(
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  )
+                div(class="form-group")
+                  label(for="phone") Số điện thoại 
+                  input(
+                    type="text"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                    required
+                )
+                div(
+                  class="form-group d-flex flex-column"
+                  upload-image
+                )
+                  input(
+                    type="file"
+                    class="form-control-file"
+                    id="avatar"
+                    name="avatar"
+                    accept="image/*" 
+                    upload-image-input
+                  )
+                  img(
+                    src=""
+                    class="image-preview"
+                    upload-image-preview
+                  )
+
+                div(class="form-group")
+                  label(for="role_id") Phân quyền
+                  select(name="role_id" id="role_id" class="form-control")
+                    option(disabled) -- Chọn --
+                    each item in roles 
+                      option(value=item.id) #{item.title}
+
+                div(class="form-group")
+                  button.btn.btn-success(type="submit") Tạo mới
+    
+    table.table.table-hover
+      thead.thead-primary
+        tr
+          th(scope='col') STT 
+          th(scope='col') Avatar
+          th(scope='col') Họ và tên     
+          th(scope='col') Phân quyền 
+          th(scope='col') Email 
+          th(scope='col') Trạng thái
+          th(scope='col').text-center Hành động
+      tbody
+        each item, index in accounts
+          tr
+            td(scope='row') #{index+1}
+            td 
+              img(
+                src=item.avatar,
+                width="80px",
+                height="80px"
+              )
+            td #{item.fullName}
+            td #{item.roleTitle}
+            td #{item.email}
+            td
+              if (item.status == "active")
                 button(
-                  class="btn btn-danger btn-sm ml-1"
-                ) Xóa
+                  link=`/admin/accounts/change-status/inactive/${item.id}`
+                  class="badge bg-success"
+                  button-change-status
+                ) Hoạt động
+              else
+                button(
+                  link=`/admin/accounts/change-status/active/${item.id}`
+                  class="badge bg-danger"
+                  button-change-status
+                ) Dừng hoạt động
+            td 
+              //- Info 
+              div.text-center
+                a.btn.btn-info.btn-sm(type='button' data-bs-toggle='modal' data-bs-target=`#showInfoModal-${item.id}`)
+                  i.fa.fa-info.px-1
+              //- Modal
+              .modal.fade(tabindex='-1' id=`showInfoModal-${item.id}` aria-labelledby=`showInfoModalLabel-${item.id}` aria-hidden='true')
+                .modal-dialog.modal-dialog-scrollable
+                  .modal-content
+                    .modal-header
+                      h5(id=`showInfoModalLabel-${item.id}`).modal-title Thông tin tài khoản
+                      button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                    .modal-body
+                        div(
+                          class="form-group mb-3" 
+                        )
+                          label(for="fullName") Tên tài khoản 
+                          span.ms-2.fw-bold #{item.fullName}
+                        
+                        if item.email
+                          div(class="form-group mb-3")
+                            label(for="email") Email
+                            span.ms-2.fw-bold #{item.email}
+                        if item.phone
+                          div(class="form-group mb-3")
+                            label(for="phone") Số điện thoại 
+                            span.ms-2.fw-bold #{item.phone}
+                        if item.avatar
+                          div(class="form-group mb-3")
+                            p.mb-0 Ảnh đại diện
+                            img(
+                              src=item.avatar
+                              class="image-preview"
+                              upload-image-preview
+                            )
+                        if item.roleTitle
+                          div(class="form-group mb-3")
+                            label(for="title") Phân quyền
+                            span.ms-2.fw-bold #{item.roleTitle}
+                        

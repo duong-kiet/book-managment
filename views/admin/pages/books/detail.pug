@@ -18,13 +18,15 @@ block main
             span.text-muted.me-2 Giá:
             span.h5 #{book.price} đồng 
           .mb-3 
-            span.text-muted.me-2 Mô tả:
-            p #{book.description}
+            if book.description
+              span.text-muted.me-2 Mô tả:
+              p !{book.description}
           .row
             dt.col-3 Position:
             dd.col-9 #{book.position}
-            dt.col-3 Category:
-            dd.col-9 #{book.category}
+            if book.category_id
+              dt.col-3 Category:
+              dd.col-9 #{category.title}
             dt.col-3 Status:
             if book.status == "active"
               dd.col-9.text-success Active 
@@ -32,4 +34,5 @@ block main
               dd.col-9.text-danger Inactive 
           hr 
           a.btn.btn-warning(type='button' href=`/admin/books/edit/${book.id}`) 
-            i.fa.fa-pencil Chỉnh sửa  
+            i.fa.fa-pencil 
+              span Chỉnh sửa  

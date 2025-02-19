@@ -1,33 +1,42 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ../../mixins/star.pug
 
 block main 
   .col.py-5
-    .row.gx-5
-      aside.col-lg-6
+    .d-flex.justify-content-center.mt-3
+      aside.col-lg-5
         .rounded-4.mb-3.d-flex.justify-content-center
           a.rounded-4(data-fslightbox='mygalley' target='_blank' data-type='image' href=book.thumbnail)
-            img.rounded-4.fit(style='width: 350px; height: auto; margin: auto;' src=book.thumbnail)
+            img.rounded-4.fit(style='width: 350px; height: 560px; margin: auto;' src=book.thumbnail)
       main.col-lg-6
         .ps-lg-3
-          h4.title.text-dark #{book.title}
-          .mb-3
-            span.text-muted.me-2 Tác giả: 
-            span #{book.author} 
-          .mb-3
+          h2.title.text-dark.mb-4 #{book.title}
+          .mb-2
+            .d-flex
+              div.me-5
+                span.text-muted.me-2 Tác giả: 
+                span #{book.author} 
+              div 
+                span.text-muted.me-2 Rating: 
+                span 
+                  +star(book.rating)
+          .mb-2
             span.text-muted.me-2 Giá:
-            span.h5 #{book.price} đồng 
+            span.h2.text-danger.fw-bold #{book.price} đ
+          .mb-2
+            span.text-muted.me-2 Thể loại:
+            span #{book.category}
           .mb-3 
-            span.text-muted.me-2 Mô tả:
-            p #{book.description}
-          .row
-            dt.col-3 Position:
-            dd.col-9 #{book.position}
-            dt.col-3 Category:
-            dd.col-9 #{book.category}
-            dt.col-3 Status:
-            if book.status == "active"
-              dd.col-9.text-success Active 
+            span.text-muted.me-2 Description:
+            if book.description
+              span #{book.description}
             else 
-              dd.col-9.text-danger Inactive 
+              span Không có mô tả cho sản phẩm 
+          
           hr 
+          .mt-4
+            a.btn.btn-warning.shadow-0.me-3(href='#')  Buy now 
+            a.btn.btn-primary.shadow-0(href='#')
+              i.me-1.fa.fa-shopping-basket
+              |  Add to cart

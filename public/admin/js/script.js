@@ -28,7 +28,7 @@ if(listButtonStatus.length > 0) {
 // End Button Status
 
 // Form search
-const formSearch = document.querySelector("[form-search");
+const formSearch = document.querySelector("[form-search]");
 if(formSearch) {
     let url = new URL(window.location.href);
 
@@ -68,8 +68,11 @@ if(listButtonPagination.length > 0) {
     listButtonPagination.forEach(button => {
         button.addEventListener("click", () => {
             const page = button.getAttribute("button-pagination");
-
-            url.searchParams.set("page", page);
+            if(page == 1) {
+                url.searchParams.delete("page");
+            } else {
+                url.searchParams.set("page", page);
+            }
             window.location.href = url.href;
         })
     })
@@ -358,48 +361,72 @@ if(listSortAuthor.length > 0) {
 // }
 // // End sort
 
-// // Phân quyền
-// const tablePermissions = document.querySelector("[table-permissions]");
-// if(tablePermissions) {
-//     const buttonSubmit = document.querySelector("[button-submit]")
-//     buttonSubmit.addEventListener("click", () => {
-//         const roles = [];
+// Phân quyền
+const tablePermissions = document.querySelector("[table-permissions]");
+if(tablePermissions) {
+    const buttonSubmit = document.querySelector("[button-submit]")
+    buttonSubmit.addEventListener("click", () => {
+        const roles = [];
 
-//         const listItemRoleId = document.querySelectorAll("[role-id]");
-//         for (const element of listItemRoleId) {
-//             const roleId = element.getAttribute("role-id");
-//             const role = {
-//                 id: roleId,
-//                 permissions: []
-//             }
-//             const listInputChecked = tablePermissions.querySelectorAll(`input[data-id="${roleId}"]:checked`); // tìm các ô input đã tích 
+        const listItemRoleId = document.querySelectorAll("[role-id]");
+        for (const element of listItemRoleId) {
+            const roleId = element.getAttribute("role-id");
+            const role = {
+                id: roleId,
+                permissions: []
+            }
+            const listInputChecked = tablePermissions.querySelectorAll(`input[data-id="${roleId}"]:checked`); // tìm các ô input đã tích 
             
-//             listInputChecked.forEach(input => {
-//                 const dataName = input.getAttribute("data-name");
-//                 role.permissions.push(dataName)
-//             });
-//             roles.push(role);
-//         }
+            listInputChecked.forEach(input => {
+                const dataName = input.getAttribute("data-name");
+                role.permissions.push(dataName)
+            });
+            roles.push(role);
+        }
 
-//         const path = buttonSubmit.getAttribute("button-submit")
-//         console.log(path)
-//         fetch(path, {
-//             method: "PATCH",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify(roles)
-//         })
-//             .then(res => res.json())
-//             .then(data => {
-//                 Swal.fire({
-//                     position: "center",
-//                     icon: "success",
-//                     title: data.message,
-//                     showConfirmButton: false,
-//                     timer: 1500
-//                 });
-//             })
-//     })
-// }
-// // End Phân quyền
+        const path = buttonSubmit.getAttribute("button-submit")
+
+        fetch(path, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(roles)
+        })
+            .then(res => {
+                res.json()
+            })
+            .then(data => {
+                console.log(data);
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Cập nhập thành công",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            })
+    })
+}
+// End Phân quyền
+
+// Password
+const eyeClose = document.querySelector("[eye-close]")
+
+if(eyeClose) {
+    const icon = eyeClose.querySelector("i")
+
+    eyeClose.addEventListener("click", () => {
+        const typePassword = document.querySelector("#typePasswordX")
+        if (typePassword.type == "password") {
+            icon.classList.remove("fa-eye-slash")
+            icon.classList.add("fa-eye")
+            typePassword.type = "text";
+        } else {
+            icon.classList.remove("fa-eye")
+            icon.classList.add("fa-eye-slash")
+            typePassword.type = "password";
+        }
+    })
+}
+// End Password

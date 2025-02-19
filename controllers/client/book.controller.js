@@ -7,11 +7,11 @@ module.exports.detail = async (req, res) => {
 	const book = await Book.findOne({
 		slug: slug,
 		deleted: false,
-    status: "active"
+    	status: "active"
 	})
 
 	res.render("client/pages/books/detail.pug", {
 		pageTitle: "Chi tiết sản phẩm",
-    book: book
+    	book: book
 	})
 }

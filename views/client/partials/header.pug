@@ -3,33 +3,26 @@ include ../mixins/sub-menu.pug
 header.header 
   .container
     nav.navbar.navbar-expand-lg.navbar-light
-        .container-fluid
-            a.navbar-brand(href='#')
-              img(src='https://cdn-icons-png.freepik.com/256/3145/3145765.png?semt=ais_hybrid' alt='' width='80' height='80')
-            button.navbar-toggler(type='button' data-bs-toggle='collapse' data-bs-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation')
-              span.navbar-toggler-icon
-            #navbarSupportedContent.collapse.navbar-collapse
-              ul.navbar-nav.me-auto.mb-2.mb-lg-0
-                li.nav-item
-                  a.nav-link.active(aria-current='page' href='#') Home
-                li.nav-item
-                  a.nav-link.active(aria-current='page' href='#') About us
-                li.nav-item
-                  a.nav-link.active(aria-current='page' href='#') Books
-                li.nav-item.dropdown
-                  a#navbarDropdown.nav-link.dropdown-toggle(href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false')
-                    | All categories
-                  ul.dropdown-menu(aria-labelledby='navbarDropdown')
-                    li
-                      a.dropdown-item(href='#') Arts
-                    li
-                      a.dropdown-item(href='#') Musics
-                    li
-                      a.dropdown-item(href='#') Comics
+        .container
+            .d-flex.align-items-center
+              a.navbar-brand(href='#')
+                img(src='/images/book-logo.png' alt='' width='80' height='80')
+                
+              h3.fw-bold.text-title Bookstore
 
-              form.d-flex(style="width: 400px")
-                input.form-control.me-2(type='search' placeholder='Search' aria-label='Search')
-                button.btn.btn-outline-success(type='submit') Search
+            div
+              form.d-flex(style="width: 650px;height: 40px;" bar-search)
+                input(class='form-control' type='search' placeholder='Bạn muốn tốt hơn nhờ quyển sách nào ?' aria-label='Search' value=keyword name="keyword")
+                button.btn.btn-outline-success(type='submit')
+                  i(class="fa fa-search")
+            .d-flex.align-items-center
+              a(class="me-3" href="#")
+                i(class="fa fa-shopping-cart fa-2x icon-cart")
+              a(class="me-3" href="#")
+                i(class="fa fa-user fa-2x icon-user")
+              a.hidden
+                img(src="./images/book-logo.png" style="height: 40px; width: 40px; border-radius: 50%")
+
     //- .container 
 
     //-     .row.align-items-center    

@@ -3,44 +3,24 @@ const systemConfig = require("../../config/system");
 
 // GET /admin/roles
 module.exports.index = async (req, res) => {
-    const records = await Role.find({
+    const roles = await Role.find({
         deleted: false
     })
 
     res.render("admin/pages/roles/index.pug", {
         pageTitle: "Nhóm quyền",
-        records: records
+        roles: roles
     });
 }
 
-// GET /admin/roles/create
-module.exports.create = (req, res) => {
-    res.render("admin/pages/roles/create.pug", {
-        pageTitle: "Thêm mới nhóm quyền",
-    });
-}
 
 // POST /admin/roles/create
 module.exports.createPost = async (req, res) => {
-    const record = new Role(req.body);
-    await record.save();
+    const role = new Role(req.body);
+    await role.save();
 
-    res.redirect(`/${systemConfig.prefixAdmin}/roles`)
-}
-
-// GET /admin/roles/edit/:id
-module.exports.edit = async (req, res) => {
-    const id = req.params.id
-
-    const record = await Role.findOne({
-        _id: id,
-        deleted: false
-    })
-
-    res.render("admin/pages/roles/edit.pug", {
-        pageTitle: "Chỉnh sửa nhóm quyền",
-        record: record
-    });
+    req.flash("success", "Tạo role thành công")
+    res.redirect("back")
 }
 
 // PATCH /admin/roles/edit/:id
@@ -57,20 +37,38 @@ module.exports.editPatch = async (req, res) => {
     res.redirect("back")
 }
 
+// PATCH /admin/roles/delete/:id
+module.exports.deleteItem = async (req, res) => {
+    const {id} = req.params;
+  
+    await Role.updateOne({
+      _id: id
+    }, {
+      deleted: true
+    });
+    
+    req.flash('success', 'Xoá role thành công') 
+    
+    res.json({
+      code: 200
+    });
+}
+
 // GET /admin/roles/permissions
 module.exports.permissions = async (req, res) => {
-    const records = await Role.find({
+    const roles = await Role.find({
         deleted: false
     })
 
     res.render("admin/pages/roles/permissions.pug", {
         pageTitle: "Phân quyền",
-        records: records
+        roles: roles
     });
 }
 
 // PATCH /admin/roles/permissions
 module.exports.permissionsPatch = async (req, res) => {
+    // console.log(req.body);
     const roles = req.body;
 
     for(const role of roles) {

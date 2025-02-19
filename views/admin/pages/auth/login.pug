@@ -1,34 +1,59 @@
 extends ./auth.pug
 
-block main
-  .container.my-5
-    .row.justify-content-center
-      .col-8
-        h1(class="text-center") Đăng nhập
-        form(
-          action=`/${prefixAdmin}/auth/login`
-          method="POST"
-        )
-          div(class="form-group")
-            label(for="email") Email
-            input(
-              type="email"
-              class="form-control"
-              id="email"
-              name="email"
-              required
-            )
-          div(class="form-group")
-            label(for="password") Mật khẩu
-            input(
-              type="password"
-              class="form-control"
-              id="password"
-              name="password"
-              required
-            )
-          div(class="form-group")
-            button(
-              type="submit"
-              class="btn btn-primary btn-block"
-            ) Đăng nhập
+//- block main
+//-   .container.my-5
+//-     .row.justify-content-center
+//-       .col-8
+//-         h1(class="text-center") Đăng nhập
+//-         form(
+//-           action=`/${prefixAdmin}/auth/login`
+//-           method="POST"
+//-         )
+//-           div(class="form-group")
+//-             label(for="email") Email
+//-             input(
+//-               type="email"
+//-               class="form-control"
+//-               id="email"
+//-               name="email"
+//-               required
+//-             )
+//-           div(class="form-group")
+//-             label(for="password") Mật khẩu
+//-             input(
+//-               type="password"
+//-               class="form-control"
+//-               id="password"
+//-               name="password"
+//-               required
+//-             )
+//-           div(class="form-group")
+//-             button(
+//-               type="submit"
+//-               class="btn btn-primary btn-block"
+//-             ) Đăng nhập
+
+block main 
+  section.gradient-custom
+    .container.pt-4.h-100
+      .row.d-flex.justify-content-center.align-items-center.h-100
+        .col-12.col-md-8.col-lg-6.col-xl-5
+          .card.bg-dark.text-white(style='border-radius: 1rem;')
+            .card-body.p-5.text-center
+              .mb-md-5.mt-md-4
+                h2.fw-bold.mb-2.text-uppercase Login admin
+                p.text-white-50.mb-5 Please enter your login and password!
+                form(
+                  action=`/admin/auth/login`
+                  method="POST"
+                )
+                  .form-outline.form-white.mb-4(data-mdb-input-init='')
+                    p.form-label(for='typeEmailX').text-start Email
+                    input#typeEmailX.form-control.form-control-lg(type='email' name="email" placeholder="Enter email here" required)
+                  .form-outline.form-white.mb-4(data-mdb-input-init='')
+                    p.form-label(for='typePasswordX').text-start Password
+                    div(class="position-relative")
+                      input#typePasswordX.form-control.form-control-lg(type='password' name="password" placeholder="Enter password here" required)
+                      div(class="position-absolute" style='color: black; right: 10px; top: 6px' eye-close)
+                        i(class="fa fa-eye-slash fa-2x")
+                  button.mt-5.btn.btn-outline-light.btn-lg.px-5(data-mdb-button-init='' data-mdb-ripple-init='' type='submit') Login

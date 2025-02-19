@@ -1,0 +1,6 @@
+mixin star(number)
+  - for (var i = 0; i < 5; ++i) 
+    if i < number
+      i.fa.fa-star.star.star-active(aria-hidden='true').me-1
+    else
+      i.fa.fa-star.star.star-inactive(aria-hidden='true').me-1

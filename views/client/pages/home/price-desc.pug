@@ -1,0 +1,16 @@
+include ../../mixins/star.pug
+
+mixin price_desc()
+  #pills-price_desc.tab-pane.fade(role='tabpanel' aria-labelledby='pills-price_desc-tab')
+    .row.d-flex.gy-3
+      for book in booksPriceDesc
+        .card-book.col-3
+          .inner-image.d-flex.justify-content-center
+            a(href=`/books/detail/${book.slug}`)
+              img(src=book.thumbnail width='110px' height='180px')
+          p.inner-title.mt-2 #{book.title}
+          p.inner-price #{book.price} đồng 
+          .d-flex.justify-content-between
+            div
+              +star(book.rating)
+            p.inner-sold Đã bán #{book.sold}
