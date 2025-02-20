@@ -20,7 +20,6 @@ module.exports.index = (app) => {
     app.use("/", homeRoute);
     
     app.use("/products", productRoute); // khi dung /products thi se chay vao day 
-    // app.get("/products", productRoute);
 
     app.use("/books", bookRoute);
 
@@ -32,9 +31,9 @@ module.exports.index = (app) => {
 
     app.use("/user", userRoute)
 
-    app.get("*", (req, res) => {
-        res.render("client/pages/errors/404", {
-            pageTitle: "404 Not Found"
-        });
-    });
+    // app.get("*", (req, res) => {
+    //     res.render("client/pages/errors/404", {
+    //         pageTitle: "404 Not Found"
+    //     });
+    // });
 }

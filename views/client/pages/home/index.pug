@@ -12,75 +12,83 @@ block main
     .row.gx-5
       .col-3.filter-search
         .card
-          .card-header.d-flex.align-items-center.justify-content-between.py-3
+          .card-header.d-flex.align-items-center.justify-content-between.py-3(style="background: #a6f1f1;")
             .d-flex
               i.fa.fa-filter.me-2.mt-1
               p.fw-bold.mt-0.mb-0
-            i.fa.fa-repeat(aria-hidden='true')
+            .btn-reset
+              i.fa.fa-repeat(aria-hidden='true')
           .card-body
-            .mt-3.mb-5
-              h6.card-title.mb-4 Danh mục sản phẩm 
-              for item in booksCategory
-                .form-check
-                  input#flexCheckDefault.form-check-input(type='checkbox' value='')
-                  label.form-check-label(for='flexCheckDefault')
-                    | #{item.title}
-            hr
-            .mt-3.mb-3
-              h6.card-title.mb-4 Khoảng giá
-              .d-flex.justify-content-between.mb-3
-                .input-group.price.mb-3
-                  input.form-control(type='number' placeholder='Từ' min='0')
-                span -
-                .input-group.price.mb-3
-                  input.form-control(type='number' placeholder='Đến' min='0')
-              //- button.btn.btn-success.btn-full-width(type='button') Áp dụng 
-            hr
-            .mt-3.mb-5
-              h6.card-title.mb- Đánh giá 
-              .five-star
-                a(href='/5')
-                  - for (var i = 0; i < 5; ++i) {
-                    i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden='true')
-                  - }
-              .four-star
-                a(href='/4')
-                  - for (var i = 0; i < 5; i++)
-                    if i < 4
-                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
-                    else
-                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
-                
-                span Trở lên
-              .three-star
-                a(href='/3')
-                  - for (var i = 0; i < 5; i++)
-                    if i < 3
-                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
-                    else
-                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
-                
-                span Trở lên
-              .two-star
-                a(href='/2')
-                  - for (var i = 0; i < 5; i++)
-                    if i < 2
-                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
-                    else
-                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
-                
-                span Trở lên
-              .one-star
-                a(href='/1')
-                  - for (var i = 0; i < 5; i++)
-                    if i < 1
-                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
-                    else
-                      i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
-                span Trở lên
+            form(form-apply)
+              .mt-3.mb-5
+                h6.card-title.mb-4 Danh mục sản phẩm 
+                for item in booksCategory
+                  .form-check.mb-2
+                    input#flexCheckDefault.form-check-input(type='checkbox' name='checkCategory' value=item.title checked=(categories.includes(item.title) ? true : false))
+                    label.form-check-label(for='flexCheckDefault')
+                      | #{item.title}
+              hr
+              .mt-3.mb-3
+                h6.card-title.mb-4 Khoảng giá
+                .d-flex.justify-content-between.mb-3
+                  .input-group.price.mb-3
+                    input.form-control(type='number' placeholder='Từ' min='0' name="low-price" value=lowPrice)
+                  span -
+                  .input-group.price.mb-3
+                    input.form-control(type='number' placeholder='Đến' min='0' name="high-price" value=highPrice) 
+              hr
+              .mt-3.mb-5.rating-section
+                h6.card-title.mb- Đánh giá 
+                input.form-range(disabled type='range' min='1' max='5' step='1' rating-range value=rating).mb-3
 
-            hr
-            button.btn.btn-success.btn-full-width(type='button') Áp dụng 
+                .five-star.hidden
+                  a(href='/5')
+                    - for (var i = 0; i < 5; ++i) {
+                      i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden='true')
+                    - }
+                .four-star.hidden
+                  a(href='/4')
+                    - for (var i = 0; i < 5; i++)
+                      if i < 4
+                        i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                      else
+                        i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                  
+                  span Trở lên
+                .three-star.hidden
+                  a(href='/3')
+                    - for (var i = 0; i < 5; i++)
+                      if i < 3
+                        i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                      else
+                        i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                  
+                  span Trở lên
+                .two-star.hidden
+                  a(href='/2')
+                    - for (var i = 0; i < 5; i++)
+                      if i < 2
+                        i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                      else
+                        i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                  
+                  span Trở lên
+                .one-star.hidden
+                  a(href='/1')
+                    - for (var i = 0; i < 5; i++)
+                      if i < 1
+                        i.fa.fa-lg.fa-star.star.star-active.me-2(aria-hidden="true")
+                      else
+                        i.fa.fa-lg.fa-star.star.star-inactive.me-2(aria-hidden="true")
+                  span Trở lên
+
+              hr
+              button.btn.btn-success.btn-full-width.btn-apply(type='submit') Áp dụng 
+
+
+
+
+
 
       .col-9.display-book
         div
@@ -114,15 +122,3 @@ block main
 
           .mb-4
           +pagination(pagination)
-          //- nav.mt-5.mb-4
-          //-   ul.pagination.justify-content-center
-          //-     li.page-item.disabled
-          //-       a.page-link(href='#' tabindex='-1' aria-disabled='true') Previous
-          //-     li.page-item
-          //-       a.page-link(href='#') 1
-          //-     li.page-item
-          //-       a.page-link(href='#') 2
-          //-     li.page-item
-          //-       a.page-link(href='#') 3
-          //-     li.page-item
-          //-       a.page-link(href='#') Next

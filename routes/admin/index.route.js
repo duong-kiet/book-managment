@@ -28,11 +28,11 @@ module.exports.index = (app) => {
 
     app.use("/admin/profile", authMiddleware.requireAuth, profileRoute);
 
-    app.get("*", (req, res) => {
-        res.render("admin/pages/errors/404", {
-            pageTitle: "404 Not Found"
-        });
-    });
+    // app.get("*", (req, res) => {
+    //     res.render("admin/pages/errors/404", {
+    //         pageTitle: "404 Not Found"
+    //     });
+    // });
 
     // app.use("/admin/order", orderRoute);
 }
