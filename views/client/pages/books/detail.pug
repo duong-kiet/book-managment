@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/star.pug
+include ../../mixins/alert.pug
 
 block main 
   .col.py-5
@@ -30,13 +31,19 @@ block main
           .mb-3 
             span.text-muted.me-2 Description:
             if book.description
-              span #{book.description}
+              span !{book.description}
             else 
               span Không có mô tả cho sản phẩm 
           
           hr 
+          .col-md-3.col-lg-3.col-xl-2.d-flex
+            button.btn.px-2(data-mdb-button-init='' data-mdb-ripple-init='' onclick="this.parentNode.querySelector('input[type=number]').stepDown()")
+              i.fa.fa-minus
+            input#form1.form-control.form-control-sm.text-center(min='1' name='quantity' value='1' type='number')
+            button.btn.px-2(data-mdb-button-init='' data-mdb-ripple-init='' onclick="this.parentNode.querySelector('input[type=number]').stepUp()")
+              i.fa.fa-plus
           .mt-4
-            a.btn.btn-warning.shadow-0.me-3(href='#')  Buy now 
-            a.btn.btn-primary.shadow-0(href='#')
+            button.btn.btn-warning.shadow-0.me-3 Buy now 
+            button.btn.btn-primary.shadow-0(link=`/cart/add/${book.id}`).btn-add-cart
               i.me-1.fa.fa-shopping-basket
               |  Add to cart

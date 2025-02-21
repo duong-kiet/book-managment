@@ -2,63 +2,66 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 
 block main 
-    .container.my-3 
-        .row 
-            .col-12 
-                +box-head(pageTitle)
+  .container.my-5
+    .row.mb-5
+      .col-12
+        div(class="alert alert-success")
+          | Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.
 
-        .row
-            .col-12
-                div(class="alert alert-success")
-                    | Chúc mừng bạn đã đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.
+    if(order)
+      .row.mb-5
+        .col-6
+          h4(class="mb-3") Thông tin cá nhân
+          table(class="table table-bordered")
+            tbody
+              tr
+                td.col-3 Họ tên
+                td
+                    b #{order.userInfo.fullName}
+              tr
+                td Số điện thoại
+                td
+                    b #{order.userInfo.phone}
+              tr
+                td Địa chỉ
+                td
+                    b #{order.userInfo.address}
 
-        if(order)
-            .row
-                .col-12
-                    h4(class="mb-2") Thông tin cá nhân
-                    table(class="table table-bordered")
-                        tbody
-                            tr
-                                td Họ tên
-                                td
-                                    b #{order.userInfo.fullName}
-                            tr
-                                td Số điện thoại
-                                td
-                                    b #{order.userInfo.phone}
-                            tr
-                                td Địa chỉ
-                                td
-                                    b #{order.userInfo.address}
-
-            .row
-                .col-12
-                    h4(class="mb-2") Thông tin đơn hàng
-                    table(class="table table-bordered")
-                        thead
-                            tr
-                                th STT
-                                th Ảnh
-                                th Tên
-                                th Giá
-                                th Số lượng
-                                th Tổng tiền
-                        tbody
-                            if(order.products.length > 0)
-                                each item, index in order.products
-                                    tr
-                                        td #{index + 1}
-                                        td
-                                            img(
-                                                src=item.thumbnail
-                                                alt=item.title
-                                                width="80px"
-                                            )
-                                        td #{item.title}
-                                        td #{item.priceNew}$
-                                        td #{item.quantity}
-                                        td #{item.totalPrice}$
+      .row.mb-5
+        .col-12
+          h4.mb-3 Thông tin đơn hàng
+          table(class="table" cart)
+              thead(style="background: #a6f1f1")
+                  tr
+                    th.text-center STT
+                    th.text-center Ảnh
+                    th.text-center Tên sách 
+                    th.text-center Đơn giá 
+                    th.text-center Số lượng 
+                    th.text-center Tổng tiền
+              tbody
+                  if(order.books.length > 0)
+                      each book, index in order.books
+                        tr
+                            td.text-center #{index+1}
+                            td.text-center 
+                              img(
+                                src=book.thumbnail, 
+                                alt=book.title, 
+                                width="80px"
+                              )
+                            td.text-center
+                              a(
+                                href=`/books/detail/${book.slug}`
+                                style="text-decoration: none; font-weight: bold; color: black;"
+                              ) #{book.title}
+                            td.text-center  #{book.price} đ
+                            td.text-center
+                              p.lead.fw-normal.mb-0
+                                i.fa.fa-circle.me-2(style='color: #fdd8d2;') 
+                                span #{book.quantity}
+                            td.text-center #{book.totalPrice} đ
 
 
-                    if(order.products.length > 0)
-                        h3(class="text-right") Tổng đơn hàng: #{totalPrice}$
+          if(order.books.length > 0)
+            h3.mt-4(style="text-align: right") Tổng đơn hàng: #{totalPrice} đ

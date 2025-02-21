@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 
 const cartSchema = new mongoose.Schema({
-    products: [
+    books: [
         {
-            productId: String,
+            bookId: String,
             quantity: Number
         }
     ]
@@ -12,6 +12,6 @@ const cartSchema = new mongoose.Schema({
 });
 
 
-const Cart = mongoose.model("Cart", cartSchema, "carts"); // ten connection
+const Cart = mongoose.model("Cart", cartSchema, "carts");
 
 module.exports = Cart;

@@ -2,59 +2,111 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 
 block main
-    .container.my-3
+    section(style='background-color: white')
+      //- .container.pt-5
+      //-   .row.d-flex.justify-content-center.align-items-center
+      //-     .col
+      //-       p.mb-3
+      //-         span.h2.fw-bold Shopping Cart 
+            
+      //-       each item in cartDetail.books
+      //-         .card(style="background: #FAF6F6")
+      //-           .card-body.p-4
+      //-             .row.align-items-center.justify-content-around
+      //-               .col-md-2.text-center
+      //-                 img(src=item.bookInfo.thumbnail alt='thumnail' style="width: 100px; height=auto")
+      //-               .col-md-2.d-flex.justify-content-center
+      //-                 div
+      //-                   h5.text-muted.pb-2 Tên sách 
+      //-                   p.lead.fw-normal.mb-0 #{item.bookInfo.title}
+      //-               .col-md-2.d-flex.justify-content-center
+      //-                 div
+      //-                   h5.text-muted.pb-2 Số lượng 
+      //-                   p.lead.fw-normal.mb-0
+      //-                     i.fa.fa-circle.me-2(style='color: #fdd8d2;') 
+      //-                     span #{item.quantity}
+      //-               .col-md-2.d-flex.justify-content-center
+      //-                 div
+      //-                   h5.text-muted.pb-2 Đơn giá 
+      //-                   p.lead.fw-normal.mb-0 #{item.bookInfo.price}
+        
+      //-               .col-md-2.d-flex.justify-content-center
+      //-                 div
+      //-                   h5.text-muted.pb-2 Total
+      //-                   p.lead.fw-normal.mb-0 #{item.bookInfo.price * item.quantity}
+              
+                        
+      //- .card.mb-5.mt-5
+      //-   .card-body.p-4
+      //-     .float-end
+      //-       p.mb-0.me-5.d-flex.align-items-center
+      //-         span.text-muted.me-2(style="font-size: 30px") Order total :
+      //-         span.lead.fw-normal(style="font-size: 26px") #{cartDetail.totalPrice}
+      //- .d-flex.justify-content-end.mb-5
+      //-   a.btn.btn-lg.me-2(href="/" style="background-color: #efefef") Continue shopping
+      //-   button.btn.btn-success.btn-lg(type='button' data-mdb-button-init='' data-mdb-ripple-init='') Thanh toán 
+
+      .container.my-5
+        p.mb-3
+          span.h2.fw-bold Giỏ hàng
         .row
             .col-12
-                +box-head("Giỏ hàng")
+              table(class="table" cart)
+                  thead(style="background: #a6f1f1")
+                      tr
+                          th.text-center STT
+                          th.text-center Ảnh
+                          th.text-center Tên sách 
+                          th.text-center Đơn giá 
+                          th.text-center Số lượng 
+                          th.text-center Tổng tiền
+                          th.text-center Hành động
+                  tbody
+                      if(cartDetail.books.length > 0)
+                          each book, index in cartDetail.books
+                              tr
+                                  td.text-center #{index+1}
+                                  td.text-center 
+                                      img(
+                                          src=book.bookInfo.thumbnail, 
+                                          alt=book.bookInfo.title, 
+                                          width="80px"
+                                      )
+                                  td.text-center
+                                      a(
+                                          href=`/books/detail/${book.bookInfo.slug}`
+                                          style="text-decoration: none; font-weight: bold; color: black;"
+                                      ) #{book.bookInfo.title}
+                                  td.text-center  #{book.bookInfo.price} đ
+                                  td.text-center
+                                      //- input(
+                                      //-     type="number"
+                                      //-     name="quantity"
+                                      //-     value=book.quantity
+                                      //-     min="1"
+                                      //-     book-id=book.bookId
+                                      //-     style="width: 100px"
+                                      //- )
+                                      .d-flex.justify-content-center
+                                        button.btn.px-2(data-mdb-button-init='' data-mdb-ripple-init='' onclick="this.parentNode.querySelector('input[type=number]').stepDown()")
+                                          i.fa.fa-minus
+                                        input#form1.form-control.form-control-sm.text-center(min='1' name='quantity-cart' value=book.quantity type='number' style="width: 50px" book-id=book.bookId)
+                                        button.btn.px-2(data-mdb-button-init='' data-mdb-ripple-init='' onclick="this.parentNode.querySelector('input[type=number]').stepUp()")
+                                          i.fa.fa-plus
+                                  td.text-center #{book.totalPrice} đ
+                                  td.text-center
+                                      button(
+                                          btn-cart-delete
+                                          link=`/cart/delete/${book.bookId}`
+                                          class="btn btn-danger"
+                                      ) 
+                                        i.fa.fa-trash
+                      else 
+                          h2.mb-3.mt-3 Chưa có sản phẩm nào trong giỏ hàng 
 
-        .row
-            .col-12
-                table(class="table table-bordered" cart)
-                    thead
-                        tr
-                            th STT
-                            th Ảnh
-                            th Tên
-                            th Giá
-                            th Số lượng
-                            th Tổng tiền
-                            th Hành động
-                    tbody
-                        if(cartDetail.products.length > 0)
-                            each product, index in cartDetail.products
-                                tr
-                                    td #{index+1}
-                                    td 
-                                        img(
-                                            src=product.productInfo.thumbnail, 
-                                            alt=product.productInfo.title, 
-                                            width="80px"
-                                        )
-                                    td
-                                        a(
-                                            href=`/products/detail/${product.productInfo.slug}`
-                                        ) #{product.productInfo.title}
-                                    td  #{product.productInfo.priceNew}$
-                                    td
-                                        input(
-                                            type="number"
-                                            name="quantity"
-                                            value=product.quantity
-                                            min="1"
-                                            product-id=product.productId
-                                            style="width: 60px"
-                                        )
-                                    td #{product.totalPrice}$
-                                    td
-                                        a(
-                                            href=`/cart/delete/${product.productId}`
-                                            class="btn btn-danger"
-                                        ) Xóa
-                        else 
-                            p Chưa có sản phẩm nào trong giỏ hàng 
+              if(cartDetail.books.length > 0)
+                  div(style="text-align: right")
+                    h3(class="") Tổng đơn hàng: #{cartDetail.totalPrice} đ
 
-                if(cartDetail.products.length > 0)
-                    h3(class="text-right") Tổng đơn hàng: #{cartDetail.totalPrice}$
-
-                    div(class="text-right mt-3")
+                    div(class="mt-3")
                         a(href="/checkout" class="btn btn-success") Thanh toán 

@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     password: String,
     tokenUser: String,
     avatar: String,
+    address: String,
     status: {
         type: String,
         default: "active"

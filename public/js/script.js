@@ -223,16 +223,105 @@ if(btnReset) {
 }
 // End reset
 
+// Đặt hàng 
+const btnAddCart = document.querySelector(".btn-add-cart");
+
+if(btnAddCart) {
+    btnAddCart.addEventListener("click", () => {
+        const inputQuantity = document.querySelector("[name='quantity']")
+        const value = inputQuantity.value
+
+        const path = btnAddCart.getAttribute('link');
+        console.log(path);
+        
+        fetch(path, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({quantity: value})
+        })
+            .then(res => res.json())
+            .then(data => {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Thêm vào giỏ hàng thành công",
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(() => {
+                    if (data.code == 200) {
+                        window.location.reload();
+                    }
+                });
+            })
+    })
+}
+// End đặt hàng 
+
+// Show-alert
+const showAlert = document.querySelector("[show-alert");
+
+if(showAlert) {
+    let time = showAlert.getAttribute("show-alert") || 3000;
+    time = parseInt(time);
+
+    setTimeout(() => {
+        showAlert.classList.add("hidden");
+    }, time);
+}
+// End show-alert
+
+// Button cart delete 
+const btnCartDelete = document.querySelector("[btn-cart-delete]")
+
+if(btnCartDelete) {
+    btnCartDelete.addEventListener("click", () => {
+        const link = btnCartDelete.getAttribute("link")
+
+        fetch(link, {
+            method: "DELETE"
+        })
+            .then(res => res.json())
+            .then(data => {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Xóa khỏi giỏ hàng thành công",
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(() => {
+                    if (data.code == 200) {
+                        window.location.reload();
+                    }
+                });
+            })
+    })
+}
+
+// End button cart delete
+
 // Cập nhật số lượng sản phẩm trong giỏ hàng
-const listInputQuantity = document.querySelectorAll("[cart] input[name='quantity']");
-if(listInputQuantity.length > 0) {
-    listInputQuantity.forEach(input => {
+const listInputQuantityCart = document.querySelectorAll("input[name='quantity-cart']");
+
+if(listInputQuantityCart.length > 0) {
+    listInputQuantityCart.forEach(input => {
         input.addEventListener("change", () => {
-            const productId = input.getAttribute("product-id");
+            const bookId = input.getAttribute("book-id");
             const quantity = parseInt(input.value);
 
-            if(productId && quantity > 0) {
-                window.location.href = `/cart/update/${productId}/${quantity}`
+
+            if(bookId && quantity > 0) {
+                link = `/cart/update/${bookId}/${quantity}`
+                fetch(link, {
+                    method: "PATCH"
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.code == 200) {
+                            window.location.reload();
+                        }
+                    })
             }
         })
     })

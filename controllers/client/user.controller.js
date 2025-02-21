@@ -10,6 +10,7 @@ const ForgotPassword = require("../../models/forgot-password.model");
 module.exports.register = async (req, res) => {
     res.render("client/pages/user/register.pug", {
         pageTitle: "Đăng ký tài khoản",
+        titleHead: "Đăng ký"
     });
 }
 
@@ -41,14 +42,15 @@ module.exports.registerPost = async (req, res) => {
     res.redirect("/");
 }
 
-// [GET] /user/login
+// GET /user/login
 module.exports.login = async (req, res) => {
     res.render("client/pages/user/login", {
       pageTitle: "Đăng nhập tài khoản",
+      titleHead: "Đăng nhập"
     });
 };
   
-// [POST] /user/login
+// POST /user/login
 module.exports.loginPost = async (req, res) => {
     const user = await User.findOne({
         email: req.body.email,
@@ -79,20 +81,20 @@ module.exports.loginPost = async (req, res) => {
     res.redirect("/");
 };
 
-// [GET] /user/logout
+// GET /user/logout
 module.exports.logout = async (req, res) => {
     res.clearCookie("tokenUser");
     res.redirect("/user/login");
 };
 
-// [GET] /user/password/forgot
+// GET /user/password/forgot
 module.exports.forgotPassword = async (req, res) => {
     res.render("client/pages/user/forgot-password", {
       pageTitle: "Lấy lại mật khẩu",
     });
   };
   
-// [POST] /user/password/forgot
+// POST /user/password/forgot
 module.exports.forgotPasswordPost = async (req, res) => {
     const email = req.body.email;
   
@@ -127,7 +129,7 @@ module.exports.forgotPasswordPost = async (req, res) => {
     res.redirect(`/user/password/otp?email=${email}`);
 };
 
-// [GET] /user/password/otp
+// GET /user/password/otp
 module.exports.otpPassword = async (req, res) => {
     const email = req.query.email;
   
@@ -137,7 +139,7 @@ module.exports.otpPassword = async (req, res) => {
     });
 };
   
-// [POST] /user/password/otp
+// POST /user/password/otp
 module.exports.otpPasswordPost = async (req, res) => {
     const email = req.body.email;
     const otp = req.body.otp;
@@ -162,14 +164,14 @@ module.exports.otpPasswordPost = async (req, res) => {
     res.redirect("/user/password/reset");
 };
   
-// [GET] /user/password/reset
+// GET /user/password/reset
 module.exports.resetPassword = async (req, res) => {
     res.render("client/pages/user/reset-password", {
         pageTitle: "Đổi mật khẩu mới"
     });
 };
 
-// [PATCH] /user/password/reset
+// PATCH /user/password/reset
 module.exports.resetPasswordPatch = async (req, res) => {
     const password = req.body.password;
     const tokenUser = req.cookies.tokenUser;
@@ -184,7 +186,7 @@ module.exports.resetPasswordPatch = async (req, res) => {
     res.redirect("/");
 };
 
-// [GET] /user/profile
+// GET /user/profile
 module.exports.profile = async (req, res) => {
     res.render("client/pages/user/profile", {
       pageTitle: "Thông tin cá nhân"

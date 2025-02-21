@@ -1,45 +1,55 @@
-extends ../../layouts/default.pug
+extends ../../layouts/default-user.pug
 include ../../mixins/box-head.pug
+include ../../mixins/alert.pug
 
 block main
-  .container.my-3
+  .container.my-5
     .row
-      .col-8.mx-auto
-        +box-head(pageTitle)
-
+      .col-6.mx-auto
+        .d-flex.justify-content-between
+          +box-head(pageTitle)
+          
+          div 
+            +alert-success(3000)
+            +alert-error(3000)
+        //- +box-head(pageTitle)
         form(
           action="/user/register"
           method="POST"
         )
           div(class="form-group")
-            label(for="fullName") Họ và tên
+            label(for="fullName" class="mb-2") Họ và tên
             input(
               type="text"
-              class="form-control"
+              class="form-control mb-2"
               id="fullName"
               name="fullName"
               required
             )
           div(class="form-group")
-            label(for="email") Email
+            label(for="email" class="mb-2") Email
             input(
               type="email"
-              class="form-control"
+              class="form-control mb-2"
               id="email"
               name="email"
               required
             )
           div(class="form-group")
-            label(for="password") Mật khẩu
+            label(for="password" class="mb-2") Mật khẩu
             input(
               type="password"
-              class="form-control"
+              class="form-control mb-2"
               id="password"
               name="password"
               required
             )
-          div(class="form-group")
+          div(class="form-group text-end")
             button(
               type="submit"
-              class="btn btn-primary btn-block"
+              class="btn btn-success btn-block mt-3"
             ) Đăng ký
+          
+          p.text-muted.text-center.mt-3 Đã có tài khoản ? 
+            a(href="/user/login")
+              b Đăng nhập ngay 

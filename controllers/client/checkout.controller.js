@@ -1,9 +1,9 @@
 const Cart = require("../../models/cart.model")
-const Product = require("../../models/product.model")
+const Book = require("../../models/book.model")
 const Order = require("../../models/order.model")
 
 // GET /checkout
-module.exports.index = async (req,res) => {
+module.exports.index = async (req, res) => {
     const cartId = req.cookies.cartId;
 
     const cart = await Cart.findOne({
@@ -12,15 +12,15 @@ module.exports.index = async (req,res) => {
 
     cart.totalPrice = 0
     
-    if(cart.products.length > 0) {
-        for(const product of cart.products) {
-            const productInfo = await Product.findOne({
-                _id: product.productId
-            }).select("title thumbnail slug price discountPercentage")
-            productInfo.priceNew = (1 - productInfo.discountPercentage/100) * productInfo.price;
-            product.productInfo = productInfo;
-            product.totalPrice = productInfo.priceNew * product.quantity
-            cart.totalPrice += product.totalPrice
+    if(cart.books.length > 0) {
+        for(const book of cart.books) {
+            const bookInfo = await Book.findOne({
+                _id: book.bookId
+            }).select("title thumbnail slug price")
+            
+            book.bookInfo = bookInfo
+            book.totalPrice = bookInfo.price * book.quantity
+            cart.totalPrice += book.totalPrice
         }
     }
 
@@ -37,23 +37,30 @@ module.exports.orderPost = async (req,res) => {
    
     const orderData = {
         userInfo: userInfo,
-        products: []
+        books: []
     }
 
     const cart = await Cart.findOne({
         _id: cartId
     })
 
-    for (const item of cart.products) {
-        const productInfo = await Product.findOne({
-            _id: item.productId
+    for (const item of cart.books) {
+        const bookInfo = await Book.findOne({
+            _id: item.bookId
         })
 
-        orderData.products.push({
-            productId: item.productId,
-            price: productInfo.price,
-            discountPercentage: productInfo.discountPercentage,
-            quantity: item.quantity
+        orderData.books.push({
+            bookId: item.bookId,
+            price: bookInfo.price,
+            quantity: item.quantity,
+        })
+
+        await Book.updateOne({
+            _id: item.bookId
+        }, {
+            $inc: { 
+                sold: item.quantity 
+            } 
         })
     }
     
@@ -63,7 +70,7 @@ module.exports.orderPost = async (req,res) => {
     await Cart.updateOne({
         _id: cartId
     }, {
-        products: []
+        books: []
     })
 
     res.redirect(`/checkout/success/${order.id}`)
@@ -79,15 +86,15 @@ module.exports.success = async (req,res) => {
 
     let totalPrice = 0
 
-    for (const item of order.products) {
-        const productInfo = await Product.findOne({
-            _id: item.productId
+    for (const item of order.books) {
+        const bookInfo = await Book.findOne({
+            _id: item.bookId
         })
 
-        item.thumnail = productInfo.thumbnail
-        item.title = productInfo.title
-        item.priceNew = (1 - item.discountPercentage/100) * item.price
-        item.totalPrice = item.priceNew * item.quantity
+        item.thumbnail = bookInfo.thumbnail
+        item.title = bookInfo.title
+        item.slug = bookInfo.slug
+        item.totalPrice = item.price * item.quantity
         totalPrice += item.totalPrice
     }
 

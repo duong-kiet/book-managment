@@ -16,64 +16,36 @@ header.header
                 button.btn.btn-outline-success(type='submit')
                   i(class="fa fa-search")
             .d-flex.align-items-center
-              a(class="me-3" href="#")
+              a(class="me-3" href="/cart" style="position: relative; padding-right: 10px;")
                 i(class="fa fa-shopping-cart fa-2x icon-cart")
-              a(class="me-3" href="#")
-                i(class="fa fa-user fa-2x icon-user")
-              a.hidden
-                img(src="./images/book-logo.png" style="height: 40px; width: 40px; border-radius: 50%")
+                span(
+                  class="" 
+                  style="padding: 0px 6px; position: absolute; top: -5px; right: 0px; background: white; color: darkcyan; border-radius: 50px"
+                ) #{cartTotal}
+              if user
+                if user.thumbnail 
+                  a#dropdownIn(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+                    img(src=user.thumbnail style="height: 40px; width: 40px; border-radius: 50%")
+                  ul.dropdown-menu.dropdown-menu-end(aria-labelledby='dropdownIn')
+                    li
+                      a.dropdown-item(href='#') Tài khoản của tôi 
+                    li
+                      a.dropdown-item(href='#') Đăng xuất 
+                else 
+                  a#dropdownIn(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+                    img(src="/images/user-default.jpg" style="height: 40px; width: 40px; border-radius: 50%")
+                  ul.dropdown-menu.dropdown-menu-end(aria-labelledby='dropdownIn')
+                    li
+                      a.dropdown-item(href='#') Tài khoản của tôi 
+                    li
+                      a.dropdown-item(href='/user/logout') Đăng xuất 
 
-    //- .container 
-
-    //-     .row.align-items-center    
-    //-         .col-1
-    //-             .inner-logo 
-    //-                 a(href="/")
-    //-                     img(src="https://www.shutterstock.com/image-vector/hand-keep-book-read-source-600nw-1127076767.jpg", alt="logo")
-    //-                     //- img(src=setting.logo, alt="Logo")
-            
-    //-         .col-7
-    //-             form(
-    //-                 action="/search"
-    //-                 method="GET"    
-    //-             ) 
-    //-                 div(class="form-group d-flex mb-0")
-    //-                     input(
-    //-                         type="text"
-    //-                         placeholder="Nhập từ khóa..."
-    //-                         class="form-control"
-    //-                         name="keyword"
-    //-                         value=keyword   
-    //-                     )
-    //-                     button(
-    //-                         type="submit"
-    //-                         class="btn btn-primary"
-    //-                     ) Tìm
-
-    //-         .col-4 
-    //-             .inner-menu 
-    //-                 ul 
-    //-                     li 
-    //-                         a(href="/") Trang chủ
-    //-                     li(class="sub-menu")
-    //-                         a(href="/products") Sản phẩm
-    //-                         if(layoutCategoryProducts)
-    //-                             +sub-menu(layoutCategoryProducts)
-
-    //-                     li 
-    //-                         a(href="/cart") Giỏ hàng (#{cartTotal})  
-                              
-    //-                     if(user)
-    //-                         li
-    //-                             a(href="/user/profile") #{user.fullName}
-    //-                         li
-    //-                             a(href="/user/logout") Đăng xuất
-    //-                     else
-    //-                         li
-    //-                             a(href="/user/login") Đăng nhập
-    //-                         li
-    //-                             a(href="/user/register") Đăng ký
-
-
-                                        
-                                
+              else 
+                .dropdown.me-3
+                  a#dropdownOut(type='button' data-bs-toggle='dropdown' aria-expanded='false')
+                    i(class="fa fa-user fa-2x icon-user")
+                  ul.dropdown-menu.dropdown-menu-end(aria-labelledby='dropdownOut')
+                    li
+                      a.dropdown-item(href='/user/login') Đăng nhập 
+                    li
+                      a.dropdown-item(href='/user/register') Đăng ký 

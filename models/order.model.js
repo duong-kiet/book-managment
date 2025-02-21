@@ -6,11 +6,10 @@ const orderSchema = new mongoose.Schema({
         phone: String,
         address: String
     },
-    products: [
+    books: [
         {
-            productId: String,
+            bookId: String,
             price: Number,
-            discountPercentage: Number,
             quantity: Number
         }
     ]

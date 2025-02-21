@@ -5,10 +5,12 @@ const controller = require("../../controllers/client/cart.controller")
 
 router.get("/", controller.index);
 
-router.post("/add/:productId", controller.addPost);
+router.post("/add/:bookId", controller.addPost);
 
-router.get("/delete/:productId", controller.delete)
+router.delete("/delete/:bookId", controller.delete)
 
-router.get("/update/:productId/:quantity", controller.update)
+router.patch("/update/:bookId/:quantity", controller.updatePatch)
+
+// router.get("/update/:productId/:quantity", controller.update)
 
 module.exports = router;
