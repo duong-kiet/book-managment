@@ -91,6 +91,7 @@ module.exports.logout = async (req, res) => {
 module.exports.forgotPassword = async (req, res) => {
     res.render("client/pages/user/forgot-password", {
       pageTitle: "Lấy lại mật khẩu",
+      titleHead: "Lấy lại mật khẩu",
     });
   };
   
@@ -116,10 +117,10 @@ module.exports.forgotPasswordPost = async (req, res) => {
       email: email,
       otp: otp,
       expireAt: Date.now() + 3*60*1000
-    };
+    }; 
   
     const forgotPassword = new ForgotPassword(forgotPasswordData);
-    await forgotPassword.save();
+    await forgotPassword.save(); 
   
     // Việc 2: Gửi mã OTP qua email của user
     const subject = "Mã OTP lấy lại mật khẩu.";
@@ -135,7 +136,8 @@ module.exports.otpPassword = async (req, res) => {
   
     res.render("client/pages/user/otp-password", {
       pageTitle: "Xác thực OTP",
-      email: email
+      email: email,
+      titleHead: "Xác thực OTP"
     });
 };
   
@@ -167,15 +169,26 @@ module.exports.otpPasswordPost = async (req, res) => {
 // GET /user/password/reset
 module.exports.resetPassword = async (req, res) => {
     res.render("client/pages/user/reset-password", {
-        pageTitle: "Đổi mật khẩu mới"
+        pageTitle: "Đổi mật khẩu mới",
+        headTitle: "Đổi mật khẩu mới"
     });
 };
 
 // PATCH /user/password/reset
 module.exports.resetPasswordPatch = async (req, res) => {
     const password = req.body.password;
+    const password2 = req.body.password2;
     const tokenUser = req.cookies.tokenUser;
   
+    console.log(password)
+    console.log(password2)
+
+    if(password != password2) {
+        req.flash("error", "Xác thực lại mật khẩu không dúng");
+        res.redirect("back");
+        return;
+    }
+
     await User.updateOne({
       tokenUser: tokenUser,
       deleted: false
