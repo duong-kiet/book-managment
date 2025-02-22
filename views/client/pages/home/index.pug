@@ -12,7 +12,7 @@ block main
     .row.gx-5
       .col-3.filter-search
         .card
-          .card-header.d-flex.align-items-center.justify-content-between.py-3(style="background: #a6f1f1;")
+          .card-header.d-flex.align-items-center.justify-content-between.py-3(style=`background: ${setting.color || "rgb(165, 241, 241)"}`)
             .d-flex
               i.fa.fa-filter.me-2.mt-1
               p.fw-bold.mt-0.mb-0
@@ -88,7 +88,7 @@ block main
 
       .col-9.display-book
         div
-          .justify-content-between.pt-3.pb-2.mb-3(style="background: #a6f1f1;")
+          .justify-content-between.pt-3.pb-2.mb-3(style=`background: ${setting.color || "rgb(165, 241, 241)"}`)
             ul#pills-tab.nav(role='tablist')
               li.nav-item(role='presentation')
                 h6#pills-home-tab.nav-link.active.mb-0(data-bs-toggle='pill' data-bs-target='#pills-home' role='tab' aria-controls='pills-home' aria-selected='true') Danh sách sản phẩm 

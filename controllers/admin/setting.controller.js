@@ -23,5 +23,6 @@ module.exports.generalPatch = async (req, res) => {
     await record.save();
   }
 
+  req.flash("success", "Cập nhập thành công")
   res.redirect("back");
 };

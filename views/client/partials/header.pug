@@ -1,17 +1,20 @@
 include ../mixins/sub-menu.pug
 
-header.header 
+header.header(style=`background: ${setting.color || "rgb(165, 241, 241)"}`)
   .container
     nav.navbar.navbar-expand-lg.navbar-light
         .container
             .d-flex.align-items-center
               a.navbar-brand(href='/')
-                img(src='/images/book-logo.png' alt='' width='80' height='80')
+                img(src= setting.logo ? setting.logo : '/images/book-logo.png' alt='' width='80' height='80')
                 
-              h3.fw-bold.text-title Bookstore
+              if setting.websiteName
+                h3.fw-bold.text-title #{setting.websiteName}
+              else 
+                h3.fw-bold.text-title Bookstore
 
             div
-              form.d-flex(style="width: 650px;height: 40px;" bar-search)
+              form.d-flex(style="width: 650px; height: 40px;" bar-search)
                 input(class='form-control' type='search' placeholder='Bạn muốn tốt hơn nhờ quyển sách nào ?' aria-label='Search' value=keyword name="keyword")
                 button.btn.btn-outline-success(type='submit')
                   i(class="fa fa-search")
