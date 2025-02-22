@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
     password: String,
     tokenUser: String,
     avatar: String,
-    address: String,
+    address1: String,
+    address2: String,
+    birthday: String,
     status: {
         type: String,
         default: "active"

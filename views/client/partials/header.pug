@@ -23,12 +23,12 @@ header.header
                   style="padding: 0px 6px; position: absolute; top: -5px; right: 0px; background: white; color: darkcyan; border-radius: 50px"
                 ) #{cartTotal}
               if user
-                if user.thumbnail 
+                if user.avatar
                   a#dropdownIn(type='button' data-bs-toggle='dropdown' aria-expanded='false')
-                    img(src=user.thumbnail style="height: 40px; width: 40px; border-radius: 50%")
+                    img(src=user.avatar style="height: 40px; width: 40px; border-radius: 50%")
                   ul.dropdown-menu.dropdown-menu-end(aria-labelledby='dropdownIn')
                     li
-                      a.dropdown-item(href='#') Tài khoản của tôi 
+                      a.dropdown-item(href=`/user/profile`) Tài khoản của tôi 
                     li
                       a.dropdown-item(href='/user/logout') Đăng xuất 
                 else 
@@ -36,7 +36,7 @@ header.header
                     img(src="/images/user-default.jpg" style="height: 40px; width: 40px; border-radius: 50%")
                   ul.dropdown-menu.dropdown-menu-end(aria-labelledby='dropdownIn')
                     li
-                      a.dropdown-item(href='#') Tài khoản của tôi 
+                      a.dropdown-item(href=`/user/profile`) Tài khoản của tôi 
                     li
                       a.dropdown-item(href='/user/logout') Đăng xuất 
 

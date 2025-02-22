@@ -327,3 +327,62 @@ if(listInputQuantityCart.length > 0) {
     })
 }
 // End Cập nhật số lượng sản phẩm trong giỏ hàng
+
+
+const btnSaveProfile = document.querySelector('#btnSaveProfile');
+
+// Readonly form
+document.querySelectorAll('#my-profile input').forEach(input => input.readOnly = true);
+// End readonly form 
+
+// Edit readonly form 
+const btnEditProfile = document.querySelector('#btnEditProfile')
+if(btnEditProfile) {
+    btnEditProfile.addEventListener("click", () => {
+    
+        btnSaveProfile.classList.remove("hidden");
+        btnEditProfile.classList.add("hidden")
+
+        document.querySelectorAll('#my-profile input').forEach(input => input.readOnly = false);
+    })
+}
+// End edit readonly form 
+
+// Edit profile avatar
+const btnEditAvatar = document.querySelector('#btnEditAvatar')
+if(btnEditAvatar) {
+    const formEditAvatar = document.querySelector('.formEditAvatar')
+    btnEditAvatar.addEventListener("click", () => {
+        formEditAvatar.classList.remove("hidden");
+        btnEditAvatar.classList.add("hidden");
+    })
+}
+// End edit profile avatar 
+
+// Save profile avatar
+const btnSaveAvatar = document.querySelector('#btnSaveAvatar')
+if(btnSaveAvatar) {
+    const formEditAvatar = document.querySelector('.formEditAvatar')
+    btnSaveAvatar.addEventListener("click", () => {
+        formEditAvatar.classList.add("hidden");
+        btnEditAvatar.classList.remove("hidden");
+    })
+}
+
+// End save profile avatar 
+
+// Upload preview avatar
+const uploadImage = document.querySelector("[upload-image]");
+
+if(uploadImage) {
+    const uploadImageInput = document.querySelector("[upload-image-input]");
+    const uploadImagePreview = document.querySelector("[upload-image-preview]");
+
+    uploadImageInput.addEventListener("change", () => {
+        const file = uploadImageInput.files[0];
+        if(file) {
+            uploadImagePreview.src = URL.createObjectURL(file)
+        }
+    })
+}
+// End upload preview avatar

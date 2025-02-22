@@ -2,10 +2,89 @@ extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 
 block main
-  .container.my-3
+  .container-xl.px-4.mt-4
+    nav.nav.nav-borders
+      a.nav-link.active.ms-0(href='https://www.bootdey.com/snippets/view/bs5-edit-profile-account-details' target='__blank') Profile
+      //- a.nav-link(href='#' target='__blank') Các đơn hàng của tôi
+    hr.mt-0.mb-4
     .row
-      .col-12
-        +box-head("Thông tin tài khoản")
+      .col-xl-4
+        //-  Profile picture card
+        .card.mb-4.mb-xl-0
+          .card-header Profile Picture
+          .card-body.text-center
+            //-  Profile picture image
+            if(user.avatar)
+              img.rounded-circle.mb-2(src=user.avatar alt='' style="width: 250px; height: 250px; object-fit: cover" upload-image-preview)
+            else 
+              img.rounded-circle.mb-2(src='/images/user-default.jpg' alt='' style="width: 250px; height: 250px; object-fit: cover" upload-image-preview)
+            //- Profile picture help block
+            .small.font-italic.text-muted.mb-4 JPG or PNG no larger than 5 MB
+            //-  Profile picture upload button
+            button.btn-warning(type='button' id="btnEditAvatar" style="border-radius: 5px;")
+              i.fa.fa-pencil 
+                span Chỉnh sửa ảnh
+            form(
+              class="hidden formEditAvatar" 
+              action=`/user/profile?_method=PATCH`
+              method="POST"
+              enctype="multipart/form-data" 
+            )
+              .d-flex
+                div(
+                  upload-image
+                )
+                  input(
+                    type="file"
+                    class="form-control-file"
+                    id="avatar"
+                    name="avatar"
+                    accept="image/*" 
+                    style="width: 250px"
+                    upload-image-input
+                  )
+                button.btn-primary(id="btnSaveAvatar" style="border-radius: 5px;" type="submit") Save changes
 
-        div #{user.fullName}
-        div #{user.email}
+      .col-xl-8
+        //- Account details card
+        .card.mb-4
+          .card-header User Details
+          .card-body
+            form(
+              id="my-profile" 
+              action=`/user/profile?_method=PATCH`
+              method="POST"
+            )
+              //- Form Group (username)
+              .mb-3
+                label.small.mb-1(for='inputName') Tên tài khoản
+                input#inputUsername.form-control(type='text' placeholder='Enter your username' value=user.fullName name="fullName")
+              //- // Form Row
+              .row.gx-3.mb-3
+                //- Form Group (first name)
+                .col-md-6
+                  label.small.mb-1(for='inputFirstAddress') Địa chỉ 1
+                  input#inputFirstName.form-control(type='text' placeholder='Địa chỉ 1' value=user.address1 ? user.address1 : "" name="address1")
+                //- Form Group (last name)
+                .col-md-6
+                  label.small.mb-1(for='inputSecondAddress') Địa chỉ 2
+                  input#inputLastName.form-control(type='text' placeholder='Địa chỉ 2' value=user.address2 ? user.address2 : "" name="address2")
+              //- Form Group (email address)
+              .mb-3
+                label.small.mb-1(for='inputEmailAddress') Email address
+                input#inputEmailAddress.form-control(type='email' placeholder='Enter your email address' value=user.email name="email")
+              //- // Form Row
+              .row.gx-3.mb-3
+                //- Form Group (phone number)
+                .col-md-6
+                  label.small.mb-1(for='inputPhone') Phone number
+                  input#inputPhone.form-control(type='tel' placeholder='Phone number' value=user.phone ? user.phone : "" name="phone")
+                //- Form Group (birthday)
+                .col-md-6
+                  label.small.mb-1(for='inputBirthday') Birthday
+                  input#inputBirthday.form-control(type='text' placeholder='Birthday' value=user.birthday ? user.birthday : "" name="birthday")
+              //- Save changes button
+              button.btn-warning(type='button' id="btnEditProfile" style="border-radius: 5px;")
+                i.fa.fa-pencil 
+                  span Chỉnh sửa  
+              button.btn-primary(class="hidden" id="btnSaveProfile" style="border-radius: 5px;" type="submit") Save changes

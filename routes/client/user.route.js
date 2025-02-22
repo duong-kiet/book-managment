@@ -1,6 +1,12 @@
 const express = require("express")
 const router = express.Router();
 
+// Upload ảnh 
+const multer  = require('multer')
+
+const storageMulterHelper = require("../../helpers/storageMulter.helper");
+const upload = multer({ storage: storageMulterHelper.storage })
+
 const controller = require("../../controllers/client/user.controller")
 
 router.get("/register", controller.register);
@@ -26,5 +32,7 @@ router.get("/password/reset", controller.resetPassword);
 router.patch("/password/reset", controller.resetPasswordPatch);
 
 router.get("/profile", controller.profile);
+
+router.patch("/profile", upload.single('avatar'), controller.profilePatch)
 
 module.exports = router;

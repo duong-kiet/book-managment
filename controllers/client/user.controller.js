@@ -202,6 +202,26 @@ module.exports.resetPasswordPatch = async (req, res) => {
 // GET /user/profile
 module.exports.profile = async (req, res) => {
     res.render("client/pages/user/profile", {
-      pageTitle: "Thông tin cá nhân"
+      pageTitle: "Thông tin cá nhân",
     });
+};
+
+// PATCH /user/profile
+module.exports.profilePatch = async (req, res) => {
+    if(req.file) {
+        req.body.avatar = `/uploads/${req.file.filename}`;
+    }
+
+
+    const user = res.locals.user
+
+    await User.updateOne({
+        _id: user.id,
+        deleted: false
+    }, req.body);
+
+    req.flash("success", "Cập nhập thông tin thành công")
+
+    res.redirect(`/user/profile`)
+    
 };

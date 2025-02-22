@@ -129,55 +129,6 @@ if(inputCheckAll) {
         })
     })
 }
-// End Check Item
-
-// // Box Actions
-// const boxActions = document.querySelector("[box-actions]");
-// if(boxActions) {
-//     const button = boxActions.querySelector("button");
-
-//     button.addEventListener("click", () => {
-//         const select = boxActions.querySelector("select");
-//         const status = select.value;
-
-//         const listInputChecked = document.querySelectorAll("input[name='checkItem']:checked")
-//         const ids = [];
-//         listInputChecked.forEach(input => {
-//             ids.push(input.value);
-//         });
-
-//         if(status != "" && ids.length > 0) {
-//             // console.log(status);
-//             // console.log(ids);
-
-//             const dataChangeMulti = {
-//                 status: status,
-//                 ids: ids
-//             }
-
-//             const link = boxActions.getAttribute("box-actions");
-
-//             // console.log(dataChangeMulti);
-
-//             fetch(link, {
-//                 method: "PATCH",
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                 },
-//                 body: JSON.stringify(dataChangeMulti),
-//             })
-//                 .then(res => res.json())
-//                 .then(data => {
-//                     if(data.code == 200) {
-//                         window.location.reload();
-//                     }
-//                 })
-//         } else {
-//             alert("Hành động và checkItem phải được chọn")
-//         }
-//     })
-// }
-// // End Box Actions
 
 // Xóa bản ghi 
 const listButtonDelete = document.querySelectorAll("[button-delete]");
@@ -201,32 +152,6 @@ if(listButtonDelete.length > 0) {
 }
 // End xóa bản ghi 
 
-// // Thay đổi vị trí 
-// const listInputPosition = document.querySelectorAll("input[name='position']");
-// if(listInputPosition.length > 0) {
-//     listInputPosition.forEach(input => {
-//         input.addEventListener("change", () => {
-//             const link = input.getAttribute("link");
-//             const position = parseInt(input.value);
-
-//             fetch(link, {
-//                 method: "PATCH",
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                 },
-//                 body: JSON.stringify({
-//                     position: position
-//                 })
-//             })
-//                 .then(res => res.json())
-//                 .then(data => {
-//                     console.log(data);
-//                 })
-//         })
-//     })
-// }
-// // Hết thay đổi vị trí
-
 // Show-alert
 const showAlert = document.querySelector("[show-alert");
 
@@ -246,7 +171,6 @@ const uploadImage = document.querySelector("[upload-image]");
 
 if(uploadImage) {
     const uploadImageInput = uploadImage.querySelector("[upload-image-input]");
-    console.log(uploadImageInput);
     const uploadImagePreview = uploadImage.querySelector("[upload-image-preview]");
 
     uploadImageInput.addEventListener("change", () => {
@@ -321,45 +245,6 @@ if(listSortAuthor.length > 0) {
     buttonCurrent.classList.add("active");
 }
 
-// // Sort 
-// const sort = document.querySelector("[sort]")
-// if(sort) {
-//     let url = new URL(window.location.href);
-
-//     const select = sort.querySelector("[sort-select]")
-//     select.addEventListener("change", () => {
-//         const [sortKey, sortValue] =  select.value.split("-")
-
-//         if(sortKey && sortValue) {
-//             url.searchParams.set("sortKey", sortKey);
-//             url.searchParams.set("sortValue", sortValue);
-
-//             window.location.href = url.href;
-//         }
-//     })
-
-
-//     // Thêm selected mặc định cho thẻ option
-//     const defaultSortKey = url.searchParams.get("sortKey");
-//     const defaultSortValue = url.searchParams.get("sortValue");
-
-//     if(defaultSortKey && defaultSortValue) {
-//         const optionSelected = select.querySelector(`option[value="${defaultSortKey}-${defaultSortValue}"]`);
-//         optionSelected.setAttribute("selected", true);
-//     }
-
-//     // Tính năng clear
-//     const buttonClear = sort.querySelector("[sort-clear]");
-//     if(buttonClear) {
-//         buttonClear.addEventListener("click", () => {
-//             url.searchParams.delete("sortKey");
-//             url.searchParams.delete("sortValue");
-
-//             window.location.href = url.href;
-//         })
-//     }
-// }
-// // End sort
 
 // Phân quyền
 const tablePermissions = document.querySelector("[table-permissions]");
