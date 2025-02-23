@@ -1,0 +1,79 @@
+mixin order()
+  #pills-order.tab-pane.fade.show(role='tabpanel' aria-labelledby='pills-order-tab')
+    .col.py-3
+      if (orders.length > 0)
+        for order in orders
+          .p-3.border.rounded.mb-3
+            .mb-3
+              .mb-3
+                span.fs-4.fw-bold.me-2 Trạng thái đơn hàng 
+                span.fs-5
+                  if order.status == "pending"
+                    span.badge.bg-warning Pending
+                  else if order.status == "accept"
+                    span.badge.bg-success Accept
+                  else if order.status == "deny"
+                    span.badge.bg-danger Deny
+                    
+            h4(class="mb-3") Thông tin đặt hàng 
+            .mb-4
+              table(class="table-bordered col-5")
+                tbody
+                  tr
+                    td.col-3.py-2.ps-2 Họ tên
+                    td.py-2.ps-2
+                        b #{order.userInfo.fullName}
+                  tr
+                    td.py-2.ps-2.ps-2 Số điện thoại
+                    td.py-2.ps-2
+                        b #{order.userInfo.phone}
+                  tr
+                    td.py-2.ps-2 Địa chỉ
+                    td.py-2.ps-2
+                        b #{order.userInfo.address}
+                  tr
+                    td.py-2.ps-2 Thời gian đặt
+                    td.py-2.ps-2
+                        b #{order.createAtFormat}
+
+            table.table.table-hover
+              thead.thead-primary
+                tr
+                  th.text-center STT
+                  th.text-center Ảnh
+                  th.text-center Tên sách 
+                  th.text-center Đơn giá 
+                  th.text-center Số lượng 
+                  th.text-center Tổng tiền
+              tbody
+                each book, index in order.books
+                  tr
+                    td.text-center #{index+1}
+                    td.text-center 
+                      img(
+                        src=book.bookInfo.thumbnail, 
+                        alt=book.bookInfo.title, 
+                        width="80px"
+                      )
+                    td.text-center
+                      a(
+                        style="text-decoration: none; font-weight: bold; color: black;"
+                      ) #{book.bookInfo.title}
+                    td.text-center  #{book.price} đ
+                    td.text-center
+                      p.lead.fw-normal.mb-0
+                        i.fa.fa-circle.me-2(style='color: #fdd8d2;') 
+                        span #{book.quantity}
+                    td.text-center #{book.totalPrice} đ
+
+            if(order.books.length > 0)
+              h3.mb-4.mt-3(style="text-align: right") Tổng đơn hàng: #{order.totalPrice} đ
+
+      else 
+        tr
+          td(colspan="4" class="text-center") Không có đơn hàng nào của bạn.
+
+
+
+
+    

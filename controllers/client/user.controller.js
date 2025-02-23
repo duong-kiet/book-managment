@@ -4,6 +4,10 @@ const sendEmailHelper = require("../../helpers/sendMail.helper");
 
 const User = require("../../models/user.model");
 const ForgotPassword = require("../../models/forgot-password.model");
+const Order = require("../../models/order.model")
+const Book = require("../../models/book.model")
+
+const moment = require("moment")
 
 
 // GET /user/register
@@ -176,7 +180,7 @@ module.exports.resetPassword = async (req, res) => {
 
 // PATCH /user/password/reset
 module.exports.resetPasswordPatch = async (req, res) => {
-    const password = req.body.password;
+    const password = req.body.password; 
     const password2 = req.body.password2;
     const tokenUser = req.cookies.tokenUser;
   
@@ -201,8 +205,35 @@ module.exports.resetPasswordPatch = async (req, res) => {
 
 // GET /user/profile
 module.exports.profile = async (req, res) => {
+  const userId = res.locals.user.id
+
+    const orders = await Order
+    .find({
+        userId: userId
+    })
+    .sort({
+      createdAt: -1
+    })
+
+    for(const order of orders) {
+      order.totalPrice = 0;
+      order.createAtFormat = moment(order.createdAt).format("DD/MM/YYYY HH:mm:ss")
+  
+      for(const book of order.books) { 
+        const bookInfo = await Book.findOne({
+          _id: book.bookId
+        }).select("title thumbnail price")
+        
+        book.bookInfo = bookInfo
+        book.totalPrice = bookInfo.price * book.quantity
+        order.totalPrice += book.totalPrice
+      }
+    }
+    
+
     res.render("client/pages/user/profile", {
       pageTitle: "Thông tin cá nhân",
+      orders: orders
     });
 };
 

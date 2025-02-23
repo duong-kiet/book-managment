@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         default: "pending"
     },
+    userId: String,
     books: [
         {
             bookId: String,

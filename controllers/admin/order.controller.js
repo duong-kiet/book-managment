@@ -34,6 +34,8 @@ module.exports.index = async (req, res) => {
     }
   }
 
+  console.log(orders);
+
   res.render("admin/pages/orders/index.pug", {
     pageTitle: "Trang quản lý đặt hàng",
     orders: orders
@@ -43,8 +45,6 @@ module.exports.index = async (req, res) => {
 // PATCH /admin/orders/:status/:id
 module.exports.changeStatus = async (req, res) => {
   const {id, status} = req.params
-
-  // console.log(req.params)
 
   await Order.updateOne({
     _id: id

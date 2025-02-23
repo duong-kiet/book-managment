@@ -3,6 +3,7 @@ include ../../mixins/box-head.pug
 include ./newest.pug
 include ./price-desc.pug
 include ./price-asc.pug
+include ./default.pug
 include ../../mixins/star.pug
 include ../../mixins/pagination.pug
 
@@ -99,19 +100,7 @@ block main
               li.nav-item(role='presentation')
                 h6#pills-price_asc-tab.nav-link.mb-0(data-bs-toggle='pill' data-bs-target='#pills-price_asc' type='button' role='tab' aria-controls='pills-price_asc' aria-selected='false') Giá thấp đến cao 
           #pills-tabContent.tab-content
-            #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
-              .row.d-flex.gy-3
-                for book in books
-                  .card-book.col-3
-                    .inner-image.d-flex.justify-content-center
-                      a(href=`/books/detail/${book.slug}`)
-                        img(src=book.thumbnail width='110px' height='180px')
-                    p.inner-title.mt-3 #{book.title}
-                    p.inner-price #{book.price} đồng 
-                    .d-flex.justify-content-between
-                      div
-                        +star(book.rating)
-                      p.inner-sold Đã bán #{book.sold}
+            +default()
             +newest()
             +price_desc()
             +price_asc()

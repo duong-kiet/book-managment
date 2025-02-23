@@ -18,9 +18,9 @@ module.exports.index = async (req, res) => {
             const bookInfo = await Book.findOne({
                 _id: book.bookId
             }).select("title thumbnail slug price")
-            
+
             book.bookInfo = bookInfo
-            book.totalPrice = book.price * book.quantity
+            book.totalPrice = book.bookInfo.price * book.quantity
             cart.totalPrice += book.totalPrice
         }
     }
@@ -38,7 +38,8 @@ module.exports.orderPost = async (req,res) => {
    
     const orderData = {
         userInfo: userInfo,
-        books: []
+        books: [],
+        userId: userId
     }
 
     const cart = await Cart.findOne({
