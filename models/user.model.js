@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     address1: String,
     address2: String,
     birthday: String,
+    cartLength: {
+        type: Number,
+        default: 0
+    },
     status: {
         type: String,
         default: "active"

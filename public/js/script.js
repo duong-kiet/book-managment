@@ -243,21 +243,62 @@ if(btnAddCart) {
         })
             .then(res => res.json())
             .then(data => {
-                Swal.fire({
-                    position: "center",
-                    icon: "success",
-                    title: "Thêm vào giỏ hàng thành công",
-                    showConfirmButton: false,
-                    timer: 1000
-                }).then(() => {
-                    if (data.code == 200) {
+                // console.log(data);
+                if(data.code == 200 ){
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Thêm vào giỏ hàng thành công",
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(() => {
                         window.location.reload();
-                    }
-                });
+                    });
+                } else if(data.code == 401) {
+                    window.location.href = "/user/login"
+                }
             })
     })
 }
 // End đặt hàng 
+
+// Buy now 
+const btnBuyNow = document.querySelector(".btn-buy-now");
+
+if(btnBuyNow) {
+    btnBuyNow.addEventListener("click", () => {
+        const inputQuantity = document.querySelector("[name='quantity']")
+        const value = inputQuantity.value
+
+        const path = btnBuyNow.getAttribute('link');
+        console.log(path);
+        
+        fetch(path, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({quantity: value})
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.code == 200 ){
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: "Chuyển hướng tới thanh toán",
+                        showConfirmButton: false,
+                        timer: 1000
+                    }).then(() => {
+                        window.location.href = "/checkout"
+                    });
+                } else if(data.code == 401) {
+                    window.location.href = "/user/login"
+                }
+            })
+    })
+}
+// End buy now 
 
 // Show-alert
 const showAlert = document.querySelector("[show-alert");

@@ -9,16 +9,14 @@ const userMiddleware = require("../../middlewares/client/user.middleware");
 const settingMiddleware = require("../../middlewares/client/setting.middleware");
 
 module.exports.index = (app) => {
-    app.use(cartMiddleware.cartId);
     app.use(userMiddleware.infoUser);
-    
     app.use(settingMiddleware.setting);
 
     app.use("/", homeRoute);
 
     app.use("/books", bookRoute);
 
-    app.use("/cart", cartRoute)
+    app.use("/cart", cartMiddleware.userAuth, cartRoute)
 
     app.use("/checkout", checkoutRoute)
 

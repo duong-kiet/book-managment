@@ -1,5 +1,6 @@
 const Account = require("../../models/account.model")
 const Role = require("../../models/role.model");
+const User = require("../../models/user.model");
 
 const md5 = require('md5');
 const generateHelper = require("../../helpers/generate.helper")
@@ -30,6 +31,7 @@ module.exports.index = async (req, res) => {
         roles: roles
     });
 }
+
 // PATCH /admin/accounts/change-status/:statusChange/:id
 module.exports.changeStatus = async (req, res) => {
     const {id, statusChange} = req.params;
@@ -47,38 +49,6 @@ module.exports.changeStatus = async (req, res) => {
     });
 }
 
-// GET /admin/accounts
-// module.exports.index = async (req, res) => {
-//     const records = await Account.find({
-//         deleted: false
-//     })
-
-//     for (const record of records) {
-//         const role = await Role.findOne({
-//             _id: record.role_id,
-//             deleted: false
-//         })
-//         record.roleTitle = role.title
-//     }
-
-//     res.render("admin/pages/accounts/index.pug", {
-//         pageTitle: "Tài khoản admin",
-//         records: records
-//     });
-// }
-
-// // GET /admin/accounts/create
-// module.exports.create = async (req, res) => {
-//     const roles = await Role.find({
-//         deleted: false
-//     }).select("title")
-
-//     res.render("admin/pages/accounts/create.pug", {
-//         pageTitle: "Taọ tài khoản admin",
-//         roles: roles
-//     });
-// }
-
 // POST /admin/accounts/create
 module.exports.createPost = async (req, res) => {
     if(req.file) {
@@ -95,35 +65,48 @@ module.exports.createPost = async (req, res) => {
     res.redirect("back");
 }
 
-// // GET /admin/accounts/edit
-// module.exports.edit = async (req, res) => {
-//     const id = req.params.id
-//     const account = await Account.findOne({
-//         _id: id,
-//         deleted: false
-//     })
+// GET /admin/accounts/users
+module.exports.getUsers = async (req, res) => {
+    const users = await User.find({
+        deleted: false
+    })
 
-//     const roles = await Role.find({
-//         deleted: false
-//     }).select("title")
+    res.render("admin/pages/accounts/user.pug", {
+        pageTitle: "Tài khoản users",
+        users: users
+    });
+}
 
-//     res.render("admin/pages/accounts/edit.pug", {
-//         pageTitle: "Chỉnh sửa tài khoản admin",
-//         roles: roles,
-//         account: account
-//     });
-// }
+// PATCH /admin/accounts/users/change-status/:statusChange/:id
+module.exports.userChangeStatus = async (req, res) => {
+    const {id, statusChange} = req.params;
+  
+    await User.updateOne({
+      _id: id
+    }, {
+        status: statusChange
+    });
+    
+    req.flash('success', 'Cập nhật trạng thái thành công')
+    res.json({
+        code: 200
+    })
+}
 
-// // PATCH /admin/accounts/edit
-// module.exports.editPatch = async (req, res) => {
-//    const id = req.params.id
 
-//    await Account.updateOne({
-//         _id: id,
-//         deleted: false
-//    }, req.body)
-
-//    req.flash("success", "Cập nhập thành công");
-
-//    res.redirect("back")
-// }
+// PATCH /admin/accounts/users/delete/:id
+module.exports.deleteUser = async (req, res) => {
+    const {id} = req.params;
+  
+    await User.updateOne({
+      _id: id
+    }, {
+      deleted: true
+    });
+    
+    req.flash('success', 'Xoá tài khoản thành công') 
+    
+    res.json({
+      code: 200
+    });
+  }

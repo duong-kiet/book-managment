@@ -1,0 +1,218 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main 
+  .col.py-3
+    +alert-success(3000)
+    +alert-error(3000)
+
+    h1.mb-4 Manage Orders
+
+    if (orders.length > 0)
+      for order in orders
+        //- .mb-3
+        //-   .mb-3
+        //-     span.fw-bold.me-2 Trạng thái đơn hàng 
+        //-     span #{order.status}
+        //-   button.btn.btn-success.shadow-0.me-3(link=`/order/accept/${order.id}` btn-order)
+        //-     i.me-1.fa.fa-check
+        //-     |Phê duyệt 
+        //-   button.btn.btn-danger.shadow-0(link=`/order/deny/${order.id}` btn-order)
+        //-     i.me-1.fa.fa-times
+        //-     |Từ chối 
+
+        .p-3.border.rounded.mb-3
+          .mb-3
+            .mb-3
+              span.fs-4.fw-bold.me-2 Trạng thái đơn hàng 
+              span.fs-5
+                if order.status == "pending"
+                  span.badge.bg-warning Pending
+                else if order.status == "accept"
+                  span.badge.bg-success Accept
+                else if order.status == "deny"
+                  span.badge.bg-danger Deny
+
+            if order.status == "pending"
+              button.btn.btn-success.shadow-0.me-3(link=`/admin/orders/accept/${order.id}` btn-order)
+                i.me-1.fa.fa-check
+                |Phê duyệt 
+              button.btn.btn-danger.shadow-0(link=`/admin/orders/deny/${order.id}` btn-order)
+                i.me-1.fa.fa-times
+                |Từ chối 
+          h4(class="mb-3") Thông tin đặt hàng 
+          .mb-4
+            table(class="table-bordered col-5")
+              tbody
+                tr
+                  td.col-3.py-2.ps-2 Họ tên
+                  td.py-2.ps-2
+                      b #{order.userInfo.fullName}
+                tr
+                  td.py-2.ps-2 Số điện thoại
+                  td.py-2.ps-2
+                      b #{order.userInfo.phone}
+                tr
+                  td.py-2.ps-2 Địa chỉ
+                  td.py-2.ps-2
+                      b #{order.userInfo.address}
+                tr
+                  td.py-2.ps-2 Thời gian đặt
+                  td.py-2.ps-2
+                      b #{order.createAtFormat}
+
+          table.table.table-hover
+            thead.thead-primary
+              tr
+                th.text-center STT
+                th.text-center Ảnh
+                th.text-center Tên sách 
+                th.text-center Đơn giá 
+                th.text-center Số lượng 
+                th.text-center Tổng tiền
+            tbody
+              each book, index in order.books
+                tr
+                  td.text-center #{index+1}
+                  td.text-center 
+                    img(
+                      src=book.bookInfo.thumbnail, 
+                      alt=book.bookInfo.title, 
+                      width="80px"
+                    )
+                  td.text-center
+                    a(
+                      style="text-decoration: none; font-weight: bold; color: black;"
+                    ) #{book.bookInfo.title}
+                  td.text-center  #{book.price} đ
+                  td.text-center
+                    p.lead.fw-normal.mb-0
+                      i.fa.fa-circle.me-2(style='color: #fdd8d2;') 
+                      span #{book.quantity}
+                  td.text-center #{book.totalPrice} đ
+
+          if(order.books.length > 0)
+            h3.mb-4.mt-3(style="text-align: right") Tổng đơn hàng: #{order.totalPrice} đ
+
+                  //- //- Edit 
+                  //- a.btn.btn-warning.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#showModal-${item.id}`)
+                  //-   i.fa.fa-pencil
+                  //- //- Modal
+                  //- .modal.fade(tabindex='-1' id=`showModal-${item.id}` aria-labelledby=`showModalLabel-${item.id}` aria-hidden='true')
+                  //-   .modal-dialog.modal-dialog-scrollable
+                  //-     .modal-content
+                  //-       .modal-header
+                  //-         h5(id=`showModalLabel-${item.id}`).modal-title Thông tin role
+                  //-         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                  //-       .modal-body
+                  //-         form(
+                  //-           action=`/admin/roles/edit/${item.id}?_method=PATCH`
+                  //-           method="POST"
+                  //-           id=`form-show-role-${item.id}`
+                  //-           class="d-flex flex-column gap-4"
+                  //-         )
+                  //-           div(
+                  //-             class="form-group" 
+                  //-           )
+                  //-             label(for="title") Tên role
+                  //-             input(
+                  //-               type="text"
+                  //-               class="form-control"
+                  //-               id="title"
+                  //-               name="title"
+                  //-               required
+                  //-               value=item.title
+                  //-             )
+                  //-           div(class="form-group")
+                  //-             label(for="desc") Mô tả
+                  //-             textarea(
+                  //-               class="form-control"
+                  //-               id="desc"
+                  //-               name="description"
+                  //-               rows="5"
+                  //-               textarea-mce
+                  //-             ) !{item.description}
+
+                  //-           div(class="form-group")
+                  //-             button.btn.btn-primary(type="submit") Save changes
+
+                  //- //- Delete
+                  //- a.btn.btn-danger.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#deleteModal-${item.id}`)
+                  //-   i.fa.fa-trash
+                  //- //- Modal
+                  //- .modal.fade(tabindex='-1' id=`deleteModal-${item.id}` aria-labelledby=`deleteModalLabel-${item.id}` aria-hidden='true')
+                  //-   .modal-dialog
+                  //-     .modal-content
+                  //-       .modal-header
+                  //-         h5(id=`deleteModalLabel-${item.id}`).modal-title Delete confirmation 
+                  //-         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                  //-       .modal-body
+                  //-         p Bạn có chắc chắn muốn xóa role này không ? 
+                  //-       .modal-footer
+                  //-         button.btn.btn-success(type='button' button-delete=`/admin/roles/delete/${item.id}`) Yes
+                  //-         button.btn.btn-danger(type='button' data-bs-dismiss='modal') No
+
+    else 
+      tr
+        td(colspan="4" class="text-center") Không có đơn hàng nào chờ để phê duyệt.
+
+
+
+
+    //- if(order)
+    //-   .row.mb-5
+    //-     .col-6
+    //-       h4(class="mb-3") Thông tin cá nhân
+    //-       table(class="table table-bordered")
+    //-         tbody
+    //-           tr
+    //-             td.col-3 Họ tên
+    //-             td
+    //-                 b #{order.userInfo.fullName}
+    //-           tr
+    //-             td Số điện thoại
+    //-             td
+    //-                 b #{order.userInfo.phone}
+    //-           tr
+    //-             td Địa chỉ
+    //-             td
+    //-                 b #{order.userInfo.address}
+
+      .row.mb-5
+        .col-12
+          h4.mb-3 Thông tin đơn hàng
+          table(class="table" cart)
+              thead(style="background: #a6f1f1")
+                  tr
+                    th.text-center STT
+                    th.text-center Ảnh
+                    th.text-center Tên sách 
+                    th.text-center Đơn giá 
+                    th.text-center Số lượng 
+                    th.text-center Tổng tiền
+              tbody
+                  if(order.books.length > 0)
+                      each book, index in order.books
+                        tr
+                            td.text-center #{index+1}
+                            td.text-center 
+                              img(
+                                src=book.thumbnail, 
+                                alt=book.title, 
+                                width="80px"
+                              )
+                            td.text-center
+                              a(
+                                href=`/books/detail/${book.slug}`
+                                style="text-decoration: none; font-weight: bold; color: black;"
+                              ) #{book.title}
+                            td.text-center  #{book.price} đ
+                            td.text-center
+                              p.lead.fw-normal.mb-0
+                                i.fa.fa-circle.me-2(style='color: #fdd8d2;') 
+                                span #{book.quantity}
+                            td.text-center #{book.totalPrice} đ
+
+
+          if(order.books.length > 0)
+            h3.mt-4(style="text-align: right") Tổng đơn hàng: #{totalPrice} đ

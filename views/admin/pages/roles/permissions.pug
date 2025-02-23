@@ -220,52 +220,31 @@ block main
                   checked=(item.permissions.includes("users_delete") ? true : false)
                 )
 
-          //- tr
-          //-   td(colspan="4")
-          //-     b Tài khoản admin
-          //- tr
-          //-   td Xem
-          //-   each item in roles
-          //-     td(class="text-center")
-          //-       input(
-          //-         type="checkbox" 
-          //-         data-id=item.id 
-          //-         data-name="accounts_view"
-          //-         checked=(item.permissions.includes("accounts_view") ? true : false)
-          //-       )
-          //- tr
-          //-   td Thêm mới
-          //-   each item in roles
-          //-     td(class="text-center")
-          //-       input(
-          //-         type="checkbox" 
-          //-         data-id=item.id
-          //-         data-name="accounts_create"
-          //-         checked=(item.permissions.includes("accounts_create") ? true : false)
-          //-       )
-          //- tr
-          //-   td Chỉnh sửa
-          //-   each item in roles
-          //-     td(class="text-center")
-          //-       input(
-          //-         type="checkbox" 
-          //-         data-id=item.id
-          //-         data-name="accounts_edit"
-          //-         checked=(item.permissions.includes("accounts_edit") ? true : false)
-          //-       )
-          //- tr
-          //-   td Xóa
-          //-   each item in roles
-          //-     td(class="text-center")
-          //-       input(
-          //-         type="checkbox" 
-          //-         data-id=item.id
-          //-         data-name="accounts_delete"
-          //-         checked=(item.permissions.includes("accounts_delete") ? true : false)
-          //-       )
-          
+          tr
+            td(colspan="4")
+              b Manage Orders
+          tr
+            td Phê duyệt
+            each item in roles
+              td(class="text-center")
+                input(
+                  type="checkbox" 
+                  data-id=item.id 
+                  data-name="orders_view"
+                  checked=(item.permissions.includes("orders_view") ? true : false)
+                )
 
-            
+          tr
+            td(colspan="4")
+              b Manage Website Settings
+          tr
+            td Chỉnh sửa
+            each item in roles
+              td(class="text-center")
+                input(
+                  type="checkbox" 
+                  data-id=item.id 
+                  data-name="website_setting_edit"
+                  checked=(item.permissions.includes("website_setting_edit") ? true : false)
+                )
           
-
-            

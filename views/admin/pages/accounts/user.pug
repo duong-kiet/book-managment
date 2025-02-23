@@ -1,0 +1,112 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+
+block main 
+  .col.py-3
+    +alert-success(3000)
+    +alert-error(3000)
+
+    h1.mb-4 User Accounts
+    
+    table.table.table-hover.mt-5
+      thead.thead-primary
+        tr
+          th(scope='col') STT 
+          th(scope='col') Avatar
+          th(scope='col') Họ và tên     
+          th(scope='col') Email 
+          th(scope='col') Trạng thái
+          th(scope='col').text-center Hành động
+      tbody
+        if(users.length > 0)
+          each item, index in users
+            tr
+              td(scope='row') #{index+1}
+              td
+                img(
+                  src=item.avatar ? item.avatar : "https://coffective.com/wp-content/uploads/2018/06/default-featured-image.png.jpg",
+                  width="100px",
+                  height="100px"
+                )
+              td #{item.fullName}
+              td #{item.email}
+              td
+                if (item.status == "active")
+                  button(
+                    link=`/admin/accounts/users/change-status/inactive/${item.id}`
+                    class="badge bg-success"
+                    button-change-status
+                  ) Hoạt động
+                else
+                  button(
+                    link=`/admin/accounts/users/change-status/active/${item.id}`
+                    class="badge bg-danger"
+                    button-change-status
+                  ) Dừng hoạt động
+              td 
+                .d-flex.justify-content-center
+                  //- Info 
+                  a.btn.btn-info.btn-sm(type='button' data-bs-toggle='modal' data-bs-target=`#showInfoModal-${item.id}`)
+                    i.fa.fa-info.px-1
+                  //- Modal
+                  .modal.fade(tabindex='-1' id=`showInfoModal-${item.id}` aria-labelledby=`showInfoModalLabel-${item.id}` aria-hidden='true')
+                    .modal-dialog.modal-dialog-scrollable
+                      .modal-content
+                        .modal-header
+                          h5(id=`showInfoModalLabel-${item.id}`).modal-title Thông tin tài khoản
+                          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                        .modal-body
+                            div(
+                              class="form-group mb-3" 
+                            )
+                              label(for="fullName") Tên tài khoản 
+                              span.ms-2.fw-bold #{item.fullName}
+                            
+                            if item.email
+                              div(class="form-group mb-3")
+                                label(for="email") Email
+                                span.ms-2.fw-bold #{item.email}
+                            if item.phone
+                              div(class="form-group mb-3")
+                                label(for="phone") Số điện thoại 
+                                span.ms-2.fw-bold #{item.phone}
+                            if item.address1
+                              div(class="form-group mb-3")
+                                label(for="phone") Địa chỉ 1
+                                span.ms-2.fw-bold #{item.address1}
+                            if item.address1
+                              div(class="form-group mb-3")
+                                label(for="phone") Địa chỉ 2
+                                span.ms-2.fw-bold #{item.address2}
+                            if item.avatar
+                              div(class="form-group mb-3")
+                                p.mb-0 Ảnh đại diện
+                                img(
+                                  src=item.avatar
+                                  class="image-preview"
+                                  upload-image-preview
+                                )
+                            if item.roleTitle
+                              div(class="form-group mb-3")
+                                label(for="title") Phân quyền
+                                span.ms-2.fw-bold #{item.roleTitle}
+
+                  //- Delete
+                  a.btn.btn-danger.btn-sm.ms-2(type='button' data-bs-toggle='modal' data-bs-target=`#deleteModal-${item.id}`)
+                    i.fa.fa-trash
+                  //- Modal
+                  .modal.fade(tabindex='-1' id=`deleteModal-${item.id}` aria-labelledby=`deleteModalLabel-${item.id}` aria-hidden='true')
+                    .modal-dialog
+                      .modal-content
+                        .modal-header
+                          h5(id=`deleteModalLabel-${item.id}`).modal-title Delete confirmation 
+                          button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
+                        .modal-body
+                          p Bạn có chắc chắn muốn xóa tài khoản này không ? 
+                        .modal-footer
+                          button.btn.btn-success(type='button' button-delete=`/admin/accounts/users/delete/${item.id}`) Yes
+                          button.btn.btn-danger(type='button' data-bs-dismiss='modal') No
+          else 
+            tr
+              td(colspan="4" class="text-center") Chưa có tài khoản nào được tạo.                  

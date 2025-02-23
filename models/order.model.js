@@ -6,6 +6,10 @@ const orderSchema = new mongoose.Schema({
         phone: String,
         address: String
     },
+    status: {
+        type: String,
+        default: "pending"
+    },
     books: [
         {
             bookId: String,

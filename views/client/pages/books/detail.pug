@@ -43,7 +43,7 @@ block main
             button.btn.px-2(data-mdb-button-init='' data-mdb-ripple-init='' onclick="this.parentNode.querySelector('input[type=number]').stepUp()")
               i.fa.fa-plus
           .mt-4
-            button.btn.btn-warning.shadow-0.me-3 Buy now 
+            button.btn.btn-warning.shadow-0.me-3(link=`/cart/add/${book.id}`).btn-buy-now Buy now 
             button.btn.btn-primary.shadow-0(link=`/cart/add/${book.id}`).btn-add-cart
               i.me-1.fa.fa-shopping-basket
               |  Add to cart

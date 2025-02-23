@@ -41,14 +41,21 @@
             i.fa.fa-male
             span.ms-2.d-none.d-sm-inline User Accounts
       
+      if(role.permissions.includes("orders_view"))
+        li
+          a.nav-link.px-0.align-middle(href='/admin/orders')
+            i.fa.fa-shopping-cart
+            span.ms-2.d-none.d-sm-inline Manage Orders
+
     hr
     div.dropdown.pb-4(style='position: fixed; bottom: 10px')
       a#dropdownUser1.d-flex.align-items-center.text-white.text-decoration-none.dropdown-toggle(href='#' data-bs-toggle='dropdown' aria-expanded='false')
         img.rounded-circle(src=account.avatar width='30' height='30')
         span.d-none.d-sm-inline.mx-1 #{account.fullName}
       ul.dropdown-menu.dropdown-menu-dark.text-small.shadow(aria-labelledby='dropdownUser1')
-        li
-          a.dropdown-item(href=`/admin/settings/general`) Settings
+        if(role.permissions.includes("website_setting_edit"))
+          li
+            a.dropdown-item(href=`/admin/settings/general`) Settings
         li
           a.dropdown-item(href='/admin/profile') Profile
         li

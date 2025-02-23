@@ -6,7 +6,8 @@ const cartSchema = new mongoose.Schema({
             bookId: String,
             quantity: Number
         }
-    ]
+    ],
+    userId: String,
 }, {
     timestamps: true // Tự động thêm trường createAt và updateAt
 });

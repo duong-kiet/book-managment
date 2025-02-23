@@ -1,13 +1,14 @@
 const Cart = require("../../models/cart.model")
 const Book = require("../../models/book.model")
 const Order = require("../../models/order.model")
+const User = require("../../models/user.model");
 
 // GET /checkout
 module.exports.index = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const userId = res.locals.user.id
 
     const cart = await Cart.findOne({
-        _id: cartId
+        userId: userId
     })
 
     cart.totalPrice = 0
@@ -19,7 +20,7 @@ module.exports.index = async (req, res) => {
             }).select("title thumbnail slug price")
             
             book.bookInfo = bookInfo
-            book.totalPrice = bookInfo.price * book.quantity
+            book.totalPrice = book.price * book.quantity
             cart.totalPrice += book.totalPrice
         }
     }
@@ -32,7 +33,7 @@ module.exports.index = async (req, res) => {
 
 // POST /checkout/order
 module.exports.orderPost = async (req,res) => {
-    const cartId = req.cookies.cartId
+    const userId = res.locals.user.id
     const userInfo = req.body
    
     const orderData = {
@@ -41,7 +42,7 @@ module.exports.orderPost = async (req,res) => {
     }
 
     const cart = await Cart.findOne({
-        _id: cartId
+        userId: userId
     })
 
     for (const item of cart.books) {
@@ -68,10 +69,15 @@ module.exports.orderPost = async (req,res) => {
     await order.save()
 
     await Cart.updateOne({
-        _id: cartId
+        userId: userId
     }, {
         books: []
     })
+
+    await User.updateOne(
+        { _id: userId }, 
+        { $set: { cartLength: 0 } }
+    );
 
     res.redirect(`/checkout/success/${order.id}`)
 }

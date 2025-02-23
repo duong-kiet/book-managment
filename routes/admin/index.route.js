@@ -6,10 +6,9 @@ const accountsRoute = require("./account.route.js");
 const authRoute = require("./auth.route.js")
 const profileRoute = require("./profile.route.js")
 const settingRoute = require("./setting.route.js")
+const orderRoute = require("./order.route.js")
 
 // const userRoute = require("./user.route.js")
-
-// const orderRoute = require("./order.route.js")
 
 // const systemConfig = require("../../config/system.js")
 const authMiddleware = require("../../middlewares/admin/auth.middleware.js")
@@ -31,11 +30,12 @@ module.exports.index = (app) => {
 
     app.use("/admin/settings", authMiddleware.requireAuth, settingRoute);
 
+    app.use("/admin/orders", authMiddleware.requireAuth, orderRoute);
+
     // app.get("*", (req, res) => {
     //     res.render("admin/pages/errors/404", {
     //         pageTitle: "404 Not Found"
     //     });
     // });
 
-    // app.use("/admin/order", orderRoute);
 }

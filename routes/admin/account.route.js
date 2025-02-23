@@ -14,9 +14,11 @@ router.patch("/change-status/:statusChange/:id", controller.changeStatus);
 
 router.post("/create",  upload.single('avatar'), controller.createPost);
 
-// router.patch("/edit/:id", controller.editPatch);
+router.get("/users", controller.getUsers);
 
-// router.patch("/delete/:id", controller.deleteItem);
+router.patch("/users/change-status/:statusChange/:id", controller.userChangeStatus);
+
+router.patch("/users/delete/:id", controller.deleteUser);
 
 // router.get("/permissions", controller.permissions);
 

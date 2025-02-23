@@ -1,12 +1,14 @@
 const Cart = require("../../models/cart.model")
 const Book = require("../../models/book.model")
+const User = require("../../models/user.model")
 
 // GET /cart
 module.exports.index = async (req, res) => {
-    const cartId = req.cookies.cartId;
+  if(res.locals.user) {
+    const userId = res.locals.user.id
 
     const cart = await Cart.findOne({
-        _id: cartId
+        userId: userId
     })
 
     cart.totalPrice = 0
@@ -23,23 +25,26 @@ module.exports.index = async (req, res) => {
         }
     }
 
-    // console.log(cart)
-
     res.render("client/pages/cart/index", {
         pageTitle: "Giỏ hàng",
         cartDetail: cart
     })
+  } else {
+      res.redirect("/user/login");
+  }
 }
 
 
 // POST /cart/add/:bookId
 module.exports.addPost = async (req, res) => {
-    const cartId = req.cookies.cartId
+  if(res.locals.user) {
+    const userId = res.locals.user.id
     const bookId = req.params.bookId;
     const quantity = parseInt(req.body.quantity);
 
+
     const cart = await Cart.findOne({
-        _id: cartId
+        userId: userId
     })
     
     // Tìm ra phần tử đầu tiên trong books có mã Id = bookId, không có thì undefined
@@ -48,39 +53,56 @@ module.exports.addPost = async (req, res) => {
     );
 
     if(existBookInCart) {
-         await Cart.updateOne({
-            _id: cartId,
-            'books.bookId' : bookId
-         }, {
-            $set: {
-                'books.$.quantity': quantity + existBookInCart.quantity
-            }
-         })
+      await Cart.updateOne({
+        userId: userId,
+        'books.bookId' : bookId
+      }, {
+        $set: {
+          'books.$.quantity': quantity + existBookInCart.quantity
+        }
+      })
+
     } else {
-        await Cart.updateOne({
-            _id: cartId
-        }, {
-            $push: {
-                books: {
-                    bookId: bookId,
-                    quantity: quantity
-                }
-            }
-        })
+      await Cart.updateOne({
+        userId: userId
+      }, {
+        $push: {
+          books: {
+            bookId: bookId,
+            quantity: quantity
+          }
+        }
+      })
     }
 
+    const updateCart = await Cart.findOne({
+      userId: userId
+    })
+
+    await User.updateOne(
+      { _id: userId }, 
+      { $set: { cartLength: updateCart.books.length } }
+    );
+
+
     res.json({
-        code: 200
+        code: 200 
     });
+  } else {
+    if (req.accepts("json")) {
+      return res.json({ code: 401 });
+    }
+    res.redirect("/user/login")
+  }
 }
 
 // DELETE /cart/delete/:bookId
 module.exports.delete = async (req,res) => {
-    const cartId = req.cookies.cartId;
+    const userId = res.locals.user.id;
     const bookId = req.params.bookId;
 
     await Cart.updateOne({
-        _id: cartId
+        userId: userId
     }, {
         $pull: {
             books: {
@@ -89,19 +111,24 @@ module.exports.delete = async (req,res) => {
         }
     })
 
+    await User.updateOne(
+      { _id: userId }, 
+      { $inc: { cartLength: -1 } } 
+    );
+
     res.json({
-        code: 200
+      code: 200
     })
 }
 
 // PATCH /cart/update/:bookId/:quantity
 module.exports.updatePatch = async (req, res) => {
-    const cartId = req.cookies.cartId;
+    const userId = res.locals.user.id;
     const bookId = req.params.bookId;
     const quantity = parseInt(req.params.quantity)
 
     await Cart.updateOne({
-        _id: cartId,
+        userId: userId,
         'books.bookId' : bookId
      }, {
         $set: {
@@ -113,21 +140,3 @@ module.exports.updatePatch = async (req, res) => {
         code: 200
     })
 }
-
-// // GET /cart/update/:productId/:quantity
-// module.exports.update = async (req, res) => {
-//     const cartId = req.cookies.cartId;
-//     const productId = req.params.productId;
-//     const quantity = parseInt(req.params.quantity)
-
-//     await Cart.updateOne({
-//         _id: cartId,
-//         'products.productId' : productId
-//      }, {
-//         $set: {
-//             'products.$.quantity': quantity
-//         }
-//      })
-
-//      res.redirect("back")
-// }

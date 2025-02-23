@@ -19,12 +19,12 @@ header.header(style=`background: ${setting.color || "rgb(165, 241, 241)"}`)
                 button.btn.btn-outline-success(type='submit')
                   i(class="fa fa-search")
             .d-flex.align-items-center
-              a(class="me-3" href="/cart" style="position: relative; padding-right: 10px;")
+              a(class="me-3" href="/cart" btnCart style="position: relative; padding-right: 10px;")
                 i(class="fa fa-shopping-cart fa-2x icon-cart")
                 span(
                   class="" 
                   style="padding: 0px 6px; position: absolute; top: -5px; right: 0px; background: white; color: darkcyan; border-radius: 50px"
-                ) #{cartTotal}
+                ) #{(user && user.cartLength) || 0}
               if user
                 if user.avatar
                   a#dropdownIn(type='button' data-bs-toggle='dropdown' aria-expanded='false')
