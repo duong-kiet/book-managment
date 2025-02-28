@@ -14,10 +14,11 @@ header.header(style=`background: ${setting.color || "rgb(165, 241, 241)"}`)
                 h3.fw-bold.text-title Bookstore
 
             div
-              form.d-flex(style="width: 650px; height: 40px;" bar-search)
-                input(class='form-control' type='search' placeholder='Bạn muốn tốt hơn nhờ quyển sách nào ?' aria-label='Search' value=keyword name="keyword")
-                button.btn.btn-outline-success(type='submit')
-                  i(class="fa fa-search")
+              form.d-flex.flex-column(bar-search).position-relative
+                .d-flex(style="width: 650px; height: 40px")
+                  input(class='form-control' type='search' placeholder='Bạn muốn tốt hơn nhờ quyển sách nào ?' aria-label='Search' value=keyword name="keyword" books=JSON.stringify(booksDefault))
+                  button.btn.btn-outline-success(type='submit')
+                    i(class="fa fa-search")
             .d-flex.align-items-center
               a(class="me-3" href="/cart" btnCart style="position: relative; padding-right: 10px;")
                 i(class="fa fa-shopping-cart fa-2x icon-cart")

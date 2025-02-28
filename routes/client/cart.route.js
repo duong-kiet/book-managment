@@ -11,6 +11,4 @@ router.delete("/delete/:bookId", controller.delete)
 
 router.patch("/update/:bookId/:quantity", controller.updatePatch)
 
-// router.get("/update/:productId/:quantity", controller.update)
-
 module.exports = router;

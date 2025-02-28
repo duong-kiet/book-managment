@@ -17,6 +17,41 @@ if(barSearch) {
     })
 }
 
+const inputSearch = document.querySelector('[name="keyword"]')
+if(inputSearch) {
+    const books = JSON.parse(inputSearch.getAttribute("books"));
+    const div = document.createElement("div")
+    div.setAttribute("style", "background-color: #f6fefe; width: 610px; max-height: 224px; overflow: scroll")
+    div.setAttribute("class", "z-1 position-absolute top-100")
+    
+    inputSearch.addEventListener("keyup", (event) => {  
+        const inputValue = `${inputSearch.value}`;
+        let bookSearchArray = []
+
+        div.innerHTML = ``
+
+        for(const book of books) {
+            if(inputValue && book.title.toLowerCase().includes(inputValue)) {
+                bookSearchArray.push(book);
+            }
+        }
+
+        for(const item of bookSearchArray) {
+            div.innerHTML += `
+                <div class="d-flex align-items-center mt-2 pb-2 ps-2 border-bottom">
+                    <div>
+                        <a href=/books/detail/${item.slug}>
+                            <img src=${item.thumbnail} width=60px>
+                        </a>
+                    </div>
+                    <div class="p-2">${item.title}</div>
+                </div>
+            `
+        }
+    })
+    barSearch.appendChild(div)
+}
+
 // End bar search
 
 // Pagination

@@ -57,7 +57,6 @@ if(formSearch) {
         window.location.href = url.href;
     })
 }
-
 // End form search
 
 // Pagination

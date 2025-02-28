@@ -3,6 +3,7 @@ const bookRoute = require("./book.route.js")
 const cartRoute = require("./cart.route.js")
 const checkoutRoute = require("./checkout.route.js")
 const userRoute = require("./user.route.js")
+const chatRoute = require("./chat.route.js")
 
 const cartMiddleware = require("../../middlewares/client/cart.middleware.js")
 const userMiddleware = require("../../middlewares/client/user.middleware");
@@ -21,6 +22,8 @@ module.exports.index = (app) => {
     app.use("/checkout", checkoutRoute)
 
     app.use("/user", userRoute)
+
+    app.use("/chat", chatRoute)
 
     // app.get("*", (req, res) => {
     //     res.render("client/pages/errors/404", {
