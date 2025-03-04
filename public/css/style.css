@@ -90,3 +90,16 @@
 .hidden {
     display: none;
 }
+
+/* Tooltip */
+.tooltip {
+    /* visibility: hidden; */
+    display: none;
+}
+  
+.tooltip.shown {
+    /* visibility: visible; */
+    opacity: 1;
+    display: block
+}
+/* End Tooltip */
