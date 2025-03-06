@@ -17,74 +17,21 @@ block main
                         i.fa.fa-search
                     div(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 400px')
                       ul.list-unstyled.mb-0
-                        li.p-2.border-bottom
-                          a.d-flex.justify-content-between(href='#!')
-                            .d-flex.flex-row
-                              div
-                                img.d-flex.align-self-center.me-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp' alt='avatar' width='60')
-                                span.badge.bg-success.badge-dot
+                        for user in users
+                          li.p-2.border-bottom
+                            a.d-flex.justify-content-between.text-decoration-none(href='#!')
+                              .d-flex.flex-row
+                                div
+                                  img.d-flex.align-self-center.me-3(src=user.avatar alt='avatar' width='60')
+                                  span.badge.bg-success.badge-dot
+                                .pt-1
+                                  p.fw-bold.mb-0 #{user.fullName}
+                                  p.small.text-muted Hello, Are you there?
                               .pt-1
-                                p.fw-bold.mb-0 Marie Horwitz
-                                p.small.text-muted Hello, Are you there?
-                            .pt-1
-                              p.small.text-muted.mb-1 Just now
-                              span.badge.bg-danger.rounded-pill.float-end 3
-                        li.p-2.border-bottom
-                          a.d-flex.justify-content-between(href='#!')
-                            .d-flex.flex-row
-                              div
-                                img.d-flex.align-self-center.me-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava2-bg.webp' alt='avatar' width='60')
-                                span.badge.bg-warning.badge-dot
-                              .pt-1
-                                p.fw-bold.mb-0 Alexa Chung
-                                p.small.text-muted Lorem ipsum dolor sit.
-                            .pt-1
-                              p.small.text-muted.mb-1 5 mins ago
-                              span.badge.bg-danger.rounded-pill.float-end 2
-                        li.p-2.border-bottom
-                          a.d-flex.justify-content-between(href='#!')
-                            .d-flex.flex-row
-                              div
-                                img.d-flex.align-self-center.me-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp' alt='avatar' width='60')
-                                span.badge.bg-success.badge-dot
-                              .pt-1
-                                p.fw-bold.mb-0 Danny McChain
-                                p.small.text-muted Lorem ipsum dolor sit.
-                            .pt-1
-                              p.small.text-muted.mb-1 Yesterday
-                        li.p-2.border-bottom
-                          a.d-flex.justify-content-between(href='#!')
-                            .d-flex.flex-row
-                              div
-                                img.d-flex.align-self-center.me-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp' alt='avatar' width='60')
-                                span.badge.bg-danger.badge-dot
-                              .pt-1
-                                p.fw-bold.mb-0 Ashley Olsen
-                                p.small.text-muted Lorem ipsum dolor sit.
-                            .pt-1
-                              p.small.text-muted.mb-1 Yesterday
-                        li.p-2.border-bottom
-                          a.d-flex.justify-content-between(href='#!')
-                            .d-flex.flex-row
-                              div
-                                img.d-flex.align-self-center.me-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava5-bg.webp' alt='avatar' width='60')
-                                span.badge.bg-warning.badge-dot
-                              .pt-1
-                                p.fw-bold.mb-0 Kate Moss
-                                p.small.text-muted Lorem ipsum dolor sit.
-                            .pt-1
-                              p.small.text-muted.mb-1 Yesterday
-                        li.p-2
-                          a.d-flex.justify-content-between(href='#!')
-                            .d-flex.flex-row
-                              div
-                                img.d-flex.align-self-center.me-3(src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava6-bg.webp' alt='avatar' width='60')
-                                span.badge.bg-success.badge-dot
-                              .pt-1
-                                p.fw-bold.mb-0 Ben Smith
-                                p.small.text-muted Lorem ipsum dolor sit.
-                            .pt-1
-                              p.small.text-muted.mb-1 Yesterday
+                                p.small.mb-1(style="font-weight: bold;" online-status=(user.online ? "Online": "Offline") userId=user.id) 
+                                span.badge.bg-danger.rounded-pill.float-end
+                      
+                       
                 .col-md-6.col-lg-7.col-xl-8.border-start.border-2(chat)
                   .p-3.d-flex.align-items-center(style="box-shadow: 0 2px 2px -2px gray;")
                     img(src=user.avatar alt='avatar 1' style='width: 50px; height: 100%; border-radius: 50%')
@@ -106,15 +53,15 @@ block main
                             p.small.ms-3.mb-2.fw-bold #{chat.fullName}
                             p.small.p-2.ms-3.mb-1.rounded-3.bg-body-tertiary(style="border: 0.5px solid #efefef;") #{chat.message}
                             p.small.ms-3.mb-3.rounded-3.text-muted.float-end #{chat.createdFormatAt}
+                    div(class="list-typing mb-3")
                         
                   form.text-muted.d-flex.justify-content-start.align-items-center.pe-3.pt-3.mt-2(form-chat)
                     img(src=user.avatar alt='avatar 3' style='width: 40px; height: 100%; border-radius: 50%').me-2 
                     input#exampleFormControlInput2.form-control.form-control-lg(type='text' placeholder='Type message' name="message")
-                    span.ms-2.text-muted(style="border:none; background-color: white" btn-icon)
+                    span.ms-2.text-muted(style="border:none; background-color: white; position: relative" btn-icon)
                       i.fa.fa-lg.fa-smile-o
-                    button.ms-2(href='#!' type="submit" style="border:none; background-color: white; color: #0d6efd")
-                      i.fa.fa-lg.fa-paper-
-                  
-                  .tooltip
+                      .tooltip(style="bottom: 30px; right: 0px; position: absolute;")
                         emoji-picker
+                    button.ms-2(href='#!' type="submit" style="border:none; background-color: white; color: #0d6efd")
+                      i.fa.fa-lg.fa-paper-plane
 

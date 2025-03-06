@@ -21,6 +21,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "active"
     },
+    online: Boolean,
+    rooms: [
+        {
+            roomId: String,
+            friendId: String
+        }
+    ],
     deleted: {
         type: Boolean,
         default: false

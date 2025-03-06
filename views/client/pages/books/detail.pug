@@ -47,3 +47,54 @@ block main
             button.btn.btn-primary.shadow-0(link=`/cart/add/${book.id}`).btn-add-cart
               i.me-1.fa.fa-shopping-basket
               |  Add to cart
+  
+  .container.mb-5.py-5
+    .row.d-flex.justify-content-center
+      .col-md-12.col-lg-10
+        .card.text-body
+          .card-body.p-4
+            h4.mb-0 Recent comments
+            p.fw-light.mb-4.pb-2 Latest Comments section by users
+
+            for comment in comments 
+              .d-flex.flex-start.mb-3
+                img.rounded-circle.shadow-1-strong.me-3(src=comment.userInfo.avatar alt='avatar' width='60' height='60')
+                div
+                  h6.fw-bold.mb-1 #{comment.userInfo.fullName}
+                  .d-flex.align-items-center.mb-3
+                    p.mb-0 #{comment.createdAtFormat}
+                      span.badge.ms-2 
+                        +star(comment.star)
+                  p.mb-0 #{comment.body}
+              hr
+              
+          if(user) 
+            .my-0
+            .card-body.pt-2.pb-4
+              .d-flex.flex-start
+                img.rounded-circle.shadow-1-strong.me-3(src=user.avatar alt='avatar' width='60' height='60')
+                div
+                  h6.fw-bold Add a comment
+                  div(
+                    style="width: 800px; height: 100px;"
+                    form-comment
+                    link=`/books/detail/${book.slug}/comment`
+                  )
+                    .mb-3
+                      span#rate.mb-3
+                        button(star-comment=1)
+                          i.fa.fa-star.fa-sm.me-1
+                        button(star-comment=2)
+                          i.fa.fa-star.fa-sm.me-1
+                        button(star-comment=3)
+                          i.fa.fa-star.fa-sm.me-1
+                        button(star-comment=4)
+                          i.fa.fa-star.fa-sm.me-1
+                        button(star-comment=5)
+                          i.fa.fa-star.fa-sm.me-1
+
+                    textarea.form-control(style='background: #fff; width: 100%; height: 100%' name="body")
+                    .float-end.mt-2.pt-1
+                      button.btn.btn-primary.btn-sm(submit-comment) Post comment
+          
+

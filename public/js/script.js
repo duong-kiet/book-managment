@@ -462,3 +462,50 @@ if(uploadImage) {
     })
 }
 // End upload preview avatar
+
+const stars = document.querySelectorAll("#rate i");
+
+stars.forEach((star, index) => {
+    star.addEventListener("click", function () {
+        stars.forEach((s, i) => {
+            if (i <= index) {
+                s.classList.add("active");
+            } else {
+                s.classList.remove("active");
+            }
+        });
+    });
+});
+
+const btnSubmitComment = document.querySelector('button[submit-comment]')
+const formComment = document.querySelector('div[form-comment]')
+
+if(btnSubmitComment) {
+    btnSubmitComment.addEventListener("click", () => {
+        const data = {
+            star: 0
+        }
+
+        const stars = formComment.querySelectorAll("span > button > .active").length
+        data.star = stars
+        
+        const body = formComment.querySelector("textarea").value
+        data.body = body
+        const link = formComment.getAttribute("link")
+
+        fetch(link, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if(data.code == 201) {
+                    window.location.reload()
+                }
+            })
+    })
+}
