@@ -156,11 +156,11 @@ emoji-picker {
 }
 /* End box-typing */
 
-p[online-status="online"] {
+p[online-status="Online"] {
     color: #05B113;
 }
 
-p[online-status="offline"] {
+p[online-status="Offline"] {
     color: gray;
 }
 

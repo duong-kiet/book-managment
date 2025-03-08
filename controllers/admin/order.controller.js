@@ -21,7 +21,7 @@ module.exports.index = async (req, res) => {
 
   for(const order of orders) {
     order.totalPrice = 0;
-    order.createAtFormat = moment(order.createdAt).format("DD/MM/YYYY HH:mm:ss")
+    order.createdAtFormat = moment(order.createdAt).format("DD/MM/YYYY HH:mm:ss")
 
     for(const book of order.books) {
       const bookInfo = await Book.findOne({

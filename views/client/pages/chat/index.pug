@@ -17,9 +17,9 @@ block main
                         i.fa.fa-search
                     div(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 400px')
                       ul.list-unstyled.mb-0
-                        for user in users
+                        for user in chatters
                           li.p-2.border-bottom
-                            a.d-flex.justify-content-between.text-decoration-none(href='#!')
+                            a.d-flex.justify-content-between.text-decoration-none(href=`/chat/${user.id}`)
                               .d-flex.flex-row
                                 div
                                   img.d-flex.align-self-center.me-3(src=user.avatar alt='avatar' width='60')
@@ -31,37 +31,40 @@ block main
                                 p.small.mb-1(style="font-weight: bold;" online-status=(user.online ? "Online": "Offline") userId=user.id) 
                                 span.badge.bg-danger.rounded-pill.float-end
                       
-                       
-                .col-md-6.col-lg-7.col-xl-8.border-start.border-2(chat)
-                  .p-3.d-flex.align-items-center(style="box-shadow: 0 2px 2px -2px gray;")
-                    img(src=user.avatar alt='avatar 1' style='width: 50px; height: 100%; border-radius: 50%')
-                    .d-flex.flex-column.ms-3
-                      h5.mb-0 Duy Hoàng 
-                      span.text-muted Offline
+                if (!chatter)
+                  .col-md-6.col-lg-7.col-xl-8.border-start.border-2(style='width: 712px').d-flex.justify-content-center.align-items-center
+                    h2 Hãy bắt đầu các cuộc trò chuyện của bạn nào 
+                else
+                  .col-md-6.col-lg-7.col-xl-8.border-start.border-2(chat)
+                    .p-3.d-flex.align-items-center(style="box-shadow: 0 2px 2px -2px gray;")
+                      img(src=chatter.avatar alt='avatar 1' style='width: 50px; height: 100%; border-radius: 50%')
+                      .d-flex.flex-column.ms-3
+                        h5.mb-0 #{chatter.fullName}
+                        p.small(online-status=(chatter.online ? "Online": "Offline"))
 
-                  .pt-3.pe-3(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 500px; overflow: scroll' body-chat=user.id)
-                    each chat in chats
-                      if chat.userId == user.id 
-                        div(class="d-flex flex-row justify-content-end")
-                          div 
-                            p.small.p-2.me-3.mb-1.text-white.rounded-3.bg-primary #{chat.message}
-                            p.small.me-3.mb-3.rounded-3.text-muted.float-end #{chat.createdFormatAt}
-                      else 
-                        div(class="d-flex flex-row justify-content-start align-items-center")
-                          img(src=chat.avatar alt='avatar 1' style='width: 45px; height: 100%; border-radius: 50%')
-                          div.d-flex.flex-column
-                            p.small.ms-3.mb-2.fw-bold #{chat.fullName}
-                            p.small.p-2.ms-3.mb-1.rounded-3.bg-body-tertiary(style="border: 0.5px solid #efefef;") #{chat.message}
-                            p.small.ms-3.mb-3.rounded-3.text-muted.float-end #{chat.createdFormatAt}
-                    div(class="list-typing mb-3")
-                        
-                  form.text-muted.d-flex.justify-content-start.align-items-center.pe-3.pt-3.mt-2(form-chat)
-                    img(src=user.avatar alt='avatar 3' style='width: 40px; height: 100%; border-radius: 50%').me-2 
-                    input#exampleFormControlInput2.form-control.form-control-lg(type='text' placeholder='Type message' name="message")
-                    span.ms-2.text-muted(style="border:none; background-color: white; position: relative" btn-icon)
-                      i.fa.fa-lg.fa-smile-o
-                      .tooltip(style="bottom: 30px; right: 0px; position: absolute;")
-                        emoji-picker
-                    button.ms-2(href='#!' type="submit" style="border:none; background-color: white; color: #0d6efd")
-                      i.fa.fa-lg.fa-paper-plane
+                    .pt-3.pe-3(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 500px; overflow: scroll' body-chat=user.id)
+                      each chat in chats
+                        if chat.userId == user.id 
+                          div(class="d-flex flex-row justify-content-end")
+                            div 
+                              p.small.p-2.me-3.mb-1.text-white.rounded-3.bg-primary #{chat.message}
+                              p.small.me-3.mb-3.rounded-3.text-muted.float-end #{chat.createdFormatAt}
+                        else 
+                          div(class="d-flex flex-row justify-content-start align-items-center")
+                            img(src=chat.avatar alt='avatar 1' style='width: 45px; height: 100%; border-radius: 50%')
+                            div.d-flex.flex-column
+                              p.small.ms-3.mb-2.fw-bold #{chat.fullName}
+                              p.small.p-2.ms-3.mb-1.rounded-3.bg-body-tertiary(style="border: 0.5px solid #efefef;") #{chat.message}
+                              p.small.ms-3.mb-3.rounded-3.text-muted.float-end #{chat.createdFormatAt}
+                      div(class="list-typing mb-3")
+                          
+                    form.text-muted.d-flex.justify-content-start.align-items-center.pe-3.pt-3.mt-2(form-chat)
+                      img(src=user.avatar alt='avatar 3' style='width: 40px; height: 100%; border-radius: 50%').me-2 
+                      input#exampleFormControlInput2.form-control.form-control-lg(type='text' placeholder='Type message' name="message")
+                      span.ms-2.text-muted(style="border:none; background-color: white; position: relative" btn-icon)
+                        i.fa.fa-lg.fa-smile-o
+                        .tooltip(style="bottom: 30px; right: 0px; position: absolute;")
+                          emoji-picker
+                      button.ms-2(href='#!' type="submit" style="border:none; background-color: white; color: #0d6efd")
+                        i.fa.fa-lg.fa-paper-plane
 

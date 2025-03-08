@@ -56,21 +56,26 @@ block main
             h4.mb-0 Recent comments
             p.fw-light.mb-4.pb-2 Latest Comments section by users
 
-            for comment in comments 
-              .d-flex.flex-start.mb-3
-                img.rounded-circle.shadow-1-strong.me-3(src=comment.userInfo.avatar alt='avatar' width='60' height='60')
-                div
-                  h6.fw-bold.mb-1 #{comment.userInfo.fullName}
-                  .d-flex.align-items-center.mb-3
-                    p.mb-0 #{comment.createdAtFormat}
-                      span.badge.ms-2 
-                        +star(comment.star)
-                  p.mb-0 #{comment.body}
-              hr
-              
-          if(user) 
-            .my-0
-            .card-body.pt-2.pb-4
+            if(comments)
+              for comment in comments 
+                .d-flex.flex-start.mb-3
+                  img.rounded-circle.shadow-1-strong.me-3(src=comment.userInfo.avatar alt='avatar' width='60' height='60')
+                  div
+                    div
+                      span.fw-bold.mb-1 #{comment.userInfo.fullName}
+                      if user
+                        if (user.id !== comment.userInfo.id)
+                          a.ms-2(href=`/chat/${comment.userInfo.id}`)
+                            i.fa.fa-commenting-o.fa-lg
+                    .d-flex.align-items-center.mb-3
+                      p.mb-0 #{comment.createdAtFormat}
+                        span.badge.ms-2 
+                          +star(comment.star)
+                    p.mb-0 #{comment.body}
+    
+          .my-0
+          .card-body.pt-2.pb-4
+            if(user) 
               .d-flex.flex-start
                 img.rounded-circle.shadow-1-strong.me-3(src=user.avatar alt='avatar' width='60' height='60')
                 div
@@ -96,5 +101,9 @@ block main
                     textarea.form-control(style='background: #fff; width: 100%; height: 100%' name="body")
                     .float-end.mt-2.pt-1
                       button.btn.btn-primary.btn-sm(submit-comment) Post comment
-          
+            else
+              h6.ps-2 Đăng nhập để comment 
+
+  include ../../partials/chat.pug
+    
 

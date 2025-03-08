@@ -7,7 +7,6 @@ const moment = require("moment")
 // GET /books//detail/:slug
 module.exports.detail = async (req, res) => {
 	const slug = req.params.slug;
-	const userId = res.locals.user.id
 
 	const book = await Book.findOne({
 		slug: slug,
@@ -25,8 +24,8 @@ module.exports.detail = async (req, res) => {
 
 	for(const comment of comments) {
 		const userInfo = await User.findOne({
-			_id: userId
-		}).select("avatar fullName")
+			_id: comment.userId
+		}).select("id avatar fullName")
 		comment.userInfo = userInfo
 		comment.createdAtFormat = moment(comment.createdAt).format("DD/MM/YYYY HH:mm:ss")
 	}

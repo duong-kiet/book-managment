@@ -17,7 +17,7 @@ const bookCategorySchema = new mongoose.Schema({
         unique: true
     }
 }, {
-    timestamps: true // Tự động thêm trường createAt và updateAt
+    timestamps: true // Tự động thêm trường createdAt và updatedAt
 });
 
 

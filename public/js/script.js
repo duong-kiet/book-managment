@@ -21,7 +21,7 @@ const inputSearch = document.querySelector('[name="keyword"]')
 if(inputSearch) {
     const books = JSON.parse(inputSearch.getAttribute("books"));
     const div = document.createElement("div")
-    div.setAttribute("style", "background-color: #f6fefe; width: 610px; max-height: 224px; overflow: scroll")
+    div.setAttribute("style", "background-color: #f6fefe; width: 610px; max-height: 224px; overflow-yy: scroll")
     div.setAttribute("class", "z-1 position-absolute top-100")
     
     inputSearch.addEventListener("keyup", (event) => {  
