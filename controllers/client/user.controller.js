@@ -41,6 +41,14 @@ module.exports.registerPost = async (req, res) => {
     const user = new User(userData);
     await user.save();
 
+    _io.once("connection", (socket) => {
+      // Trả ra cho bạn bè trạng thái online của A
+      socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", {
+        status: "Online",
+        userId: user.id
+      })
+    });
+
     res.cookie("tokenUser", user.tokenUser);
     req.flash("success", "Đăng ký tài khoản thành công!");
     res.redirect("/");
@@ -213,8 +221,8 @@ module.exports.resetPasswordPatch = async (req, res) => {
     const password2 = req.body.password2;
     const tokenUser = req.cookies.tokenUser;
   
-    console.log(password)
-    console.log(password2)
+    // console.log(password)
+    // console.log(password2)
 
     if(password != password2) {
         req.flash("error", "Xác thực lại mật khẩu không dúng");

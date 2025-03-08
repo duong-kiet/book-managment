@@ -132,6 +132,7 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
 socket.on("SERVER_RETURN_USER_ONLINE", (data) => {
   const onlineStatus = document.querySelector(`p[userId="${data.userId}"]`);
   if(onlineStatus) {
+    console.log(data.status)
     onlineStatus.setAttribute("online-status", data.status);
     onlineStatus.innerText = data.status
   }
@@ -141,7 +142,7 @@ socket.on("SERVER_RETURN_USER_ONLINE", (data) => {
 const onlineStatusUsers = document.querySelectorAll("p[online-status]")
 if (onlineStatusUsers) {
   onlineStatusUsers.forEach(element => {
-    if(element.getAttribute("online-status") == "online") {
+    if(element.getAttribute("online-status") == "Online") {
       element.innerText = "Online"
     }
     else {

@@ -40,7 +40,7 @@ block main
                       img(src=chatter.avatar alt='avatar 1' style='width: 50px; height: 100%; border-radius: 50%')
                       .d-flex.flex-column.ms-3
                         h5.mb-0 #{chatter.fullName}
-                        p.small(online-status=(chatter.online ? "Online": "Offline"))
+                        p.small.fw-bold(online-status=(chatter.online ? "Online": "Offline"))
 
                     .pt-3.pe-3(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 500px; overflow: scroll' body-chat=user.id)
                       each chat in chats

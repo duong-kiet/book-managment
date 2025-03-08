@@ -21,7 +21,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "active"
     },
-    online: Boolean,
+    online: {
+        type: Boolean,
+        default: true
+    },
     rooms: [
         {
             roomId: String,
