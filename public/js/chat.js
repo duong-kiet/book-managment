@@ -1,5 +1,6 @@
-import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 var socket = io();
+import getName from "./getName.js";
+
 
 // CLIENT_SEND_MESSAGE
 const formChat = document.querySelector("[form-chat]")
@@ -101,6 +102,11 @@ socket.on("SERVER_RETURN_TYPING", (data) => {
 socket.on("SERVER_RETURN_MESSAGE", (data) => {
   const myId = document.querySelector("[body-chat]").getAttribute("body-chat");
 
+  const roomChatItem = document.querySelector("p[flag]")
+  const roomChat = roomChatItem.getAttribute("chatterId")
+  const lastMessage = document.querySelector(`p[message-last="${roomChat}"]`)
+  
+
   const div = document.createElement("div");
   let htmlFullName = "";
 
@@ -111,6 +117,8 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
         <p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">${data.message}</p>
       </div>
     `;
+    lastMessage.innerText = `Bạn: ${data.message}`
+
   } else {
     div.classList.add("d-flex", "flex-row", "justify-content-start", "align-items-center")
     div.innerHTML = `
@@ -120,6 +128,10 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
         <p class="small p-2 ms-3 mb-1 rounded-3 bg-body-tertiary" style="border: 0.5px solid #efefef;">${data.message}</p>
       </div>
     `;
+    
+    const name = getName(data.fullName)
+
+    lastMessage.innerText = `${name}: ${data.message}`
   }
 
   const body = document.querySelector("[body-chat]");
@@ -130,11 +142,13 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
 
 // SERVER_RETURN_USER_ONLINE
 socket.on("SERVER_RETURN_USER_ONLINE", (data) => {
-  const onlineStatus = document.querySelector(`p[userId="${data.userId}"]`);
+  const onlineStatus = document.querySelectorAll(`p[chatterId="${data.userId}"]`);
   if(onlineStatus) {
     console.log(data.status)
-    onlineStatus.setAttribute("online-status", data.status);
-    onlineStatus.innerText = data.status
+    onlineStatus.forEach(element => {
+      element.setAttribute("online-status", data.status);
+      element.innerText = data.status
+    })
   }
 })
 // End SERVER_RETURN_USER_ONLINE

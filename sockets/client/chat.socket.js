@@ -12,12 +12,21 @@ module.exports = (req, res, roomChatId) => {
       const chatData = {
         userId: userId,
         message: data.message,
-        roomChatId: roomChatId
+        roomChatId: roomChatId,
+        last: true
       };
   
       // Lưu data vào database
       const chat = new Chat(chatData);
       await chat.save();
+
+      await Chat.updateMany(
+        { _id: { $ne: chat.id }, 
+          last: true ,
+          roomChatId: roomChatId
+        }, // Điều kiện: _id ≠ 1 và last = true
+        { $set: { last: false } } // Cập nhật last thành false
+      );
 
       // Trả tin nhắn realtime về cho mọi người
       _io.emit("SERVER_RETURN_MESSAGE", {

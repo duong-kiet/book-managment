@@ -41,6 +41,7 @@ module.exports.index = async (req, res) => {
       } else {
         roomChatId = roomChatExist.id
 
+        // tìm ra tất cả chat có trong room này 
         chats = await Chat.find({
           roomChatId: roomChatExist.id
         });
@@ -64,29 +65,53 @@ module.exports.index = async (req, res) => {
           { users: { $all: [userId] } }, // Đảm bảo chứa cả 2 user
           { users: { $size: 2 } } // Đảm bảo đúng 2 phần tử
       ]
-    }).select("users");
+    }).select("title avatar users");
 
-    let arrayChatter = []
+    // lấy ra tất cả user bên side bar (có cùng roomChatId với user)
     for (const roomChat of roomsChat) {
       const array = roomChat.users;
-      const chatter = array.filter(element => element != userId)[0]
-      arrayChatter.push(chatter)
+      const chatterId = array.filter(element => element != userId)[0]
+      
+      const chatter = await User.findById(chatterId).select("_id avatar fullName online")
+
+      // lấy ra được chatterId cho mỗi roomChat
+      roomChat.chatterInfo = chatter
     }
 
-    const chatters = await User.find({
-      _id: { $in: arrayChatter }, 
-    })
+    let lastMessages = await Chat.find({
+      last: true,
+    }).sort({ 
+      createdAt: -1 
+    }).select("message roomChatId createdAt userId")
+
+
+    for (const lastMessage of lastMessages) {
+      for (const roomChat of roomsChat) {
+        if (lastMessage.roomChatId == roomChat.id) {
+          roomChat.lastMessage = lastMessage.message,
+          roomChat.lastTime = lastMessage.createdAt,
+          roomChat.userId = lastMessage.userId
+        }
+      }
+    }
+    // Sắp xếp từ mới nhất đến cũ nhất
+    roomsChat.sort((a, b) => b.lastTime - a.lastTime);
+
+    function getName(name) {
+      const array = name.split(" ");
+      return array[array.length-1]
+    }
 
     // SocketIO
     chatSocket(req, res, roomChatId);
     // End SocketIO
 
-
     res.render("client/pages/chat/index", {
       pageTitle: "Chat",
       chats: chats,
-      chatters : chatters,
-      chatter: chatter
+      chatter: chatter,
+      roomsChat: roomsChat,
+      getName
     })
   } else {
     res.redirect("/user/login")

@@ -17,18 +17,21 @@ block main
                         i.fa.fa-search
                     div(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 400px')
                       ul.list-unstyled.mb-0
-                        for user in chatters
-                          li.p-2.border-bottom
-                            a.d-flex.justify-content-between.text-decoration-none(href=`/chat/${user.id}`)
+                        for roomChat in roomsChat
+                          li.p-2.border-bottom(roomChat = roomChat.chatterInfo._id)
+                            a.d-flex.justify-content-between.text-decoration-none(href=`/chat/${roomChat.chatterInfo._id}`)
                               .d-flex.flex-row
                                 div
-                                  img.d-flex.align-self-center.me-3(src=user.avatar alt='avatar' width='60')
+                                  img.d-flex.align-self-center.me-3(src=roomChat.chatterInfo.avatar alt='avatar' width='60')
                                   span.badge.bg-success.badge-dot
                                 .pt-1
-                                  p.fw-bold.mb-0 #{user.fullName}
-                                  p.small.text-muted Hello, Are you there?
+                                  p.fw-bold.mb-0 #{roomChat.chatterInfo.fullName}
+                                  if (roomChat.userId == user.id)
+                                    p.small.text-muted(message-last=`${roomChat.chatterInfo._id}`) Bạn: #{roomChat.lastMessage}
+                                  else 
+                                    p.small.text-muted(message-last=`${roomChat.chatterInfo._id}`)  #{getName(roomChat.chatterInfo.fullName)}: #{roomChat.lastMessage}
                               .pt-1
-                                p.small.mb-1(style="font-weight: bold;" online-status=(user.online ? "Online": "Offline") userId=user.id) 
+                                p.small.mb-1(style="font-weight: bold;" online-status=(roomChat.chatterInfo.online ? "Online": "Offline") chatterId=roomChat.chatterInfo._id) 
                                 span.badge.bg-danger.rounded-pill.float-end
                       
                 if (!chatter)
@@ -39,8 +42,8 @@ block main
                     .p-3.d-flex.align-items-center(style="box-shadow: 0 2px 2px -2px gray;")
                       img(src=chatter.avatar alt='avatar 1' style='width: 50px; height: 100%; border-radius: 50%')
                       .d-flex.flex-column.ms-3
-                        h5.mb-0 #{chatter.fullName}
-                        p.small.fw-bold(online-status=(chatter.online ? "Online": "Offline"))
+                        h5.mb-0(chatterName) #{chatter.fullName}
+                        p.small.fw-bold(online-status=(chatter.online ? "Online": "Offline") chatterId=chatter._id flag)
 
                     .pt-3.pe-3(data-mdb-perfect-scrollbar-init='' style='position: relative; height: 500px; overflow: scroll' body-chat=user.id)
                       each chat in chats
