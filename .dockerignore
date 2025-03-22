@@ -1,0 +1,8 @@
+.idea
+node_modules
+.env 
+.gitignore 
+Dockerfile 
+package-lock.json
+README.md
+vercel.json
